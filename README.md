@@ -32,13 +32,32 @@ will be ran (in this case the bot).
  This the prefix used by commands, **?** is the default one if none is 
  specified. 
 ## Making it easier
+### Linux
 If you're a Linux user this doesn't need any explanation. Just make a 
 shell script and flag it as runnable, ez.
 
+### Windows
 For windows users (AKA most likely not a dev) fire up yer' notepad app 
 add write the previous line of code for starting up the bot. Save that file
 with the .bat extension and you can just double click it to run it. 
 > Double click the .bat, that is.
+
+But this works for single versions, ie. you need to update the .bat
+file every time. If you wish to make it run the highest version in the 
+folder, just paste this badboy in:
+
+    @echo off
+    setlocal enabledelayedexpansion
+    set max=0
+    for %%x in (*-shaded.jar) do (
+      set "FN=%%~nx"
+      set "FN=!FN:version-=!"
+      if !FN! GTR !max! set max=!FN!
+    )
+    
+    echo Starting: %max%.jar
+    
+    java -jar [file].jar [token] {custom prefix}
 
 ## Stopping the bot
 You just need to write **stop** in the console window of the bot.

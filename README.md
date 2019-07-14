@@ -31,6 +31,14 @@ will be ran (in this case the bot).
 - **{custom prefix}** you can add this if you want. It is not mandatory.
  This the prefix used by commands, **?** is the default one if none is 
  specified. 
+## Making it easier
+If you're a Linux user this doesn't need any explanation. Just make a 
+shell script and flag it as runnable, ez.
+
+For windows users (AKA most likely not a dev) fire up yer' notepad app 
+add write the previous line of code for starting up the bot. Save that file
+with the .bat extension and you can just double click it to run it. 
+> Double click the .bat, that is.
 
 ## Stopping the bot
 You just need to write **stop** in the console window of the bot.

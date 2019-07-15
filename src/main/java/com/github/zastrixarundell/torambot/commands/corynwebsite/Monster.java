@@ -65,6 +65,9 @@ public class Monster implements MessageCreateListener
                         .addInlineField("Tamable:", object.getTamable())
                         .addInlineField("Spawns at:", object.getLocation());
 
+                if(ToramBot.isRanOnHostingService())
+                    embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
+
                 String drops = String.join("\n", object.getItems());
 
                 embed.addField("Drops:", drops);
@@ -103,6 +106,9 @@ public class Monster implements MessageCreateListener
                         "info about a monster!")
                 .addField(ToramBot.getPrefix() + "monster [monster]", "This command is used to info about a monster!");
 
+        if(ToramBot.isRanOnHostingService())
+            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
+
         if (messageCreateEvent.getServer().isPresent())
             if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
             {
@@ -123,6 +129,9 @@ public class Monster implements MessageCreateListener
                 .setTitle(name)
                 .setThumbnail("http://coryn.club/images/cc_logo.gif")
                 .setDescription(description);
+
+        if(ToramBot.isRanOnHostingService())
+            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
 
         if (messageCreateEvent.getServer().isPresent())
             if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())

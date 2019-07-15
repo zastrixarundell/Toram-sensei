@@ -21,7 +21,7 @@ public class Help implements MessageCreateListener
         if (!messageCreateEvent.getMessageAuthor().isRegularUser())
             return;
 
-        EmbedBuilder builder = new EmbedBuilder()
+        EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("List of commands:")
                 .setDescription("Hi, I am a bot created by [Zastrix](https://toramonline.com/index.php?members/zastrix.100975/) " +
                         "solely for the purpose of assisting " +
@@ -44,6 +44,9 @@ public class Help implements MessageCreateListener
                         "new chapter in the story line, etc.")
                 .setThumbnail(messageCreateEvent.getApi().getYourself().getAvatar());
 
+        if(ToramBot.isRanOnHostingService())
+            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
+
 
         if (messageCreateEvent.getServer().isPresent())
             if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
@@ -52,11 +55,11 @@ public class Help implements MessageCreateListener
                 if (role.getColor().isPresent())
                 {
                     Color color = role.getColor().get();
-                    builder.setColor(color);
+                    embed.setColor(color);
                 }
             }
 
-        messageCreateEvent.getChannel().sendMessage(builder);
+        messageCreateEvent.getChannel().sendMessage(embed);
 
     }
 }

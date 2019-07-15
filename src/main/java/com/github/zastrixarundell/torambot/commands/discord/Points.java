@@ -65,6 +65,9 @@ public class Points implements MessageCreateListener
                 .addField(ToramBot.getPrefix() + "points [current skill points] [your level] [target level]",
                         "All of the arguments need to be present or else it will not work!");
 
+        if(ToramBot.isRanOnHostingService())
+            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
+
         if (messageCreateEvent.getServer().isPresent())
             if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
             {
@@ -85,6 +88,9 @@ public class Points implements MessageCreateListener
                 .setTitle(name)
                 .setThumbnail(ToramBot.logo())
                 .setDescription(description);
+
+        if(ToramBot.isRanOnHostingService())
+            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
 
         if (messageCreateEvent.getServer().isPresent())
             if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())

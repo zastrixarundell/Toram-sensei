@@ -138,6 +138,9 @@ public class Level implements MessageCreateListener
                 .addField("Location:", npc.getLocation())
                 .setUrl(npc.getLink());
 
+        if(ToramBot.isRanOnHostingService())
+            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
+
         if (!npc.getExp().isEmpty())
             for (String key : npc.getExp().keySet())
                 embed.addField(key + ":", npc.getExp().get(key));
@@ -168,6 +171,9 @@ public class Level implements MessageCreateListener
                                 "in normal brackets aren't specified the commands uses 5 for the level " +
                                 "range value and 0 for the EXP boost value.");
 
+        if(ToramBot.isRanOnHostingService())
+            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
+
         if (messageCreateEvent.getServer().isPresent())
             if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
             {
@@ -188,6 +194,9 @@ public class Level implements MessageCreateListener
                 .setTitle(name)
                 .setThumbnail("http://coryn.club/images/cc_logo.gif")
                 .setDescription(description);
+
+        if(ToramBot.isRanOnHostingService())
+            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
 
         if (messageCreateEvent.getServer().isPresent())
             if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())

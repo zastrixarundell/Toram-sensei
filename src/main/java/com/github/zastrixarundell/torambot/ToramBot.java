@@ -34,6 +34,8 @@ public class ToramBot
 
     private static Date postDate = new Date();
 
+    public static final String supportURL = "http://corneey.com/w2ObhY";
+
     public static boolean TimeOutCoryn(MessageCreateEvent messageCreateEvent)
     {
         boolean cancel = false;
@@ -124,6 +126,8 @@ public class ToramBot
             return "https://toramonline.com/index.php?media/toram-online-logo.50/full&d=1463410056";
     }
 
+    private static boolean ranOnHostingService = false;
+
     public static void main(String[] args)
     {
 
@@ -133,10 +137,19 @@ public class ToramBot
             return;
         }
 
-        if(args.length == 2)
+        if(args.length > 1)
         {
             prefix = args[1];
             System.out.println("Prefix set to: " + prefix);
+        }
+
+        try
+        {
+            ranOnHostingService = Boolean.valueOf(args[2]);
+        }
+        catch (Exception ignore)
+        {
+
         }
 
         String token = args[0];
@@ -196,4 +209,8 @@ public class ToramBot
 
     }
 
+    public static boolean isRanOnHostingService()
+    {
+        return ranOnHostingService;
+    }
 }

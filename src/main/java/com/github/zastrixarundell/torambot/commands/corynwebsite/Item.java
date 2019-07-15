@@ -75,6 +75,9 @@ public class Item implements MessageCreateListener
                         .addInlineField("NPC sell price:", item.getPrice())
                         .addInlineField("Processed into:", item.getProc());
 
+                if(ToramBot.isRanOnHostingService())
+                    embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
+
                 String stats = String.join("\n", item.getStats());
 
                 embed.addField("Stats/Effect:", stats);
@@ -116,6 +119,9 @@ public class Item implements MessageCreateListener
                             "coryn.club!")
                     .setThumbnail("http://coryn.club/images/cc_logo.gif");
 
+            if(ToramBot.isRanOnHostingService())
+                embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
+
             if (messageCreateEvent.getServer().isPresent())
                 if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
                 {
@@ -139,6 +145,9 @@ public class Item implements MessageCreateListener
                 .setTitle("Empty search!")
                 .setThumbnail("http://coryn.club/images/cc_logo.gif")
                 .setDescription("You can not find an item on coryn.club without specifying which item!");
+
+        if(ToramBot.isRanOnHostingService())
+            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
 
         if (messageCreateEvent.getServer().isPresent())
             if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())

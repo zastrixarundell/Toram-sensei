@@ -58,6 +58,9 @@ public class Events implements MessageCreateListener
                                     .setThumbnail(ToramBot.logo())
                                     .setFooter("Publish Date: " + link.getElementsByTag("time").text());
 
+                            if(ToramBot.isRanOnHostingService())
+                                embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
+
                             if (messageCreateEvent.getServer().isPresent())
                                 if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
                                 {

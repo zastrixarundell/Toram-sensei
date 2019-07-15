@@ -25,9 +25,6 @@ public class Latest implements MessageCreateListener
         if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(ToramBot.getPrefix() + "latest"))
             return;
 
-        if (ToramBot.TimeOut(messageCreateEvent))
-            return;
-
         try
         {
             Document document = Jsoup.connect("https://en.toram.jp/?type_code=all#contentArea").get();
@@ -82,8 +79,6 @@ public class Latest implements MessageCreateListener
         {
 
         }
-
-        ToramBot.updateTime();
     }
 
 }

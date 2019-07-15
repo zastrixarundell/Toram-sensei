@@ -38,9 +38,6 @@ public class Item implements MessageCreateListener
             return;
         }
 
-        if (ToramBot.TimeOutCoryn(messageCreateEvent))
-            return;
-
         String data = String.join(" ", arguments);
 
         try
@@ -135,8 +132,6 @@ public class Item implements MessageCreateListener
 
             messageCreateEvent.getChannel().sendMessage(embed);
         }
-
-        ToramBot.updateTime();
     }
 
     private void emptySearch(MessageCreateEvent messageCreateEvent)

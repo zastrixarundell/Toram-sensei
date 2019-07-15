@@ -11,13 +11,6 @@ import com.github.zastrixarundell.torambot.commands.discord.Help;
 import com.github.zastrixarundell.torambot.commands.discord.Points;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
-import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.permission.Role;
-import org.javacord.api.event.message.MessageCreateEvent;
-
-import java.awt.*;
-import java.text.DecimalFormat;
-import java.util.Date;
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -32,94 +25,7 @@ public class ToramBot
         return prefix;
     }
 
-    private static Date postDate = new Date();
-
     public static final String supportURL = "http://corneey.com/w2ObhY";
-
-    public static boolean TimeOutCoryn(MessageCreateEvent messageCreateEvent)
-    {
-        boolean cancel = false;
-
-        Date currentDate = new Date();
-
-        if(currentDate.getTime() <= postDate.getTime() + 1000)
-            cancel = true;
-
-        if (cancel)
-        {
-            long remainingLong = postDate.getTime() + 1000 - currentDate.getTime();
-            float remaining = remainingLong / 1000f;
-
-            DecimalFormat df = new DecimalFormat();
-            df.setMaximumFractionDigits(2);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                    .setTitle("Still on timeout!")
-                    .setDescription("You need to wait for " + df.format(remaining) + " second(s) to perform a command." +
-                            " This is here just so the site isn't spammed.")
-                    .setThumbnail(ToramBot.logo());
-
-            if(messageCreateEvent.getServer().isPresent())
-                if(messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
-                {
-                    Role role = messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).get();
-                    if(role.getColor().isPresent())
-                    {
-                        Color color = role.getColor().get();
-                        embed.setColor(color);
-                    }
-                }
-
-            messageCreateEvent.getChannel().sendMessage(embed);
-        }
-
-        return cancel;
-    }
-
-    public static boolean TimeOut(MessageCreateEvent messageCreateEvent)
-    {
-        boolean cancel = false;
-
-        Date currentDate = new Date();
-
-        if(currentDate.getTime() <= postDate.getTime() + 5000)
-            cancel = true;
-
-        if (cancel)
-        {
-            long remainingLong = postDate.getTime() + 5000 - currentDate.getTime();
-            float remaining = remainingLong / 1000f;
-
-            DecimalFormat df = new DecimalFormat();
-            df.setMaximumFractionDigits(2);
-
-            EmbedBuilder embed = new EmbedBuilder()
-                    .setTitle("Still on timeout!")
-                    .setDescription("You need to wait for " + df.format(remaining) + " second(s) to perform a command." +
-                            " This is here just so the site isn't spammed.")
-                    .setThumbnail(ToramBot.logo());
-
-            if(messageCreateEvent.getServer().isPresent())
-                if(messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
-                {
-                    Role role = messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).get();
-                    if(role.getColor().isPresent())
-                    {
-                        Color color = role.getColor().get();
-                        embed.setColor(color);
-                    }
-                }
-
-            messageCreateEvent.getChannel().sendMessage(embed);
-        }
-
-        return cancel;
-    }
-
-    public static void updateTime()
-    {
-        postDate = new Date();
-    }
 
     public static String logo()
     {
@@ -189,7 +95,7 @@ public class ToramBot
             @Override
             public void run()
             {
-                bot.updateActivity(prefix + "help");
+                bot.updateActivity(prefix + "help | " + bot.getServers().size() + " servers!");
             }
         };
 

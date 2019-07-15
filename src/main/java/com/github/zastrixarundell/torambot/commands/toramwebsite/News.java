@@ -25,9 +25,6 @@ public class News implements MessageCreateListener
         if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(ToramBot.getPrefix() + "news"))
             return;
 
-        if (ToramBot.TimeOut(messageCreateEvent))
-            return;
-
         try
         {
             Document document = Jsoup.connect("https://en.toram.jp/#news").get();
@@ -77,8 +74,6 @@ public class News implements MessageCreateListener
         catch (Exception ignore)
         {
         }
-
-        ToramBot.updateTime();
     }
 
 }

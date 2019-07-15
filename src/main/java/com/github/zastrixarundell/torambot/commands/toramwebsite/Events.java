@@ -25,9 +25,6 @@ public class Events implements MessageCreateListener
         if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(ToramBot.getPrefix() + "events"))
             return;
 
-        if (ToramBot.TimeOut(messageCreateEvent))
-            return;
-
         try
         {
             Document document = Jsoup.connect("https://en.toram.jp/information/?type_code=event").get();
@@ -82,7 +79,6 @@ public class Events implements MessageCreateListener
         {
         }
 
-        ToramBot.updateTime();
     }
 
 }

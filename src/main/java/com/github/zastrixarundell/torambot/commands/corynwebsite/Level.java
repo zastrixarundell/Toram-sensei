@@ -38,9 +38,6 @@ public class Level implements MessageCreateListener
             return;
         }
 
-        if (ToramBot.TimeOutCoryn(messageCreateEvent))
-            return;
-
         int level, range, bonus;
 
         try
@@ -126,7 +123,6 @@ public class Level implements MessageCreateListener
                     "An error happened when the level, did you put in the correct inputs?");
         }
 
-        ToramBot.updateTime();
     }
 
     private void showNPC(MessageCreateEvent messageCreateEvent, NPC_Object npc, String type)

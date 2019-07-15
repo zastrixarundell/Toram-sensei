@@ -38,9 +38,6 @@ public class Monster implements MessageCreateListener
             return;
         }
 
-        if (ToramBot.TimeOutCoryn(messageCreateEvent))
-            return;
-
         String data = String.join(" ", arguments);
 
         try
@@ -94,7 +91,6 @@ public class Monster implements MessageCreateListener
                             "exist?");
         }
 
-        ToramBot.updateTime();
     }
 
     private void sendCommandUsage(MessageCreateEvent messageCreateEvent)

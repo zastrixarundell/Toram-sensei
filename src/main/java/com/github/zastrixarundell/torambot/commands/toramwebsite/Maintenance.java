@@ -25,9 +25,6 @@ public class Maintenance implements MessageCreateListener
         if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(ToramBot.getPrefix() + "maintenance"))
             return;
 
-        if (ToramBot.TimeOut(messageCreateEvent))
-            return;
-
         try
         {
             Document document = Jsoup.connect("https://en.toram.jp/?type_code=update#contentArea").get();
@@ -83,7 +80,6 @@ public class Maintenance implements MessageCreateListener
 
         }
 
-        ToramBot.updateTime();
     }
 
 }

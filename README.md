@@ -61,3 +61,6 @@ folder, just paste this badboy in:
 
 ## Stopping the bot
 You just need to write **stop** in the console window of the bot.
+
+# Additional info
+- The bot uses JavaCord as the API. 

@@ -1,12 +1,11 @@
 package com.github.zastrixarundell.torambot.commands.discord;
 
-import com.github.zastrixarundell.torambot.ToramBot;
+import com.github.zastrixarundell.torambot.Parser;
+import com.github.zastrixarundell.torambot.Values;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.permission.Role;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Points implements MessageCreateListener
@@ -16,7 +15,7 @@ public class Points implements MessageCreateListener
     public void onMessageCreate(MessageCreateEvent messageCreateEvent)
     {
 
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(ToramBot.getPrefix() + "points"))
+        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "points"))
             return;
 
         if (!messageCreateEvent.getMessageAuthor().isRegularUser())
@@ -59,25 +58,14 @@ public class Points implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Points Command: ")
-                .setThumbnail("http://coryn.club/images/cc_logo.gif")
+                .setThumbnail(Values.userThumbnailGIF)
                 .setDescription("You can use this command to get " +
                         "how many skill points will you have at which level!")
-                .addField(ToramBot.getPrefix() + "points [current skill points] [your level] [target level]",
+                .addField(Values.getPrefix() + "points [current skill points] [your level] [target level]",
                         "All of the arguments need to be present or else it will not work!");
 
-        if(ToramBot.isRanOnHostingService())
-            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
-
-        if (messageCreateEvent.getServer().isPresent())
-            if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
-            {
-                Role role = messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).get();
-                if (role.getColor().isPresent())
-                {
-                    Color color = role.getColor().get();
-                    embed.setColor(color);
-                }
-            }
+        Parser.parseFooter(embed, messageCreateEvent);
+        Parser.parseColor(embed, messageCreateEvent);
 
         messageCreateEvent.getChannel().sendMessage(embed);
     }
@@ -86,22 +74,11 @@ public class Points implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(name)
-                .setThumbnail(ToramBot.logo())
+                .setThumbnail(Values.userThumbnailGIF)
                 .setDescription(description);
 
-        if(ToramBot.isRanOnHostingService())
-            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
-
-        if (messageCreateEvent.getServer().isPresent())
-            if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
-            {
-                Role role = messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).get();
-                if (role.getColor().isPresent())
-                {
-                    Color color = role.getColor().get();
-                    embed.setColor(color);
-                }
-            }
+        Parser.parseFooter(embed, messageCreateEvent);
+        Parser.parseColor(embed, messageCreateEvent);
 
         messageCreateEvent.getChannel().sendMessage(embed);
     }

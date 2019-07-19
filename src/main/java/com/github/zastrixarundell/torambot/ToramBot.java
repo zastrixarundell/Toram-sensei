@@ -18,22 +18,6 @@ import java.util.TimerTask;
 public class ToramBot
 {
 
-    private static String prefix = "?";
-
-    public static String getPrefix()
-    {
-        return prefix;
-    }
-
-    public static final String supportURL = "http://corneey.com/w2ObhY";
-
-    public static String logo()
-    {
-            return "https://toramonline.com/index.php?media/toram-online-logo.50/full&d=1463410056";
-    }
-
-    private static boolean ranOnHostingService = false;
-
     public static void main(String[] args)
     {
 
@@ -45,13 +29,15 @@ public class ToramBot
 
         if(args.length > 1)
         {
-            prefix = args[1];
-            System.out.println("Prefix set to: " + prefix);
+            Values.setPrefix(args[1]);
         }
 
+        System.out.println("Prefix set to: " + Values.getPrefix());
+
+        //Only if it is hosted for everyone
         try
         {
-            ranOnHostingService = Boolean.valueOf(args[2]);
+            Values.setRanOnHostingService(Boolean.valueOf(args[2]));
         }
         catch (Exception ignore)
         {
@@ -87,19 +73,7 @@ public class ToramBot
         String input;
         Scanner scanner = new Scanner(System.in);
 
-
-
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                bot.updateActivity(prefix + "help | " + bot.getServers().size() + " servers!");
-            }
-        };
-
-        timer.schedule(task, 0, 30000);
+        Timer timer = updateActivity(bot);
 
         while(true)
         {
@@ -115,8 +89,20 @@ public class ToramBot
 
     }
 
-    public static boolean isRanOnHostingService()
+    private static Timer updateActivity(DiscordApi bot)
     {
-        return ranOnHostingService;
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                bot.updateActivity(Values.getPrefix() + "help | " + bot.getServers().size() + " servers!");
+            }
+        };
+
+        timer.schedule(task, 0, 30000);
+        return timer;
     }
+
 }

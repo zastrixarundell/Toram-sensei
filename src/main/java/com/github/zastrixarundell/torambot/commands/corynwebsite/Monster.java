@@ -1,9 +1,9 @@
 package com.github.zastrixarundell.torambot.commands.corynwebsite;
 
-import com.github.zastrixarundell.torambot.ToramBot;
+import com.github.zastrixarundell.torambot.Parser;
+import com.github.zastrixarundell.torambot.Values;
 import com.github.zastrixarundell.torambot.objects.MonsterObject;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
-import org.javacord.api.entity.permission.Role;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 import org.jsoup.Jsoup;
@@ -11,7 +11,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Monster implements MessageCreateListener
@@ -24,7 +23,7 @@ public class Monster implements MessageCreateListener
         if (!messageCreateEvent.getMessageAuthor().isRegularUser())
             return;
 
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(ToramBot.getPrefix() + "monster"))
+        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "monster"))
             return;
 
         ArrayList<String> arguments = new ArrayList<>();
@@ -40,57 +39,62 @@ public class Monster implements MessageCreateListener
 
         String data = String.join(" ", arguments);
 
-        try
+        Runnable runnable = () ->
         {
-            Document document = Jsoup.connect("http://coryn.club/monster.php").data("name", data).get();
-            Elements tables = document.getElementsByClass("table table-striped");
-            Element body = tables.first().getElementsByTag("tbody").first();
-
-            for (Element element : body.getElementsByTag("tr"))
+            try
             {
-                if(element.parent() != body)
-                    continue;
+                Document document = Jsoup.connect("http://coryn.club/monster.php").data("name", data).get();
+                Elements tables = document.getElementsByClass("table table-striped");
+                Element body = tables.first().getElementsByTag("tbody").first();
 
-                MonsterObject object = new MonsterObject(element);
+                generateMonsters(body).forEach(monsterObject -> sendMonsterMessage(monsterObject, messageCreateEvent));
 
-                EmbedBuilder embed = new EmbedBuilder()
-                        .setTitle(object.getName())
-                        .setThumbnail("http://coryn.club/images/cc_logo.gif")
-                        .addInlineField("HP:", object.getHp())
-                        .addInlineField("Element:", object.getElement())
-                        .addInlineField("EXP:", object.getExp())
-                        .addInlineField("Tamable:", object.getTamable())
-                        .addInlineField("Spawns at:", object.getLocation());
-
-                if(ToramBot.isRanOnHostingService())
-                    embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
-
-                String drops = String.join("\n", object.getItems());
-
-                embed.addField("Drops:", drops);
-
-                if (messageCreateEvent.getServer().isPresent())
-                    if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
-                    {
-                        Role role = messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).get();
-                        if (role.getColor().isPresent())
-                        {
-                            Color color = role.getColor().get();
-                            embed.setColor(color);
-                        }
-                    }
-
-                messageCreateEvent.getChannel().sendMessage(embed);
             }
+            catch (Exception e)
+            {
+                sendError(messageCreateEvent, "Error while getting the monster!",
+                        "An error happened while getting the monster info! Does the specified monster even " +
+                                "exist?");
+            }
+        };
 
-        }
-        catch (Exception e)
+        (new Thread(runnable)).start();
+
+    }
+
+    private void sendMonsterMessage(MonsterObject object, MessageCreateEvent messageCreateEvent)
+    {
+        EmbedBuilder embed = new EmbedBuilder()
+                .setTitle(object.getName())
+                .setThumbnail(Values.corynLogo)
+                .addInlineField("HP:", object.getHp())
+                .addInlineField("Element:", object.getElement())
+                .addInlineField("EXP:", object.getExp())
+                .addInlineField("Tamable:", object.getTamable())
+                .addInlineField("Spawns at:", object.getLocation());
+
+        Parser.parseFooter(embed, messageCreateEvent);
+        Parser.parseColor(embed, messageCreateEvent);
+
+        String drops = String.join("\n", object.getItems());
+
+        embed.addField("Drops:", drops);
+
+        messageCreateEvent.getChannel().sendMessage(embed);
+    }
+
+    private ArrayList<MonsterObject> generateMonsters(Element body)
+    {
+
+        ArrayList<MonsterObject> monsterObjects = new ArrayList<>();
+
+        body.getElementsByTag("tr").forEach(element ->
         {
-            sendError(messageCreateEvent, "Error while getting the monster!",
-                    "An error happened while getting the monster info! Does the specified monster even " +
-                            "exist?");
-        }
+            if(element.parent() == body)
+                monsterObjects.add(new MonsterObject(element));
+        });
 
+        return monsterObjects;
     }
 
     private void sendCommandUsage(MessageCreateEvent messageCreateEvent)
@@ -100,21 +104,10 @@ public class Monster implements MessageCreateListener
                 .setThumbnail("http://coryn.club/images/cc_logo.gif")
                 .setDescription("You can use this command to get " +
                         "info about a monster!")
-                .addField(ToramBot.getPrefix() + "monster [monster]", "This command is used to info about a monster!");
+                .addField(Values.getPrefix() + "monster [monster]", "This command is used to info about a monster!");
 
-        if(ToramBot.isRanOnHostingService())
-            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
-
-        if (messageCreateEvent.getServer().isPresent())
-            if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
-            {
-                Role role = messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).get();
-                if (role.getColor().isPresent())
-                {
-                    Color color = role.getColor().get();
-                    embed.setColor(color);
-                }
-            }
+        Parser.parseFooter(embed, messageCreateEvent);
+        Parser.parseColor(embed, messageCreateEvent);
 
         messageCreateEvent.getChannel().sendMessage(embed);
     }
@@ -126,19 +119,8 @@ public class Monster implements MessageCreateListener
                 .setThumbnail("http://coryn.club/images/cc_logo.gif")
                 .setDescription(description);
 
-        if(ToramBot.isRanOnHostingService())
-            embed.setFooter("Support me by going on the link: " + ToramBot.supportURL);
-
-        if (messageCreateEvent.getServer().isPresent())
-            if (messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).isPresent())
-            {
-                Role role = messageCreateEvent.getServer().get().getHighestRole(messageCreateEvent.getApi().getYourself()).get();
-                if (role.getColor().isPresent())
-                {
-                    Color color = role.getColor().get();
-                    embed.setColor(color);
-                }
-            }
+        Parser.parseFooter(embed, messageCreateEvent);
+        Parser.parseColor(embed, messageCreateEvent);
 
         messageCreateEvent.getChannel().sendMessage(embed);
     }

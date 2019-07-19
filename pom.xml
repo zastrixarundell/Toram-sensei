@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.zastrixarundell</groupId>
     <artifactId>ToramBot</artifactId>
-    <version>3.1.1</version>
+    <version>3.2.0</version>
 
     <dependencies>
         <dependency>
@@ -29,9 +29,7 @@
 
             <resource>
                 <directory>${basedir}/src/main/resources</directory>
-                <excludes>
-                    <exclude>METAINF</exclude>
-                </excludes>
+                <filtering>true</filtering>
             </resource>
 
         </resources>

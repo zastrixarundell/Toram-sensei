@@ -1,5 +1,6 @@
 package com.github.zastrixarundell.torambot;
 
+import com.github.zastrixarundell.torambot.commands.discord.Proficiency;
 import com.github.zastrixarundell.torambot.commands.toramwebsite.Events;
 import com.github.zastrixarundell.torambot.commands.toramwebsite.Latest;
 import com.github.zastrixarundell.torambot.commands.toramwebsite.Maintenance;
@@ -67,6 +68,7 @@ public class ToramBot
         bot.addListener(new Help());
         bot.addListener(new Monster());
         bot.addListener(new Points());
+        bot.addListener(new Proficiency());
 
         System.out.println("Started! Type in \"stop\" to stop the bot!");
 

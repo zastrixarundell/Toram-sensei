@@ -17,6 +17,7 @@ public class ItemObject
         name = itemData.getElementsByTag("h4").first().text();
 
         name = name.replace("   ", " ");
+        name = name.replace("  ", " ");
 
         //Price and proc
         Element ppStatTable = itemData.getElementsByClass("stat-table").first();

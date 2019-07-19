@@ -28,10 +28,7 @@ public class Item implements MessageCreateListener
         if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "item"))
             return;
 
-        ArrayList<String> arguments = new ArrayList<>();
-
-        for (int i = 1; i < messageCreateEvent.getMessageContent().split(" ").length; i++)
-            arguments.add(messageCreateEvent.getMessageContent().split(" ")[i]);
+        ArrayList<String> arguments = Parser.argumentsParser(messageCreateEvent);
 
         if (arguments.isEmpty())
         {
@@ -68,14 +65,11 @@ public class Item implements MessageCreateListener
         ArrayList<ItemObject> listOfItems = new ArrayList<>();
 
         for(int size = 0, count = 0; size < trs.size() && count < 5; size++)
-        {
-            System.out.println(count + " " + trs.size());
             if(trs.get(size).parent() == body)
             {
                 listOfItems.add(new ItemObject(trs.get(size)));
                 count++;
             }
-        }
 
         return listOfItems;
     }

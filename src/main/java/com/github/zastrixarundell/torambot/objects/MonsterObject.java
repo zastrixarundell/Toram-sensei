@@ -13,10 +13,7 @@ public class MonsterObject
     {
         monsterData = monsterData.getElementsByTag("td").first();
 
-        StringBuilder nameBuilder = new StringBuilder();
-
         name =  monsterData.getElementsByTag("h4").text();
-        name = name.replace("   ", " ");
 
         Element stats = monsterData.getElementsByClass("stat-table").first();
         Element statBody = stats.getElementsByTag("tbody").first();

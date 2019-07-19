@@ -5,6 +5,7 @@ import org.javacord.api.entity.permission.Role;
 import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import static com.github.zastrixarundell.torambot.Values.footerMessage;
 
@@ -30,6 +31,16 @@ public class Parser
                     embed.setColor(color);
                 }
             }
+    }
+
+    public static ArrayList<String> argumentsParser(MessageCreateEvent messageCreateEvent)
+    {
+        ArrayList<String> arguments = new ArrayList<>();
+
+        for (int i = 1; i < messageCreateEvent.getMessageContent().split(" ").length; i++)
+            arguments.add(messageCreateEvent.getMessageContent().split(" ")[i]);
+
+        return arguments;
     }
 
 }

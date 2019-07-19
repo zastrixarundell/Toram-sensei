@@ -1,5 +1,13 @@
 # Changelog
 
+### 3.2.0
+- Added proficiency command.
+- Added version on the help command.
+- Fixed monster command.
+- Fixed some commands on item.
+- Maintenance can be used as ***maint*** as well
+- Added Argument Parser
+
 ### 3.1.1
 - Removed the logical error on items.
 

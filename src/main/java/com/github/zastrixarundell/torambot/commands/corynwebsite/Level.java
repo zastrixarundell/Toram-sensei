@@ -26,10 +26,7 @@ public class Level implements MessageCreateListener
         if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "level"))
             return;
 
-        ArrayList<String> arguments = new ArrayList<>();
-
-        for (int i = 1; i < messageCreateEvent.getMessageContent().split(" ").length; i++)
-            arguments.add(messageCreateEvent.getMessageContent().split(" ")[i]);
+        ArrayList<String> arguments = Parser.argumentsParser(messageCreateEvent);
 
         if (arguments.isEmpty())
         {

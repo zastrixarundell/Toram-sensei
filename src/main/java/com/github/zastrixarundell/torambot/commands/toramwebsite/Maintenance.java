@@ -21,7 +21,8 @@ public class Maintenance implements MessageCreateListener
             return;
 
         if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "maintenance"))
-            return;
+            if(!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "maint"))
+                return;
 
         Runnable runnable = () ->
         {

@@ -91,7 +91,14 @@ public class Monster implements MessageCreateListener
         body.getElementsByTag("tr").forEach(element ->
         {
             if(element.parent() == body)
-                monsterObjects.add(new MonsterObject(element));
+                try
+                {
+                    monsterObjects.add(new MonsterObject(element));
+                }
+                catch (Exception ignore)
+                {
+
+                }
         });
 
         return monsterObjects;

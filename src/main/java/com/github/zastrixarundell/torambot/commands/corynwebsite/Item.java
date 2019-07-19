@@ -67,10 +67,14 @@ public class Item implements MessageCreateListener
 
         ArrayList<ItemObject> listOfItems = new ArrayList<>();
 
-        for(int count = 0; count < trs.size() && count < 5; count++)
+        for(int size = 0, count = 0; size < trs.size() && count < 5; size++)
         {
-            if(trs.get(count).parent() == body)
-                listOfItems.add(new ItemObject(trs.get(count)));
+            System.out.println(count + " " + trs.size());
+            if(trs.get(size).parent() == body)
+            {
+                listOfItems.add(new ItemObject(trs.get(size)));
+                count++;
+            }
         }
 
         return listOfItems;

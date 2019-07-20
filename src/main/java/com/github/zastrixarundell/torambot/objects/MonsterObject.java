@@ -1,19 +1,20 @@
 package com.github.zastrixarundell.torambot.objects;
 
+import com.github.zastrixarundell.torambot.Parser;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
 public class MonsterObject
 {
-    private String name, hp, element, exp, tamable, location;
+    private String name, hp, element, exp, tamable, location, weakness;
     private ArrayList<String> items = new ArrayList<>();
 
     public MonsterObject(Element monsterData)
     {
         monsterData = monsterData.getElementsByTag("td").first();
 
-        name =  monsterData.getElementsByTag("h4").text();
+        name = Parser.nameParser(monsterData.getElementsByTag("h4").text());
 
         Element stats = monsterData.getElementsByClass("stat-table").first();
         Element statBody = stats.getElementsByTag("tbody").first();
@@ -40,6 +41,30 @@ public class MonsterObject
                 items.add(element.text());
             }
         );
+
+        switch(element.toLowerCase())
+        {
+            case "earth":
+                weakness = "Fire";
+                break;
+            case "fire":
+                weakness = "Water";
+                break;
+            case "water":
+                weakness = "Wind";
+                break;
+            case "wind":
+                weakness = "Earth";
+                break;
+            case "dark":
+                weakness = "Light";
+                break;
+            case "light":
+                weakness = "Dark";
+                break;
+            default:
+                weakness = "No weakness";
+        }
     }
 
     public String getName()
@@ -75,5 +100,10 @@ public class MonsterObject
     public ArrayList<String> getItems()
     {
         return items;
+    }
+
+    public String getWeakness()
+    {
+        return weakness;
     }
 }

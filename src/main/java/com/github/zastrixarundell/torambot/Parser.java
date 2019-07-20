@@ -43,4 +43,26 @@ public class Parser
         return arguments;
     }
 
+    public static String nameParser(String name)
+    {
+        name = name.replaceAll("(^\\h*)|(\\h*$)","");
+
+        String[] nameParts = name.split(" ");
+
+        int toEdit = -1;
+
+        for(int counter = nameParts.length - 1; counter >= 0; counter--)
+            if(nameParts[counter].contains("["))
+                toEdit = counter;
+
+        if(toEdit == -1)
+            return name;
+
+        while(String.valueOf(nameParts[toEdit].toCharArray()[0]).equalsIgnoreCase(" ") ||
+                ((int) nameParts[toEdit].toCharArray()[0]) == 160)
+            nameParts[toEdit] = nameParts[toEdit].substring(1);
+
+        return String.join(" ", nameParts);
+    }
+
 }

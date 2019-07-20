@@ -1,17 +1,18 @@
 package com.github.zastrixarundell.torambot;
 
-import com.github.zastrixarundell.torambot.commands.discord.Proficiency;
-import com.github.zastrixarundell.torambot.commands.toramwebsite.Events;
-import com.github.zastrixarundell.torambot.commands.toramwebsite.Latest;
-import com.github.zastrixarundell.torambot.commands.toramwebsite.Maintenance;
-import com.github.zastrixarundell.torambot.commands.toramwebsite.News;
 import com.github.zastrixarundell.torambot.commands.corynwebsite.Item;
 import com.github.zastrixarundell.torambot.commands.corynwebsite.Level;
 import com.github.zastrixarundell.torambot.commands.corynwebsite.Monster;
 import com.github.zastrixarundell.torambot.commands.discord.Help;
 import com.github.zastrixarundell.torambot.commands.discord.Points;
+import com.github.zastrixarundell.torambot.commands.discord.Proficiency;
+import com.github.zastrixarundell.torambot.commands.toramwebsite.Events;
+import com.github.zastrixarundell.torambot.commands.toramwebsite.Latest;
+import com.github.zastrixarundell.torambot.commands.toramwebsite.Maintenance;
+import com.github.zastrixarundell.torambot.commands.toramwebsite.News;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+
 import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;

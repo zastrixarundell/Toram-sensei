@@ -1,5 +1,6 @@
 package com.github.zastrixarundell.torambot.objects;
 
+import com.github.zastrixarundell.torambot.Parser;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
@@ -14,10 +15,7 @@ public class ItemObject
     public ItemObject(Element itemData)
     {
         //Name, type and duration
-        name = itemData.getElementsByTag("h4").first().text();
-
-        name = name.replace("   ", " ");
-        name = name.replace("  ", " ");
+        name = Parser.nameParser(itemData.getElementsByTag("h4").first().text());
 
         //Price and proc
         Element ppStatTable = itemData.getElementsByClass("stat-table").first();
@@ -71,8 +69,7 @@ public class ItemObject
             {
                 Element tdElement = trElement.getElementsByTag("td").first();
 
-                String value =
-                        tdElement.getElementsByTag("font").first().ownText();
+                String value = tdElement.getElementsByTag("font").first().ownText();
 
                 try
                 {

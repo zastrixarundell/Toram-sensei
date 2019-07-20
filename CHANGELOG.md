@@ -1,5 +1,9 @@
 # Changelog
 
+### 3.2.1
+- Added weaknesses on monsters.
+- Added parser for names (for excess spaces).
+
 ### 3.2.0
 - Added proficiency command.
 - Added version on the help command.

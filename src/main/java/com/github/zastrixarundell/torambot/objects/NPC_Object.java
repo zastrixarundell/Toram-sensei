@@ -1,5 +1,6 @@
 package com.github.zastrixarundell.torambot.objects;
 
+import com.github.zastrixarundell.torambot.Parser;
 import org.jsoup.nodes.Element;
 
 import java.util.HashMap;
@@ -18,9 +19,9 @@ public class NPC_Object
         link = "http://coryn.club/" + npcData.getElementsByTag("td").get(1)
                 .getElementsByTag("a").first()
                 .attr("href");
-        name = npcData.getElementsByTag("td").get(1)
-                .getElementsByTag("a").first().ownText();
-        name = name.replace("   ", " ");
+
+        name = Parser.nameParser(npcData.getElementsByTag("td").get(1)
+                .getElementsByTag("a").first().ownText());
 
         StringBuilder builder = new StringBuilder();
         builder.append(npcData.getElementsByTag("td").last().getElementsByTag("b").first().ownText());

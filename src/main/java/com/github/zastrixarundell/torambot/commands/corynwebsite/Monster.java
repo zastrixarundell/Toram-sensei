@@ -26,10 +26,7 @@ public class Monster implements MessageCreateListener
         if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "monster"))
             return;
 
-        ArrayList<String> arguments = new ArrayList<>();
-
-        for (int i = 1; i < messageCreateEvent.getMessageContent().split(" ").length; i++)
-            arguments.add(messageCreateEvent.getMessageContent().split(" ")[i]);
+        ArrayList<String> arguments = Parser.argumentsParser(messageCreateEvent);
 
         if (arguments.isEmpty())
         {
@@ -68,17 +65,18 @@ public class Monster implements MessageCreateListener
                 .setTitle(object.getName())
                 .setThumbnail(Values.corynLogo)
                 .addInlineField("HP:", object.getHp())
-                .addInlineField("Element:", object.getElement())
                 .addInlineField("EXP:", object.getExp())
-                .addInlineField("Tamable:", object.getTamable())
-                .addInlineField("Spawns at:", object.getLocation());
-
-        Parser.parseFooter(embed, messageCreateEvent);
-        Parser.parseColor(embed, messageCreateEvent);
+                .addInlineField("Element:", object.getElement())
+                .addInlineField("Weakness:", object.getWeakness())
+                .addInlineField("Spawns at:", object.getLocation())
+                .addInlineField("Tamable:", object.getTamable());
 
         String drops = String.join("\n", object.getItems());
 
         embed.addField("Drops:", drops);
+
+        Parser.parseFooter(embed, messageCreateEvent);
+        Parser.parseColor(embed, messageCreateEvent);
 
         messageCreateEvent.getChannel().sendMessage(embed);
     }

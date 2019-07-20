@@ -136,7 +136,7 @@ public class Level implements MessageCreateListener
             for (String key : npc.getExp().keySet())
                 embed.addField(key + ":", npc.getExp().get(key));
 
-        Parser.parseSecondaryThumbnail(embed, messageCreateEvent);
+        Parser.parseSecondaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -154,7 +154,7 @@ public class Level implements MessageCreateListener
                                 "in normal brackets aren't specified the commands uses 5 for the level " +
                                 "range value and 0 for the EXP boost value.");
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -167,7 +167,7 @@ public class Level implements MessageCreateListener
                 .setTitle(name)
                 .setDescription(description);
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 

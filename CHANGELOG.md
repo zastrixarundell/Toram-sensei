@@ -1,5 +1,8 @@
 # Changelog
 
+### 3.3.1
+- Re-rolled to using pre-uploaded images.
+
 ### 3.3.0
 - Fixed major bug with InputStreams.
 

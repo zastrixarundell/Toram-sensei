@@ -12,16 +12,16 @@ import static com.github.zastrixarundell.torambot.Values.footerMessage;
 public class Parser
 {
 
-    public static void parsePrimaryThumbnail(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
+    public static void parsePrimaryImage(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
     {
         //messageCreateEvent might be used in the future.
-        builder.setThumbnail(Values.getPrimaryThumbnail(), "gif");
+        builder.setThumbnail("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/primary.gif");
     }
 
-    public static void parseSecondaryThumbnail(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
+    public static void parseSecondaryImage(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
     {
         //messageCreateEvent might be used in the future.
-        builder.setThumbnail(Values.getSecondaryThumbnail(), "gif");
+        builder.setImage("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/secondary.gif");
     }
 
     public static void parseFooter(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)

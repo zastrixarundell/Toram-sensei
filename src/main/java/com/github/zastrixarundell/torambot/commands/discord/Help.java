@@ -71,7 +71,7 @@ public class Help implements MessageCreateListener
                     .addField(Values.getPrefix() + "news", "This command is used to show the latest big news on the site. Big events, " +
                             "new chapter in the story line, etc.");
 
-            Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+            Parser.parsePrimaryImage(embed, messageCreateEvent);
             Parser.parseFooter(embed, messageCreateEvent);
             Parser.parseColor(embed, messageCreateEvent);
 

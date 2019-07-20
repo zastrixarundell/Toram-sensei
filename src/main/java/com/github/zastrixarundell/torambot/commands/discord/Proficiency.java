@@ -53,7 +53,7 @@ public class Proficiency implements MessageCreateListener
                 .setDescription("I'm not sure if this guide is correct. If you have any suggestions, do post them " +
                         "on [this direct link](https://toramonline.com/index.php?threads/synth-prof-guide.48219/#post-497698).");
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
 
@@ -127,7 +127,7 @@ public class Proficiency implements MessageCreateListener
             embed.addField(title, description);
         });
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
 
@@ -191,7 +191,7 @@ public class Proficiency implements MessageCreateListener
                 .addField("132 - 150", "Orichalcum")
                 .addField("150 - 200", "Hugh purity Orichalcum");
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
 
@@ -215,7 +215,7 @@ public class Proficiency implements MessageCreateListener
                 .addField("132 - 150", "Orichalcum")
                 .addField("150 - 200", "Hugh purity Orichalcum");
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
 

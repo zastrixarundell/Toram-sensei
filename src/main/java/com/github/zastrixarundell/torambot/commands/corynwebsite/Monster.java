@@ -74,7 +74,7 @@ public class Monster implements MessageCreateListener
 
         embed.addField("Drops:", drops);
 
-        Parser.parseSecondaryThumbnail(embed, messageCreateEvent);
+        Parser.parseSecondaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -110,7 +110,7 @@ public class Monster implements MessageCreateListener
                         "info about a monster!")
                 .addField(Values.getPrefix() + "monster [monster]", "This command is used to info about a monster!");
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -123,7 +123,7 @@ public class Monster implements MessageCreateListener
                 .setTitle(name)
                 .setDescription(description);
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 

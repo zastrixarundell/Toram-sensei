@@ -63,7 +63,7 @@ public class Points implements MessageCreateListener
                 .addField(Values.getPrefix() + "points [current skill points] [your level] [target level]",
                         "All of the arguments need to be present or else it will not work!");
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -76,7 +76,7 @@ public class Points implements MessageCreateListener
                 .setTitle(name)
                 .setDescription(description);
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 

@@ -101,7 +101,7 @@ public class Item implements MessageCreateListener
         if (item.getApp() != null)
             embed.setThumbnail(item.getApp());
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -114,7 +114,7 @@ public class Item implements MessageCreateListener
                 .setTitle("Empty search!")
                 .setDescription("You can not find an item without specifying the item!");
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -127,7 +127,7 @@ public class Item implements MessageCreateListener
                 .setTitle("Error while getting item!")
                 .setDescription("An error happened! Does the item even exist? The item may not be added yet.");
 
-        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
+        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 

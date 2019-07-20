@@ -7,10 +7,6 @@ public class Values
 
     public final static String toramLogo = "https://toramonline.com/index.php?media/toram-online-logo.50/full&d=1463410056";
 
-    public final static String corynLogo = "http://coryn.club/images/cc_logo.gif";
-
-    public static final String userThumbnailGIF = "https://i.pinimg.com/originals/26/e2/92/26e29265cde55cf756ed4ae2062bdcff.gif";
-
     private static boolean ranOnHostingService = false;
 
     private static String prefix = ">";

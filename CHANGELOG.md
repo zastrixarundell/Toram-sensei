@@ -1,5 +1,15 @@
 # Changelog
 
+### 3.3.0
+- Fixed major bug with InputStreams.
+
+### 3.2.3
+- Removed accidental google guava from pom.xml.
+
+### 3.2.2
+- Made images local.
+- Updated the name parser.
+
 ### 3.2.1
 - Added weaknesses on monsters.
 - Added parser for names (for excess spaces).
@@ -10,7 +20,7 @@
 - Fixed monster command.
 - Fixed some commands on item.
 - Maintenance can be used as ***maint*** as well
-- Added Argument Parser
+- Added Argument Parser.
 
 ### 3.1.1
 - Removed the logical error on items.

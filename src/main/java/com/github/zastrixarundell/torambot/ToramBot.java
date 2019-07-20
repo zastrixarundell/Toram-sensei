@@ -60,6 +60,19 @@ public class ToramBot
             return;
         }
 
+        try
+        {
+            Values.getPrimaryThumbnail();
+            Values.getSecondaryThumbnail();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            System.out.println("Error with images! Shutting down!");
+            bot.disconnect();
+            return;
+        }
+
         bot.addListener(new News());
         bot.addListener(new Latest());
         bot.addListener(new Maintenance());

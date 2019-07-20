@@ -63,7 +63,6 @@ public class Monster implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(object.getName())
-                .setThumbnail(Values.corynLogo)
                 .addInlineField("HP:", object.getHp())
                 .addInlineField("EXP:", object.getExp())
                 .addInlineField("Element:", object.getElement())
@@ -75,6 +74,7 @@ public class Monster implements MessageCreateListener
 
         embed.addField("Drops:", drops);
 
+        Parser.parseSecondaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -106,11 +106,11 @@ public class Monster implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Monster Command: ")
-                .setThumbnail("http://coryn.club/images/cc_logo.gif")
                 .setDescription("You can use this command to get " +
                         "info about a monster!")
                 .addField(Values.getPrefix() + "monster [monster]", "This command is used to info about a monster!");
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -121,9 +121,9 @@ public class Monster implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(name)
-                .setThumbnail("http://coryn.club/images/cc_logo.gif")
                 .setDescription(description);
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 

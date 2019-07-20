@@ -78,7 +78,6 @@ public class Item implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(item.getName())
-                .setThumbnail("http://coryn.club/images/cc_logo.gif")
                 .addInlineField("NPC sell price:", item.getPrice())
                 .addInlineField("Processed into:", item.getProc());
 
@@ -101,9 +100,8 @@ public class Item implements MessageCreateListener
 
         if (item.getApp() != null)
             embed.setThumbnail(item.getApp());
-        else
-            embed.setThumbnail(Values.corynLogo);
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -114,9 +112,9 @@ public class Item implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Empty search!")
-                .setThumbnail(Values.corynLogo)
-                .setDescription("You can not find an item on coryn.club without specifying which item!");
+                .setDescription("You can not find an item without specifying the item!");
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -127,10 +125,9 @@ public class Item implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Error while getting item!")
-                .setDescription("An error happened! Does the item even exist? It may not be yet added into " +
-                        "coryn.club!")
-                .setThumbnail("http://coryn.club/images/cc_logo.gif");
+                .setDescription("An error happened! Does the item even exist? The item may not be added yet.");
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 

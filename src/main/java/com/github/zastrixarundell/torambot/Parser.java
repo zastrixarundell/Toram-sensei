@@ -12,6 +12,18 @@ import static com.github.zastrixarundell.torambot.Values.footerMessage;
 public class Parser
 {
 
+    public static void parsePrimaryThumbnail(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
+    {
+        //messageCreateEvent might be used in the future.
+        builder.setThumbnail(Values.getPrimaryThumbnail(), "gif");
+    }
+
+    public static void parseSecondaryThumbnail(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
+    {
+        //messageCreateEvent might be used in the future.
+        builder.setThumbnail(Values.getSecondaryThumbnail(), "gif");
+    }
+
     public static void parseFooter(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
     {
         //messageCreateEvent might be used in the future.
@@ -45,15 +57,16 @@ public class Parser
 
     public static String nameParser(String name)
     {
-        name = name.replaceAll("(^\\h*)|(\\h*$)","");
-
         String[] nameParts = name.split(" ");
 
         int toEdit = -1;
 
         for(int counter = nameParts.length - 1; counter >= 0; counter--)
             if(nameParts[counter].contains("["))
+            {
                 toEdit = counter;
+                break;
+            }
 
         if(toEdit == -1)
             return name;

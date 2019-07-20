@@ -129,7 +129,6 @@ public class Level implements MessageCreateListener
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(type + ": " + npc.getName())
                 .addField("Level:", npc.getLevel())
-                .setThumbnail(Values.corynLogo)
                 .addField("Location:", npc.getLocation())
                 .setUrl(npc.getLink());
 
@@ -137,6 +136,7 @@ public class Level implements MessageCreateListener
             for (String key : npc.getExp().keySet())
                 embed.addField(key + ":", npc.getExp().get(key));
 
+        Parser.parseSecondaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -147,7 +147,6 @@ public class Level implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Level Command: ")
-                .setThumbnail(Values.corynLogo)
                 .setDescription("You can use this command to get " +
                         "what you need to farm to gain EXP the fastest!")
                 .addField(Values.getPrefix() + "level [your level] (level range) (EXP boost)",
@@ -155,6 +154,7 @@ public class Level implements MessageCreateListener
                                 "in normal brackets aren't specified the commands uses 5 for the level " +
                                 "range value and 0 for the EXP boost value.");
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -165,9 +165,9 @@ public class Level implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(name)
-                .setThumbnail(Values.corynLogo)
                 .setDescription(description);
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 

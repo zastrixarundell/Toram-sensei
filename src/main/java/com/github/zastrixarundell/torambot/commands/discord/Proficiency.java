@@ -50,10 +50,10 @@ public class Proficiency implements MessageCreateListener
         //https://toramonline.com/index.php?threads/synth-prof-guide.48219/#post-497698
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Info about alchemy")
-                .setThumbnail(Values.userThumbnailGIF)
                 .setDescription("I'm not sure if this guide is correct. If you have any suggestions, do post them " +
                         "on [this direct link](https://toramonline.com/index.php?threads/synth-prof-guide.48219/#post-497698).");
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
 
@@ -64,7 +64,6 @@ public class Proficiency implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Alchemy proficiency guide")
-                .setThumbnail(Values.userThumbnailGIF)
                 .setDescription("Showing what to create on level " + level + ".");
 
         types.forEach(type ->
@@ -128,6 +127,7 @@ public class Proficiency implements MessageCreateListener
             embed.addField(title, description);
         });
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
 
@@ -178,7 +178,6 @@ public class Proficiency implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Alchemy proficiency guide")
-                .setThumbnail(Values.userThumbnailGIF)
                 .setDescription("Showing the default guide.")
                 .addField("0 - 10", "Revita I")
                 .addField("10 - 30", "Revita II")
@@ -192,6 +191,7 @@ public class Proficiency implements MessageCreateListener
                 .addField("132 - 150", "Orichalcum")
                 .addField("150 - 200", "Hugh purity Orichalcum");
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
 
@@ -202,7 +202,6 @@ public class Proficiency implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Alchemy proficiency guide")
-                .setThumbnail(Values.userThumbnailGIF)
                 .setDescription("There was an error with the level, have you specified it?\n\nShowing the default guide.")
                 .addField("0 - 10", "Revita I")
                 .addField("10 - 30", "Revita II")
@@ -216,6 +215,7 @@ public class Proficiency implements MessageCreateListener
                 .addField("132 - 150", "Orichalcum")
                 .addField("150 - 200", "Hugh purity Orichalcum");
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
 

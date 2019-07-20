@@ -58,12 +58,12 @@ public class Points implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Points Command: ")
-                .setThumbnail(Values.userThumbnailGIF)
                 .setDescription("You can use this command to get " +
                         "how many skill points will you have at which level!")
                 .addField(Values.getPrefix() + "points [current skill points] [your level] [target level]",
                         "All of the arguments need to be present or else it will not work!");
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -74,9 +74,9 @@ public class Points implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(name)
-                .setThumbnail(Values.userThumbnailGIF)
                 .setDescription(description);
 
+        Parser.parsePrimaryThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 

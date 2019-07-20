@@ -1,5 +1,8 @@
 # Changelog
 
+### 3.3.2
+- Fixed missing item thumbnails.
+
 ### 3.3.1
 - Re-rolled to using pre-uploaded images.
 

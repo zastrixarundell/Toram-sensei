@@ -45,7 +45,7 @@ public class Help implements MessageCreateListener
                     .addField(Values.getPrefix() + "monster [monster]", "This command is used for getting info about a monster!")
 
                     .addField(Values.getPrefix() + "item [name]", "You can use this command to search " +
-                            "for an item on coryn.club!")
+                            "for an item!")
 
                     .addField(Values.getPrefix() + "level [your level] (level range) (EXP boost)",
                             "Get what you need to farm to level up fast. " +

@@ -100,8 +100,9 @@ public class Item implements MessageCreateListener
 
         if (item.getApp() != null)
             embed.setThumbnail(item.getApp());
+        else
+            Parser.parsePrimaryImage(embed, messageCreateEvent);
 
-        Parser.parsePrimaryImage(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 

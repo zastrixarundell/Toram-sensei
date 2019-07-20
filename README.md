@@ -3,6 +3,36 @@
 # ToramBot
 A Java Discord bot for your Discord Toram guild.
 
+# Commands
+>Note that the default prefix is ">"
+   
+- **\>monster [monster]**
+  * This command is used for getting info about a monster!
+- **\>item [name]**
+  * You can use this command to search for an item!
+- **\>level [your level] (level range) (EXP boost)**
+  * Get what you need to farm to level up fast. Only [your level] needs
+    to be present here, if the arguments in normal brackets aren't
+    specified the commands uses 5 for the level range value and 0 for
+    the EXP boost value.
+- **\>points [current skill points] [your level] [target level]**
+  * Calculate skill points. All of the arguments need to be present
+    or else it will not work!
+- **\>proficiency|prof (proficiency level)**
+  * Depending on your proficiency level this will show you what to
+    synthesize in order to gain most proficiency.
+- **\>events**
+  * This command is used to show the latest event posted on the official
+    Toram news site!
+- **\>latest**
+  * This command is used to show the overall latest news posted on the
+    official Toram news site!
+- **\>maintenance|maint**
+  * This command is used to show the latest maintenance data.
+- **\>news**
+  * This command is used to show the latest big news on the site.
+    Big events, new chapter in the story line, etc.
+
 # Setup
 This bot is made to be run even by those who are not tech-savvy.
 
@@ -40,7 +70,7 @@ shell script and flag it as runnable, ez.
 For windows users (AKA most likely not a dev) fire up yer' notepad app 
 add write the previous line of code for starting up the bot. Save that file
 with the .bat extension and you can just double click it to run it. 
-> Double click the .bat, that is.
+>Double click the .bat, that is.
 
 But this works for single versions, ie. you need to update the .bat
 file every time. If you wish to make it run the highest version in the 

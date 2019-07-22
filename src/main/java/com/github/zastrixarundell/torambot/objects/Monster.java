@@ -5,12 +5,12 @@ import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
-public class MonsterObject
+public class Monster
 {
     private String name, hp, element, exp, tamable, location, weakness;
     private ArrayList<String> items = new ArrayList<>();
 
-    public MonsterObject(Element monsterData)
+    public Monster(Element monsterData)
     {
         monsterData = monsterData.getElementsByTag("td").first();
 

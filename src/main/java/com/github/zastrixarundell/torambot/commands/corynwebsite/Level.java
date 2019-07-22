@@ -2,7 +2,7 @@ package com.github.zastrixarundell.torambot.commands.corynwebsite;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
-import com.github.zastrixarundell.torambot.objects.NPC_Object;
+import com.github.zastrixarundell.torambot.objects.NPC;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -59,7 +59,7 @@ public class Level implements MessageCreateListener
                 Document document = Jsoup.connect(url).get();
                 Elements tables = document.getElementsByClass("table table-striped");
 
-                NPC_Object boss, miniboss, monster;
+                NPC boss, miniboss, monster;
                 boss = miniboss = monster = null;
 
                 //Start Boss
@@ -67,7 +67,7 @@ public class Level implements MessageCreateListener
                 {
                     Element bossTable = tables.first();
                     Element body = bossTable.getElementsByTag("tbody").first();
-                    boss = new NPC_Object(body.getElementsByTag("tr").first());
+                    boss = new NPC(body.getElementsByTag("tr").first());
                 }
                 catch (Exception ignore)
                 {
@@ -78,7 +78,7 @@ public class Level implements MessageCreateListener
                 {
                     Element minibossTable = tables.get(1);
                     Element body = minibossTable.getElementsByTag("tbody").first();
-                    miniboss = new NPC_Object(body.getElementsByTag("tr").first());
+                    miniboss = new NPC(body.getElementsByTag("tr").first());
                 }
                 catch (Exception ignore)
                 {
@@ -89,7 +89,7 @@ public class Level implements MessageCreateListener
                 {
                     Element monsterTable = tables.last();
                     Element body = monsterTable.getElementsByTag("tbody").first();
-                    monster = new NPC_Object(body.getElementsByTag("tr").first());
+                    monster = new NPC(body.getElementsByTag("tr").first());
                 }
                 catch (Exception ignore)
                 {
@@ -124,7 +124,7 @@ public class Level implements MessageCreateListener
 
     }
 
-    private void showNPC(MessageCreateEvent messageCreateEvent, NPC_Object npc, String type)
+    private void showNPC(MessageCreateEvent messageCreateEvent, NPC npc, String type)
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(type + ": " + npc.getName())

@@ -2,7 +2,6 @@ package com.github.zastrixarundell.torambot.commands.corynwebsite;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
-import com.github.zastrixarundell.torambot.objects.ItemObject;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -57,24 +56,24 @@ public class Item implements MessageCreateListener
         (new Thread(runnable)).start();
     }
 
-    private ArrayList<ItemObject> getItems(Element body)
+    private ArrayList<com.github.zastrixarundell.torambot.objects.Item> getItems(Element body)
     {
 
         Elements trs = body.getElementsByTag("tr");
 
-        ArrayList<ItemObject> listOfItems = new ArrayList<>();
+        ArrayList<com.github.zastrixarundell.torambot.objects.Item> listOfItems = new ArrayList<>();
 
         for(int size = 0, count = 0; size < trs.size() && count < 5; size++)
             if(trs.get(size).parent() == body)
             {
-                listOfItems.add(new ItemObject(trs.get(size)));
+                listOfItems.add(new com.github.zastrixarundell.torambot.objects.Item(trs.get(size)));
                 count++;
             }
 
         return listOfItems;
     }
 
-    private void sendItemEmbed(ItemObject item, MessageCreateEvent messageCreateEvent)
+    private void sendItemEmbed(com.github.zastrixarundell.torambot.objects.Item item, MessageCreateEvent messageCreateEvent)
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(item.getName())

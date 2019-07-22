@@ -74,7 +74,9 @@ public class Help implements MessageCreateListener
                     .addField(Values.getPrefix() + "news", "This command is used to show the latest big news on the site. Big events, " +
                             "new chapter in the story line, etc.")
 
-                    .addField(Values.getPrefix() + "invite", "You can use this command to get the invite link for this bot!");
+                    .addField(Values.getPrefix() + "invite", "You can use this command to get the invite link for this bot!")
+
+                    .addField(Values.getPrefix() + "donate", "You can use this command to donate to the dev (it would help)!");
 
             Parser.parseThumbnail(embed, messageCreateEvent);
             Parser.parseFooter(embed, messageCreateEvent);

@@ -2,7 +2,6 @@ package com.github.zastrixarundell.torambot.commands.corynwebsite;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
-import com.github.zastrixarundell.torambot.objects.MonsterObject;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -44,7 +43,7 @@ public class Monster implements MessageCreateListener
                 Elements tables = document.getElementsByClass("table table-striped");
                 Element body = tables.first().getElementsByTag("tbody").first();
 
-                generateMonsters(body).forEach(monsterObject -> sendMonsterMessage(monsterObject, messageCreateEvent));
+                generateMonsters(body).forEach(monster -> sendMonsterMessage(monster, messageCreateEvent));
 
             }
             catch (Exception e)
@@ -59,7 +58,7 @@ public class Monster implements MessageCreateListener
 
     }
 
-    private void sendMonsterMessage(MonsterObject object, MessageCreateEvent messageCreateEvent)
+    private void sendMonsterMessage(com.github.zastrixarundell.torambot.objects.Monster object, MessageCreateEvent messageCreateEvent)
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(object.getName())
@@ -81,17 +80,17 @@ public class Monster implements MessageCreateListener
         messageCreateEvent.getChannel().sendMessage(embed);
     }
 
-    private ArrayList<MonsterObject> generateMonsters(Element body)
+    private ArrayList<com.github.zastrixarundell.torambot.objects.Monster> generateMonsters(Element body)
     {
 
-        ArrayList<MonsterObject> monsterObjects = new ArrayList<>();
+        ArrayList<com.github.zastrixarundell.torambot.objects.Monster> monsters = new ArrayList<>();
 
         body.getElementsByTag("tr").forEach(element ->
         {
             if(element.parent() == body)
                 try
                 {
-                    monsterObjects.add(new MonsterObject(element));
+                    monsters.add(new com.github.zastrixarundell.torambot.objects.Monster(element));
                 }
                 catch (Exception ignore)
                 {
@@ -99,7 +98,7 @@ public class Monster implements MessageCreateListener
                 }
         });
 
-        return monsterObjects;
+        return monsters;
     }
 
     private void sendCommandUsage(MessageCreateEvent messageCreateEvent)

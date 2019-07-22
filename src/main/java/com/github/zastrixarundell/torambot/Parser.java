@@ -27,7 +27,7 @@ public class Parser
     public static void parseDonationImage(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
     {
         //messageCreateEvent might be used in the future.
-        builder.setImage("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/edward_smiling.jpeg");
+        builder.setImage("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/edward_smiling.jpg");
     }
 
     public static void parseFooter(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)

@@ -5,14 +5,14 @@ import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
 
-public class ItemObject
+public class Item
 {
 
     private String name, price, proc, app;
     private ArrayList<String> stats = new ArrayList<>();
     private ArrayList<String> obtainedFrom = new ArrayList<>();
 
-    public ItemObject(Element itemData)
+    public Item(Element itemData)
     {
         //Name, type and duration
         name = Parser.nameParser(itemData.getElementsByTag("h4").first().text());

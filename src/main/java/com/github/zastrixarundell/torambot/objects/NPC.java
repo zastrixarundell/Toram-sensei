@@ -5,13 +5,13 @@ import org.jsoup.nodes.Element;
 
 import java.util.HashMap;
 
-public class NPC_Object
+public class NPC
 {
 
     private String name, level, location, link;
     private HashMap<String, String> exp = new HashMap<>();
 
-    public NPC_Object(Element npcData)
+    public NPC(Element npcData)
     {
         //Name, type and duration
         level = npcData.getElementsByTag("td").first().ownText();

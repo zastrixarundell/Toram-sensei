@@ -3,9 +3,10 @@ package com.github.zastrixarundell.torambot;
 import com.github.zastrixarundell.torambot.commands.corynwebsite.Item;
 import com.github.zastrixarundell.torambot.commands.corynwebsite.Level;
 import com.github.zastrixarundell.torambot.commands.corynwebsite.Monster;
-import com.github.zastrixarundell.torambot.commands.discord.Help;
-import com.github.zastrixarundell.torambot.commands.discord.Points;
-import com.github.zastrixarundell.torambot.commands.discord.Proficiency;
+import com.github.zastrixarundell.torambot.commands.discord.*;
+import com.github.zastrixarundell.torambot.commands.discord.toramrelated.Cooking;
+import com.github.zastrixarundell.torambot.commands.discord.toramrelated.Points;
+import com.github.zastrixarundell.torambot.commands.discord.toramrelated.Proficiency;
 import com.github.zastrixarundell.torambot.commands.toramwebsite.Events;
 import com.github.zastrixarundell.torambot.commands.toramwebsite.Latest;
 import com.github.zastrixarundell.torambot.commands.toramwebsite.Maintenance;
@@ -70,6 +71,9 @@ public class ToramBot
         bot.addListener(new Monster());
         bot.addListener(new Points());
         bot.addListener(new Proficiency());
+        bot.addListener(new Invite());
+        bot.addListener(new Donate());
+        bot.addListener(new Cooking());
 
         System.out.println("Started! Type in \"stop\" to stop the bot!");
 

@@ -58,7 +58,10 @@ public class Help implements MessageCreateListener
                                     "be present or else it will not work!")
 
                     .addField(Values.getPrefix() + "proficiency|prof (proficiency level)", "Depending on your proficiency level " +
-                            "this will show you what to synthesize in order to gain most proficiency.")
+                            "this will show you what to synthesize in order to gain most proficiency. Leave black for overall list.")
+
+                    .addField(Values.getPrefix() + "food|cooking|cook (food EXP)", "Depending on your food EXP " +
+                            "this will show you what level you are. Leave black for overall list.")
 
                     .addField(Values.getPrefix() + "events", "This command is used to show the latest " +
                             "event posted on the official Toram news site!")
@@ -69,9 +72,11 @@ public class Help implements MessageCreateListener
                     .addField(Values.getPrefix() + "maintenance|maint", "This command is used to show the latest maintenance data.")
 
                     .addField(Values.getPrefix() + "news", "This command is used to show the latest big news on the site. Big events, " +
-                            "new chapter in the story line, etc.");
+                            "new chapter in the story line, etc.")
 
-            Parser.parsePrimaryImage(embed, messageCreateEvent);
+                    .addField(Values.getPrefix() + "invite", "You can use this command to get the invite link for this bot!");
+
+            Parser.parseThumbnail(embed, messageCreateEvent);
             Parser.parseFooter(embed, messageCreateEvent);
             Parser.parseColor(embed, messageCreateEvent);
 

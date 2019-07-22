@@ -1,5 +1,10 @@
 # Changelog
 
+### 3.4.0
+- Added donate.
+- Added invite.
+- Added cooking.
+
 ### 3.3.2
 - Fixed missing item thumbnails.
 

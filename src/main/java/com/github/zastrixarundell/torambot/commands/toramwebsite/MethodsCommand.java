@@ -5,7 +5,7 @@ import com.github.zastrixarundell.torambot.Values;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 
-public class Methods
+public class MethodsCommand
 {
 
     protected static void sendErrorMessage(MessageCreateEvent messageCreateEvent)

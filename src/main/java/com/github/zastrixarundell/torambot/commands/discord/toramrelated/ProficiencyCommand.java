@@ -8,7 +8,7 @@ import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.util.ArrayList;
 
-public class Proficiency implements MessageCreateListener
+public class ProficiencyCommand implements MessageCreateListener
 {
 
     @Override
@@ -28,7 +28,7 @@ public class Proficiency implements MessageCreateListener
 
             try
             {
-                level = Integer.valueOf(Parser.argumentsParser(messageCreateEvent).get(0));
+                level = Integer.parseInt(Parser.argumentsParser(messageCreateEvent).get(0));
             }
             catch (Exception e)
             {

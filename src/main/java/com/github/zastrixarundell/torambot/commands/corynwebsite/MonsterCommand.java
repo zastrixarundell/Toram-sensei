@@ -12,7 +12,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class Monster implements MessageCreateListener
+public class MonsterCommand implements MessageCreateListener
 {
 
     @Override
@@ -73,7 +73,7 @@ public class Monster implements MessageCreateListener
 
         embed.addField("Drops:", drops);
 
-        Parser.parseMonsterImage(embed, messageCreateEvent);
+        Parser.parseMonsterThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 

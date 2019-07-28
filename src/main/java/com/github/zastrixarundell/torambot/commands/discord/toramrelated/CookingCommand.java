@@ -6,7 +6,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
-public class Cooking implements MessageCreateListener
+public class CookingCommand implements MessageCreateListener
 {
 
     @Override
@@ -27,7 +27,7 @@ public class Cooking implements MessageCreateListener
 
             try
             {
-                exp = Integer.valueOf(Parser.argumentsParser(messageCreateEvent).get(0));
+                exp = Integer.parseInt(Parser.argumentsParser(messageCreateEvent).get(0));
             }
             catch (Exception e)
             {

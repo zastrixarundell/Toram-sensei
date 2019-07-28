@@ -18,10 +18,10 @@ public class Parser
         builder.setThumbnail("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/edward_bread.gif");
     }
 
-    public static void parseMonsterImage(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
+    public static void parseMonsterThumbnail(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
     {
         //messageCreateEvent might be used in the future.
-        builder.setImage("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/edward_scythe.gif");
+        builder.setThumbnail("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/edward_scythe.gif");
     }
 
     public static void parseDonationImage(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)

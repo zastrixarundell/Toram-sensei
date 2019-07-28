@@ -6,7 +6,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
-public class Donate implements MessageCreateListener
+public class DonateCommand implements MessageCreateListener
 {
 
     @Override
@@ -22,7 +22,7 @@ public class Donate implements MessageCreateListener
         String name = messageCreateEvent.getApi().getYourself().getName();
 
         EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Donate for " + name)
+                .setTitle("Donate to suport: " + name)
                 .setDescription("Thank you! This really helps " + name + " to be continued! You can donate on " +
                 "[this link](" + Values.donationLink + ")!");
 

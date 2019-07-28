@@ -8,7 +8,7 @@ import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.util.ArrayList;
 
-public class Points implements MessageCreateListener
+public class PointsCommand implements MessageCreateListener
 {
 
     @Override
@@ -36,9 +36,9 @@ public class Points implements MessageCreateListener
 
         try
         {
-            current = Integer.valueOf(arguments.get(0));
-            level = Integer.valueOf(arguments.get(1)) + 1;
-            target = Integer.valueOf(arguments.get(2));
+            current = Integer.parseInt(arguments.get(0));
+            level = Integer.parseInt(arguments.get(1)) + 1;
+            target = Integer.parseInt(arguments.get(2));
         }
         catch (NumberFormatException e)
         {

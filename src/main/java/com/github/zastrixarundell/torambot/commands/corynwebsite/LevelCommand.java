@@ -13,7 +13,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class Level implements MessageCreateListener
+public class LevelCommand implements MessageCreateListener
 {
 
     @Override
@@ -38,9 +38,9 @@ public class Level implements MessageCreateListener
 
         try
         {
-            level = Integer.valueOf(arguments.get(0));
-            range = arguments.size() >= 2 ? Integer.valueOf(arguments.get(1)) : 5;
-            bonus = arguments.size() >= 3 ? Integer.valueOf(arguments.get(2)) : 0;
+            level = Integer.parseInt(arguments.get(0));
+            range = arguments.size() >= 2 ? Integer.parseInt(arguments.get(1)) : 9;
+            bonus = arguments.size() >= 3 ? Integer.parseInt(arguments.get(2)) : 0;
         }
         catch (NumberFormatException e)
         {
@@ -49,14 +49,16 @@ public class Level implements MessageCreateListener
             return;
         }
 
-        String url = "http://coryn.club/leveling.php?lv=" +
-                level + "&gap=" + range + "&bonusEXP=" + bonus;
-
         Runnable runnable = () ->
         {
             try
             {
-                Document document = Jsoup.connect(url).get();
+                Document document = Jsoup.connect("http://coryn.club/leveling.php")
+                        .data("lv", String.valueOf(level))
+                        .data("gap", String.valueOf(range))
+                        .data("bonus", String.valueOf(bonus))
+                        .get();
+
                 Elements tables = document.getElementsByClass("table table-striped");
 
                 NPC boss, miniboss, monster;
@@ -71,6 +73,7 @@ public class Level implements MessageCreateListener
                 }
                 catch (Exception ignore)
                 {
+
                 }
 
                 //Start MiniBoss
@@ -82,6 +85,7 @@ public class Level implements MessageCreateListener
                 }
                 catch (Exception ignore)
                 {
+
                 }
 
                 //Start Monster
@@ -93,6 +97,7 @@ public class Level implements MessageCreateListener
                 }
                 catch (Exception ignore)
                 {
+
                 }
 
                 if (boss != null)
@@ -136,7 +141,7 @@ public class Level implements MessageCreateListener
             for (String key : npc.getExp().keySet())
                 embed.addField(key + ":", npc.getExp().get(key));
 
-        Parser.parseMonsterImage(embed, messageCreateEvent);
+        Parser.parseMonsterThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
@@ -151,7 +156,7 @@ public class Level implements MessageCreateListener
                         "what you need to farm to gain EXP the fastest!")
                 .addField(Values.getPrefix() + "level [your level] (level range) (EXP boost)",
                         "Only [your level] needs to be present here, if the arguments " +
-                                "in normal brackets aren't specified the commands uses 5 for the level " +
+                                "in normal brackets aren't specified the commands uses 9 for the level " +
                                 "range value and 0 for the EXP boost value.");
 
         Parser.parseThumbnail(embed, messageCreateEvent);

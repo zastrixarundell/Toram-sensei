@@ -10,7 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class Latest implements MessageCreateListener
+public class MaintenanceCommand implements MessageCreateListener
 {
 
     @Override
@@ -20,14 +20,15 @@ public class Latest implements MessageCreateListener
         if (!messageCreateEvent.getMessageAuthor().isRegularUser())
             return;
 
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "latest"))
-            return;
+        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "maintenance"))
+            if(!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "maint"))
+                return;
 
         Runnable runnable = () ->
         {
             try
             {
-                Document document = Jsoup.connect("https://en.toram.jp/?type_code=all#contentArea").get();
+                Document document = Jsoup.connect("https://en.toram.jp/?type_code=update#contentArea").get();
                 Elements links = document.select("a[href]");
 
                 for (Element link : links)
@@ -64,13 +65,14 @@ public class Latest implements MessageCreateListener
                 }
 
             }
-            catch (Exception ignore)
+            catch (Exception exception)
             {
-                Methods.sendErrorMessage(messageCreateEvent);
+                MethodsCommand.sendErrorMessage(messageCreateEvent);
             }
         };
 
         (new Thread(runnable)).start();
+
     }
 
 }

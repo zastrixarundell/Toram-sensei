@@ -1,16 +1,20 @@
 package com.github.zastrixarundell.torambot;
 
-import com.github.zastrixarundell.torambot.commands.corynwebsite.Item;
-import com.github.zastrixarundell.torambot.commands.corynwebsite.Level;
-import com.github.zastrixarundell.torambot.commands.corynwebsite.Monster;
-import com.github.zastrixarundell.torambot.commands.discord.*;
-import com.github.zastrixarundell.torambot.commands.discord.toramrelated.Cooking;
-import com.github.zastrixarundell.torambot.commands.discord.toramrelated.Points;
-import com.github.zastrixarundell.torambot.commands.discord.toramrelated.Proficiency;
-import com.github.zastrixarundell.torambot.commands.toramwebsite.Events;
-import com.github.zastrixarundell.torambot.commands.toramwebsite.Latest;
-import com.github.zastrixarundell.torambot.commands.toramwebsite.Maintenance;
-import com.github.zastrixarundell.torambot.commands.toramwebsite.News;
+import com.github.zastrixarundell.torambot.commands.corynwebsite.ItemCommand;
+import com.github.zastrixarundell.torambot.commands.corynwebsite.LevelCommand;
+import com.github.zastrixarundell.torambot.commands.corynwebsite.MonsterCommand;
+import com.github.zastrixarundell.torambot.commands.discord.DonateCommand;
+import com.github.zastrixarundell.torambot.commands.discord.HelpCommand;
+import com.github.zastrixarundell.torambot.commands.discord.InviteCommand;
+import com.github.zastrixarundell.torambot.commands.discord.toramrelated.CookingCommand;
+import com.github.zastrixarundell.torambot.commands.discord.toramrelated.PointsCommand;
+import com.github.zastrixarundell.torambot.commands.discord.toramrelated.ProficiencyCommand;
+import com.github.zastrixarundell.torambot.commands.toramforums.DyeCommand;
+import com.github.zastrixarundell.torambot.entities.ToramForumsUser;
+import com.github.zastrixarundell.torambot.commands.toramwebsite.EventsCommand;
+import com.github.zastrixarundell.torambot.commands.toramwebsite.LatestCommand;
+import com.github.zastrixarundell.torambot.commands.toramwebsite.MaintenanceCommand;
+import com.github.zastrixarundell.torambot.commands.toramwebsite.NewsCommand;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 
@@ -30,17 +34,14 @@ public class ToramBot
             return;
         }
 
-        if(args.length > 1)
-        {
-            Values.setPrefix(args[1]);
-        }
+        if(args.length > 1) { Values.setPrefix(args[1]); }
 
         System.out.println("Prefix set to: " + Values.getPrefix());
 
         //Only if it is hosted for everyone
         try
         {
-            Values.setRanOnHostingService(Boolean.valueOf(args[2]));
+            Values.setRanOnHostingService(Boolean.parseBoolean(args[2]));
         }
         catch (Exception ignore)
         {
@@ -48,9 +49,7 @@ public class ToramBot
         }
 
         String token = args[0];
-
         DiscordApi bot;
-
         try
         {
             bot = new DiscordApiBuilder().setToken(token).login().join();
@@ -61,26 +60,45 @@ public class ToramBot
             return;
         }
 
-        bot.addListener(new News());
-        bot.addListener(new Latest());
-        bot.addListener(new Maintenance());
-        bot.addListener(new Events());
-        bot.addListener(new Item());
-        bot.addListener(new Level());
-        bot.addListener(new Help());
-        bot.addListener(new Monster());
-        bot.addListener(new Points());
-        bot.addListener(new Proficiency());
-        bot.addListener(new Invite());
-        bot.addListener(new Donate());
-        bot.addListener(new Cooking());
+        Values.getMavenVersion();
+
+        bot.updateActivity("Starting up! Please wait!");
+
+        bot.addListener(new NewsCommand());
+        bot.addListener(new LatestCommand());
+        bot.addListener(new MaintenanceCommand());
+        bot.addListener(new EventsCommand());
+        bot.addListener(new ItemCommand());
+        bot.addListener(new LevelCommand());
+        bot.addListener(new HelpCommand());
+        bot.addListener(new MonsterCommand());
+        bot.addListener(new PointsCommand());
+        bot.addListener(new ProficiencyCommand());
+        bot.addListener(new InviteCommand());
+        bot.addListener(new DonateCommand());
+        bot.addListener(new CookingCommand());
+
+        try
+        {
+            ToramForumsUser api = new ToramForumsUser(token);
+            api.setDye();
+            api.close();
+        }
+        catch (Exception e)
+        {
+            System.out.println("An error happened while setting the dye data!");
+        }
+
+        if(Values.getDyeImage() != null)
+            bot.addListener(new DyeCommand());
 
         System.out.println("Started! Type in \"stop\" to stop the bot!");
 
         String input;
         Scanner scanner = new Scanner(System.in);
 
-        Timer timer = updateActivity(bot);
+        Timer activity = updateActivity(bot);
+        Timer dyeImage = updateDyesImage(bot, token);
 
         while(true)
         {
@@ -89,7 +107,8 @@ public class ToramBot
             if (input.equalsIgnoreCase("stop"))
             {
                 bot.disconnect();
-                timer.cancel();
+                activity.cancel();
+                dyeImage.cancel();
                 return;
             }
         }
@@ -109,6 +128,40 @@ public class ToramBot
         };
 
         timer.schedule(task, 0, 30000);
+        return timer;
+    }
+
+    private static Timer updateDyesImage(DiscordApi bot, String token)
+    {
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    ToramForumsUser api = new ToramForumsUser(token);
+                    api.setDye();
+                    api.close();
+
+                    if(Values.getDyeImage() == null)
+                    {
+                        System.out.println("An error happened while updating the dye data!");
+                        bot.removeListener(DyeCommand.instance);
+                        DyeCommand.instance = null;
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.out.println("An error happened while updating the dye data!");
+                    bot.removeListener(DyeCommand.instance);
+                    DyeCommand.instance = null;
+                }
+            }
+        };
+
+        timer.schedule(task, 1000*60*60*24, 1000*60*60*24);
         return timer;
     }
 

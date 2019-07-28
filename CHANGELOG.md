@@ -1,9 +1,22 @@
 # Changelog
 
+### 4.0.0
+- Proper class re-namings.
+- Changed the **_dye_** client timeout from 20000 to 30000.
+- Fixed logical error for dye updating.
+- Fixed typo when starting up.
+
+### 3.5.0
+- Added the **_dye_** command.
+
+### 3.4.1
+- Fixed typos.
+- Changed monster GIF from image to thumbnail.
+
 ### 3.4.0
-- Added donate.
-- Added invite.
-- Added cooking.
+- Added **_donate_**.
+- Added **_invite_**.
+- Added **_cooking_**.
 
 ### 3.3.2
 - Fixed missing item thumbnails.
@@ -26,11 +39,11 @@
 - Added parser for names (for excess spaces).
 
 ### 3.2.0
-- Added proficiency command.
+- Added **_proficiency_** command.
 - Added version on the help command.
 - Fixed monster command.
-- Fixed some commands on item.
-- Maintenance can be used as ***maint*** as well
+- Fixed some errors on item search.
+- **_Maintenance_** can be used as **_maint_** as well
 - Added Argument Parser.
 
 ### 3.1.1

@@ -21,6 +21,8 @@ A Java Discord bot for your Discord Toram guild.
 - **\>proficiency|prof (proficiency level)**
   * Depending on your proficiency level this will show you what to
     synthesize in order to gain most proficiency.
+- **\>dye**
+  * Get the latest monthly dye.
 - **\>events**
   * This command is used to show the latest event posted on the official
     Toram news site!
@@ -87,10 +89,10 @@ folder, just paste this badboy in:
     
     echo Starting: %max%.jar
     
-    java -jar [file].jar [token] {custom prefix}
+    java -jar %max%.jar [token] {custom prefix}
 
 ## Stopping the bot
 You just need to write **stop** in the console window of the bot.
 
 # Additional info
-- The bot uses JavaCord as the API. 
+- The bot uses Javacord as the API. 

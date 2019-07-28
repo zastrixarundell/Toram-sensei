@@ -6,7 +6,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
-public class Invite implements MessageCreateListener
+public class InviteCommand implements MessageCreateListener
 {
 
     @Override

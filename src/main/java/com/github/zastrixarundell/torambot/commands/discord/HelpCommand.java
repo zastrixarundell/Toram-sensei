@@ -6,9 +6,7 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
-import java.util.Properties;
-
-public class Help implements MessageCreateListener
+public class HelpCommand implements MessageCreateListener
 {
 
     @Override
@@ -23,16 +21,8 @@ public class Help implements MessageCreateListener
 
         String title = "General help";
 
-        try
-        {
-            final Properties properties = new Properties();
-            properties.load(this.getClass().getClassLoader().getResourceAsStream("values.properties"));
-            title += " | v" + properties.getProperty("version");
-        }
-        catch (Exception ignore)
-        {
-
-        }
+        if(!Values.getVersion().isEmpty())
+            title += " | v" + Values.getVersion();
 
         try
         {
@@ -50,7 +40,7 @@ public class Help implements MessageCreateListener
                     .addField(Values.getPrefix() + "level [your level] (level range) (EXP boost)",
                             "Get what you need to farm to level up fast. " +
                                     "Only [your level] needs to be present here, if the arguments " +
-                                    "in normal brackets aren't specified the commands uses 5 for the level " +
+                                    "in normal brackets aren't specified the commands uses 9 for the level " +
                                     "range value and 0 for the EXP boost value.")
 
                     .addField(Values.getPrefix() + "points [current skill points] [your level] [target level]",
@@ -72,11 +62,14 @@ public class Help implements MessageCreateListener
                     .addField(Values.getPrefix() + "maintenance|maint", "This command is used to show the latest maintenance data.")
 
                     .addField(Values.getPrefix() + "news", "This command is used to show the latest big news on the site. Big events, " +
-                            "new chapter in the story line, etc.")
+                            "new chapter in the story line, etc.");
 
-                    .addField(Values.getPrefix() + "invite", "You can use this command to get the invite link for this bot!")
+            if (Values.getDyeImage() != null)
+                embed.addField(Values.getPrefix() + "dye", "Get the latest monthly dyes!");
 
-                    .addField(Values.getPrefix() + "donate", "You can use this command to donate to the dev (it would help)!");
+
+            embed.addField(Values.getPrefix() + "invite", "You can use this command to get the invite link for this bot!")
+                    .addField(Values.getPrefix() + "donate", "You can use this command to donate to the developer (it would help)!");
 
             Parser.parseThumbnail(embed, messageCreateEvent);
             Parser.parseFooter(embed, messageCreateEvent);

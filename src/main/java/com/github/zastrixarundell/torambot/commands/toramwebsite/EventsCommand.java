@@ -10,7 +10,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class Events implements MessageCreateListener
+public class EventsCommand implements MessageCreateListener
 {
 
     @Override
@@ -66,7 +66,7 @@ public class Events implements MessageCreateListener
             }
             catch (Exception exception)
             {
-                Methods.sendErrorMessage(messageCreateEvent);
+                MethodsCommand.sendErrorMessage(messageCreateEvent);
             }
         };
 

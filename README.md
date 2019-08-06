@@ -4,36 +4,31 @@
 A Java Discord bot for your Discord Toram guild.
 
 # Commands
->Note that the default prefix is ">"
-   
-- **\>monster [monster]**
-  * This command is used for getting info about a monster!
-- **\>item [name]**
-  * You can use this command to search for an item!
-- **\>level [your level] (level range) (EXP boost)**
-  * Get what you need to farm to level up fast. Only [your level] needs
-    to be present here, if the arguments in normal brackets aren't
-    specified the commands uses 5 for the level range value and 0 for
-    the EXP boost value.
-- **\>points [current skill points] [your level] [target level]**
-  * Calculate skill points. All of the arguments need to be present
-    or else it will not work!
-- **\>proficiency|prof (proficiency level)**
-  * Depending on your proficiency level this will show you what to
-    synthesize in order to gain most proficiency.
-- **\>dye**
-  * Get the latest monthly dye.
-- **\>events**
-  * This command is used to show the latest event posted on the official
-    Toram news site!
-- **\>latest**
-  * This command is used to show the overall latest news posted on the
-    official Toram news site!
-- **\>maintenance|maint**
-  * This command is used to show the latest maintenance data.
-- **\>news**
-  * This command is used to show the latest big news on the site.
-    Big events, new chapter in the story line, etc.
+
+## Item search commands
+This bot has commands to search for items and most categories of items. You can
+search for any item via the general command or if you want specific categories you can
+search for swords, bow(gun)s, arrows, daggers, halberds, katanas, knuckles, magic devices,
+staffs, additional gear, armors, shields, special gear, gems, crystals and upgrade cystals!
+
+## Monster search commands
+These commands are used for specific monster search, you can search for general monsters,
+bosses and minibosses.
+
+## Player commands
+You can search for what you need to farm in order to level up, calculate skill points which
+you will have ona targeted level, and get your cooking level from cooking points.
+
+## Crafting commands
+You can search what you need to create in order to level up your synthesis and get mats/recipe
+for searched items.
+
+## Game info commands
+You can get the latest events, maintenance, news, dyes or info off from the web.
+
+## Bot info commands
+You can get the link to invite the bot to your server, donate to the bot or get the link
+to the support server.
 
 # Setup
 This bot is made to be run even by those who are not tech-savvy.

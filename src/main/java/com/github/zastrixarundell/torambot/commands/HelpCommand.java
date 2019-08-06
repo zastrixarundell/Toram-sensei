@@ -74,7 +74,7 @@ public class HelpCommand implements MessageCreateListener
                 .addField("Item Search Commands", Values.getPrefix() + "help items")
                 .addField("Monster Search Commands:", Values.getPrefix() + "help monsters")
                 .addField("Player Info Commands:", Values.getPrefix() + "help player")
-                .addField("Bot Info Commands:", Values.getPrefix() + "help crafting")
+                .addField("Crafting Commands:", Values.getPrefix() + "help crafting")
                 .addField("Game Info Commands:", Values.getPrefix() + "help game")
                 .addField("Bot Info Commands:", Values.getPrefix() + "help bot");
 

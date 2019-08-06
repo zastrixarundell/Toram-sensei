@@ -14,19 +14,17 @@ public class Values
 
     public final static String inviteLink = "http://ceesty.com/w2Ncfe";
 
-    public final static String donationLink = "https://donatebot.io/checkout/602112468961067011";
+    public final static String donationLink = "https://www.patreon.com/zastrix_arundell";
 
-    public static BufferedImage dyeImage = null;
+    public final static String supportLink = "https://discord.gg/MdASH22";
 
-    private static boolean ranOnHostingService = false;
+    public final static String patreonLogo = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Patreon_logo.svg/541px-Patreon_logo.svg.png";
+
+    private static BufferedImage dyeImage = null;
 
     private static String prefix = ">";
 
     static void setPrefix(String prefix) { Values.prefix = prefix; }
-
-    static void setRanOnHostingService(boolean ranOnHostingService) { Values.ranOnHostingService = ranOnHostingService; }
-
-    static boolean isRanOnHostingService() { return ranOnHostingService; }
 
     public static String getPrefix() { return prefix; }
 

@@ -24,17 +24,15 @@ public class Parser
         builder.setThumbnail("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/edward_scythe.gif");
     }
 
-    public static void parseDonationImage(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
+    public static void parseDonationThumbnail(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
     {
         //messageCreateEvent might be used in the future.
-        builder.setImage("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/edward_smiling.jpg");
+        builder.setThumbnail(Values.patreonLogo);
     }
 
     public static void parseFooter(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
     {
         //messageCreateEvent might be used in the future.
-        if(Values.isRanOnHostingService())
-            builder.setFooter(footerMessage);
     }
 
     public static void parseColor(EmbedBuilder embed, MessageCreateEvent messageCreateEvent)

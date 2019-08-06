@@ -4,12 +4,14 @@ import com.github.zastrixarundell.torambot.Parser;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Item
 {
 
     private String name, price, proc, app;
     private ArrayList<String> stats = new ArrayList<>();
+    private ArrayList<String> mats = new ArrayList<>();
     private ArrayList<String> obtainedFrom = new ArrayList<>();
 
     public Item(Element itemData)
@@ -90,6 +92,29 @@ public class Item
         {
             obtainedFrom.add("N/A");
         }
+
+        //Recipe
+        try
+        {
+            Element myTabContent = itemData.getElementById("myTabContent");
+            Element obtainedFromTable = myTabContent.getElementsByClass("pad5-table").last();
+            Element obtainedFromBody = obtainedFromTable.getElementsByTag("tbody").last();
+
+            for (Element trElement : obtainedFromBody.getElementsByTag("tr"))
+                try
+                {
+                    String mats = trElement.getElementsByTag("td").last().text();
+                    this.mats = new ArrayList<>(Arrays.asList(mats.split("- ")));
+                }
+                catch (Exception ignore)
+                {
+
+                }
+        }
+        catch (Exception e)
+        {
+            obtainedFrom.add("N/A");
+        }
     }
 
     public String getName()
@@ -120,6 +145,11 @@ public class Item
     public ArrayList<String> getObtainedFrom()
     {
         return obtainedFrom;
+    }
+
+    public ArrayList<String> getMats()
+    {
+        return mats;
     }
 
 }

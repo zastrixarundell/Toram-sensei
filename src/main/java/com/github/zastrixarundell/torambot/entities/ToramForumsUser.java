@@ -42,8 +42,8 @@ public class ToramForumsUser implements Closeable
         //It is most likely the beta bot
         catch(Exception e)
         {
-            username = aesHelper.decryptData("SfbnI+fEDydygdCCjmC6FZBmAosx+ZTiV0VusxLrYMc=");
-            password = aesHelper.decryptData("SARquQj13ozYOAyyl3AYDQ==");
+            username = aesHelper.decryptData("qCzlHTvYtB51mrv2eBpZYqmpE27WNzh+JvUcgs1GiMg=");
+            password = aesHelper.decryptData("yglXjxiQk4x71B3S8ogorQ==");
         }
 
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
@@ -84,7 +84,6 @@ public class ToramForumsUser implements Closeable
                 ImageReader reader = htmlImage.getImageReader();
                 BufferedImage image = reader.read(0);
                 Values.setDyeImage(image);
-                //https://toramonline.com/index.php?attachments/febrero1-png.53456/
                 break;
             }
     }

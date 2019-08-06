@@ -1,5 +1,25 @@
 # Changelog
 
+### 5.3.1
+- Fixed to send messages when no upgrades are found.
+- Saved the upgrade xtal list page in a buffered variable for faster access.
+
+### 5.3.0
+- Added the **_enhance|upgrade_** search command.
+
+### 5.2.0
+- Changed the dye update rate to 12 hours.
+- Changed the donation link to a Patreon one.
+- Added a support command.
+- Made parser method blank.
+
+### 5.1.0
+- Added the **_mats_** command.
+
+### 5.0.0
+- Renamed packages.
+- Added a lot of commands for specific search queries.
+
 ### 4.0.0
 - Proper class re-namings.
 - Changed the **_dye_** client timeout from 20000 to 30000.

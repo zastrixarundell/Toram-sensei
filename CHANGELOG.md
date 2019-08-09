@@ -1,5 +1,15 @@
 # Changelog
 
+### 5.3.4
+- Fixed errors on showed time with **_dye_** command.
+
+### 5.3.3
+- Added checkers to not count servers which are bot verifiers.
+
+### 5.3.2
+- Added more messages on activity.
+- Added last check time on **_dye_** command.
+
 ### 5.3.1
 - Fixed to send messages when no upgrades are found.
 - Saved the upgrade xtal list page in a buffered variable for faster access.

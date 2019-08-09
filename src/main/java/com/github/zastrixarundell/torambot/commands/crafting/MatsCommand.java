@@ -36,7 +36,13 @@ public class MatsCommand implements MessageCreateListener
             return;
         }
 
+        //Join all of the data
         String data = String.join(" ", arguments);
+
+        /*
+            Running this in the a new thread as I don't want the whole bot to halt
+            while it is doing this.
+         */
 
         Runnable runnable;
         runnable = () ->

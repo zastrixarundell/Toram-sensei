@@ -2,6 +2,7 @@ package com.github.zastrixarundell.torambot.commands.search.monsters;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.objects.Monster;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -63,7 +64,7 @@ public class NormalMonsterComand implements MessageCreateListener
 
     }
 
-    private void sendMonsterMessage(com.github.zastrixarundell.torambot.objects.Monster object, MessageCreateEvent messageCreateEvent)
+    private void sendMonsterMessage(Monster object, MessageCreateEvent messageCreateEvent)
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(object.getName())
@@ -85,17 +86,17 @@ public class NormalMonsterComand implements MessageCreateListener
         messageCreateEvent.getChannel().sendMessage(embed);
     }
 
-    private ArrayList<com.github.zastrixarundell.torambot.objects.Monster> generateMonsters(Element body)
+    private ArrayList<Monster> generateMonsters(Element body)
     {
 
-        ArrayList<com.github.zastrixarundell.torambot.objects.Monster> monsters = new ArrayList<>();
+        ArrayList<Monster> monsters = new ArrayList<>();
 
         body.getElementsByTag("tr").forEach(element ->
         {
             if(element.parent() == body)
                 try
                 {
-                    monsters.add(new com.github.zastrixarundell.torambot.objects.Monster(element));
+                    monsters.add(new Monster(element));
                 }
                 catch (Exception ignore)
                 {

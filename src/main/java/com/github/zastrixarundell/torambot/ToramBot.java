@@ -1,10 +1,21 @@
 package com.github.zastrixarundell.torambot;
 
 import com.github.zastrixarundell.torambot.commands.HelpCommand;
+import com.github.zastrixarundell.torambot.commands.gameinfo.*;
 import com.github.zastrixarundell.torambot.commands.player.CookingCommand;
 import com.github.zastrixarundell.torambot.commands.crafting.MatsCommand;
 import com.github.zastrixarundell.torambot.commands.crafting.ProficiencyCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.*;
+import com.github.zastrixarundell.torambot.commands.player.LevelCommand;
+import com.github.zastrixarundell.torambot.commands.player.PointsCommand;
+import com.github.zastrixarundell.torambot.commands.search.items.ItemCommand;
+import com.github.zastrixarundell.torambot.commands.search.items.weapons.*;
+import com.github.zastrixarundell.torambot.commands.search.monsters.BossCommand;
+import com.github.zastrixarundell.torambot.commands.search.monsters.MiniBossCommand;
+import com.github.zastrixarundell.torambot.commands.search.monsters.MonsterCommand;
+import com.github.zastrixarundell.torambot.commands.search.monsters.NormalMonsterComand;
+import com.github.zastrixarundell.torambot.commands.torambot.DonateCommand;
+import com.github.zastrixarundell.torambot.commands.torambot.InviteCommand;
+import com.github.zastrixarundell.torambot.commands.torambot.SupportCommand;
 import com.github.zastrixarundell.torambot.commands.search.items.extra.GemCommand;
 import com.github.zastrixarundell.torambot.commands.search.items.extra.UpgradeCommand;
 import com.github.zastrixarundell.torambot.commands.search.items.extra.XtalCommand;
@@ -12,19 +23,14 @@ import com.github.zastrixarundell.torambot.commands.search.items.gear.Additional
 import com.github.zastrixarundell.torambot.commands.search.items.gear.ArmorCommand;
 import com.github.zastrixarundell.torambot.commands.search.items.gear.ShieldCommand;
 import com.github.zastrixarundell.torambot.commands.search.items.gear.SpecialCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.weapons.*;
-import com.github.zastrixarundell.torambot.commands.search.monsters.*;
-import com.github.zastrixarundell.torambot.commands.player.*;
-import com.github.zastrixarundell.torambot.commands.torambot.*;
-import com.github.zastrixarundell.torambot.commands.gameinfo.*;
 
 import com.github.zastrixarundell.torambot.entities.ToramForumsUser;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
+import org.javacord.api.entity.server.Server;
+import org.javacord.api.entity.user.User;
 
-import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 public class ToramBot
 {
@@ -133,14 +139,44 @@ public class ToramBot
         Timer timer = new Timer();
         TimerTask task = new TimerTask()
         {
+
+            int status = 0;
+
             @Override
             public void run()
             {
-                bot.updateActivity(Values.getPrefix() + "help | " + bot.getServers().size() + " servers!");
+
+                switch(status)
+                {
+                    case 0:
+
+                        List<String> doNotCheckThese =Arrays.asList
+                                (
+                                    "264445053596991498",
+                                    "446425626988249089"
+                                );
+
+                        long userCount = 0;
+
+                        for (Server server : bot.getServers())
+                            if(!doNotCheckThese.contains(server.getIdAsString()))
+                                for (User user : server.getMembers())
+                                    if (!user.isBot())
+                                        userCount++;
+
+                        bot.updateActivity(Values.getPrefix() + "help | " + userCount + " users!");
+                        break;
+                    case 1:
+                        bot.updateActivity(Values.getPrefix() + "invite | " + bot.getServers().size() + " servers!");
+                        break;
+                }
+
+                status ++;
+                status = status % 2;
             }
         };
 
-        timer.schedule(task, 0, 30000);
+        timer.schedule(task, 0, 1000*60);
         return timer;
     }
 

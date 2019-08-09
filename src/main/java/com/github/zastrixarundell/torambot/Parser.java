@@ -7,15 +7,13 @@ import org.javacord.api.event.message.MessageCreateEvent;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.github.zastrixarundell.torambot.Values.footerMessage;
-
 public class Parser
 {
 
     public static void parseThumbnail(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
     {
         //messageCreateEvent might be used in the future.
-        builder.setThumbnail("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/edward_bread.gif");
+        builder.setThumbnail("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/potum.png");
     }
 
     public static void parseMonsterThumbnail(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)

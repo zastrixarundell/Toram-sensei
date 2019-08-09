@@ -3,6 +3,7 @@ package com.github.zastrixarundell.torambot.entities;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.github.zastrixarundell.torambot.Values;
+import org.joda.time.DateTime;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -86,6 +87,8 @@ public class ToramForumsUser implements Closeable
                 Values.setDyeImage(image);
                 break;
             }
+
+        Values.setLastDyeUpdate(new DateTime());
     }
 
     @Override

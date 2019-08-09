@@ -1,6 +1,9 @@
 package com.github.zastrixarundell.torambot;
 
+import org.joda.time.DateTime;
+
 import java.awt.image.BufferedImage;
+import java.util.Date;
 import java.util.Properties;
 
 public class Values
@@ -20,11 +23,13 @@ public class Values
 
     public final static String patreonLogo = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Patreon_logo.svg/541px-Patreon_logo.svg.png";
 
+    private static DateTime lastDyeUpdate;
+
     private static BufferedImage dyeImage = null;
 
     private static String prefix = ">";
 
-    static void setPrefix(String prefix) { Values.prefix = prefix; }
+    public static void setPrefix(String prefix) { Values.prefix = prefix; }
 
     public static String getPrefix() { return prefix; }
 
@@ -48,4 +53,8 @@ public class Values
     }
 
     public static String getVersion() { return version; }
+
+    public static DateTime getLastDyeUpdate() { return lastDyeUpdate; }
+
+    public static void setLastDyeUpdate(DateTime lastDyeUpdate) { Values.lastDyeUpdate = lastDyeUpdate; }
 }

@@ -1,4 +1,5 @@
 <p align="center"><img src="https://toramonline.com/index.php?media/toram-online-logo.50/full&d=1463410056" /></p>
+
 # ToramBot
 A Java Discord bot for your Discord Toram guild.
 <p align="center"><img src="https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/profile.png" /></p>

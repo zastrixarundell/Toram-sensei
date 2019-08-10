@@ -1,5 +1,8 @@
 # Changelog
 
+### 5.3.5
+- Renamed bot and changes some picture URLs.
+
 ### 5.3.4
 - Fixed errors on showed time with **_dye_** command.
 

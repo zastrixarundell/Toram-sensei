@@ -37,8 +37,8 @@ public class ToramForumsUser implements Closeable
         //Try for main first
         try
         {
-            username = aesHelper.decryptData("TJHWV+WLyl296krsUDgyNPnumZs4K3h5C3B9AXftHSE=");
-            password = aesHelper.decryptData("vv5/mS+exOxYwWaXBfsFoQ==");
+            username = aesHelper.decryptData("3OztJIxzzY79H9YYEJs5Jr5QkWgsx5eU/hYy1zgEkN4=");
+            password = aesHelper.decryptData("L41kztOpWabG6q+r6HvLqQ==");
         }
         //It is most likely the beta bot
         catch(Exception e)

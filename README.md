@@ -3,6 +3,8 @@
 # ToramBot
 A Java Discord bot for your Discord Toram guild.
 
+![](https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/profile.png)
+
 # Commands
 
 ## Item search commands

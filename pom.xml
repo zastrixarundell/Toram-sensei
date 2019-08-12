@@ -6,7 +6,14 @@
 
     <groupId>com.gmail.zastrixarundell</groupId>
     <artifactId>ToramBot</artifactId>
-    <version>5.3.5</version>
+    <version>5.4.0</version>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -34,7 +41,17 @@
             <version>2.10.3</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.discordbots</groupId>
+            <artifactId>DBL-Java-Library</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.coobird</groupId>
+            <artifactId>thumbnailator</artifactId>
+            <version>0.4.8</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 

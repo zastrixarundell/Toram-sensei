@@ -1,5 +1,15 @@
 # Changelog
 
+### 5.4.0
+- Added **_vote_** command.
+- Added discord bot list api.
+- Added support for multiple dye images.
+
+### 5.3.6
+- Added the StatusImage object, will need to add a
+RESTful api in order to use it, most likely will use
+spring boot for this.
+
 ### 5.3.5
 - Renamed bot and changes some picture URLs.
 

@@ -1,15 +1,23 @@
 package com.github.zastrixarundell.torambot;
 
+import org.discordbots.api.client.DiscordBotListAPI;
 import org.joda.time.DateTime;
 
 import java.awt.image.BufferedImage;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class Values
 {
 
+    private static DiscordBotListAPI api = null;
+
     private static String version = "";
+
+    private static int userCount, guildCount, commandCount;
+
+    public static final String profileImageURL = "https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/profile.png";
 
     public final static String footerMessage = "Support me by going on: http://corneey.com/w2ObhY";
 
@@ -25,7 +33,7 @@ public class Values
 
     private static DateTime lastDyeUpdate;
 
-    private static BufferedImage dyeImage = null;
+    private static BufferedImage[] dyeImages = null;
 
     private static String prefix = ">";
 
@@ -33,9 +41,9 @@ public class Values
 
     public static String getPrefix() { return prefix; }
 
-    public static BufferedImage getDyeImage() { return dyeImage; }
+    public static BufferedImage[] getDyeImages() { return dyeImages; }
 
-    public static void setDyeImage(BufferedImage dyeImage) { Values.dyeImage = dyeImage; }
+    public static void setDyeImages(BufferedImage[] dyeImage) { Values.dyeImages = dyeImage; }
 
     public static void getMavenVersion()
     {
@@ -57,4 +65,38 @@ public class Values
     public static DateTime getLastDyeUpdate() { return lastDyeUpdate; }
 
     public static void setLastDyeUpdate(DateTime lastDyeUpdate) { Values.lastDyeUpdate = lastDyeUpdate; }
+
+    public static int getUserCount()
+    {
+        return userCount;
+    }
+
+    public static void setUserCount(int userCount)
+    {
+        Values.userCount = userCount;
+    }
+
+    public static int getGuildCount()
+    {
+        return guildCount;
+    }
+
+    public static void setGuildCount(int guildCount)
+    {
+        Values.guildCount = guildCount;
+    }
+
+    public static int getCommandCount()
+    {
+        return commandCount;
+    }
+
+    public static void setCommandCount(int commandCount)
+    {
+        Values.commandCount = commandCount;
+    }
+
+    public static DiscordBotListAPI getApi() { return api;     }
+
+    public static void setApi(DiscordBotListAPI api) { Values.api = api; }
 }

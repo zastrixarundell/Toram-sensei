@@ -19,16 +19,19 @@ public class UpgradeCommand implements MessageCreateListener
 
     private static final int sizeOfPage = 2000;
 
-    private Document document = null;
+    private Element body = null;
 
     public UpgradeCommand()
     {
         try
         {
-            document = Jsoup.connect("http://coryn.club/item.php")
+            Document document = Jsoup.connect("http://coryn.club/item.php")
                     .data("special", "xtal")
                     .data("show", String.valueOf(sizeOfPage))
                     .get();
+
+            Element table = document.getElementsByClass("table table-striped").first();
+            body = table.getElementsByTag("tbody").first();
         }
         catch (Exception ignore)
         {
@@ -64,14 +67,16 @@ public class UpgradeCommand implements MessageCreateListener
         {
             try
             {
-                if(document == null)
-                    document = Jsoup.connect("http://coryn.club/item.php")
+                if(body == null)
+                {
+                    Document document = Jsoup.connect("http://coryn.club/item.php")
                             .data("special", "xtal")
                             .data("show", String.valueOf(sizeOfPage))
                             .get();
 
-                Element table = document.getElementsByClass("table table-striped").first();
-                Element body = table.getElementsByTag("tbody").first();
+                    Element table = document.getElementsByClass("table table-striped").first();
+                    body = table.getElementsByTag("tbody").first();
+                }
 
                 List<Item> itemList = getItems(body, data);
 
@@ -86,7 +91,7 @@ public class UpgradeCommand implements MessageCreateListener
             catch (Exception e)
             {
                 sendErrorMessage(messageCreateEvent);
-                document = null;
+                body = null;
             }
         };
 

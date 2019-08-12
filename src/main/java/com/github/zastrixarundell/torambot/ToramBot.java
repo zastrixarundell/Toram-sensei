@@ -24,7 +24,10 @@ import com.github.zastrixarundell.torambot.commands.search.items.gear.ArmorComma
 import com.github.zastrixarundell.torambot.commands.search.items.gear.ShieldCommand;
 import com.github.zastrixarundell.torambot.commands.search.items.gear.SpecialCommand;
 
+import com.github.zastrixarundell.torambot.commands.torambot.VoteCommand;
 import com.github.zastrixarundell.torambot.entities.ToramForumsUser;
+import com.github.zastrixarundell.torambot.utils.AESHelper;
+import org.discordbots.api.client.DiscordBotListAPI;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 import org.javacord.api.entity.server.Server;
@@ -41,7 +44,7 @@ public class ToramBot
         if(args.length == 0)
         {
             System.out.println("The token is not specified... shutting down!");
-            return;
+            System.exit(-1);
         }
 
         if(args.length > 1) { Values.setPrefix(args[1]); }
@@ -64,6 +67,156 @@ public class ToramBot
 
         bot.updateActivity("Starting up! Please wait!");
 
+        updateCount(bot);
+        addCommands(bot);
+
+        //vote command is here
+        setupDiscordBotListApi(bot);
+
+        //Just to refresh
+        updateCount(bot);
+
+        System.out.println("Started! Type in \"stop\" to stop the bot!");
+
+        String input;
+        Scanner scanner = new Scanner(System.in);
+
+        Timer activity = updateActivity(bot);
+        Timer dyeImage = updateDyesImage(bot, token);
+
+        while(true)
+        {
+            System.out.print("User input: ");
+            input = scanner.nextLine();
+            if (input.equalsIgnoreCase("stop"))
+            {
+                bot.disconnect();
+                activity.cancel();
+                dyeImage.cancel();
+                System.exit(0);
+            }
+        }
+    }
+
+    private static Timer updateActivity(DiscordApi bot)
+    {
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask()
+        {
+
+            int status = 0;
+
+            @Override
+            public void run()
+            {
+                updateCount(bot);
+
+                if(Values.getApi() != null)
+                    Values.getApi().setStats(bot.getServers().size());
+
+                switch(status)
+                {
+                    case 0:
+                        bot.updateActivity(Values.getPrefix() + "help | " + Values.getUserCount() + " users!");
+                        break;
+                    case 1:
+                        bot.updateActivity(Values.getPrefix() + "invite | " + Values.getGuildCount() + " servers!");
+                        break;
+                    case 2:
+                        Values.getApi().getBot("600302983305101323").whenComplete((bot1, throwable) -> bot.updateActivity(Values.getPrefix() + "vote | " + bot1.getMonthlyPoints() + " votes this month!"));
+                }
+
+                status ++;
+                status = status % (Values.getApi() != null ? 3 : 2);
+
+                System.gc();
+            }
+        };
+
+        timer.schedule(task, 0, 1000*60);
+        return timer;
+    }
+
+    private static Timer updateDyesImage(DiscordApi bot, String token)
+    {
+        Timer timer = new Timer();
+        TimerTask task = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    System.out.println("Starting user!");
+                    ToramForumsUser user = new ToramForumsUser(token);
+                    System.out.println("Starting dye!");
+                    user.setDye();
+                    System.out.println("Finished dye!");
+                    user.close();
+
+                    if(Values.getDyeImages() == null)
+                    {
+                        System.out.println("There are no dyes!");
+
+                        if(DyeCommand.instance != null)
+                        {
+                            bot.removeListener(DyeCommand.instance);
+                            DyeCommand.instance = null;
+                        }
+                    }
+                    else
+                        if(DyeCommand.instance == null)
+                        {
+                            bot.addListener(new DyeCommand());
+                            System.out.println("Updated dyes!");
+                        }
+                }
+                catch (Exception e)
+                {
+                    Values.setDyeImages(null);
+                    System.out.println("An error happened while updating the dye data!");
+                    e.printStackTrace();
+
+                    if(DyeCommand.instance != null)
+                    {
+                        bot.removeListener(DyeCommand.instance);
+                        DyeCommand.instance = null;
+                    }
+                }
+
+                System.gc();
+            }
+        };
+
+        timer.schedule(task,0, 250*60*60*24);
+        return timer;
+    }
+
+    private static void updateCount(DiscordApi bot)
+    {
+        List<String> doNotCheckThese =Arrays.asList
+                (
+                        "264445053596991498",
+                        "446425626988249089"
+                );
+
+        int userCount = 0;
+
+        for (Server server : bot.getServers())
+            if(!doNotCheckThese.contains(server.getIdAsString()))
+                for (User user : server.getMembers())
+                    if (!user.isBot())
+                        userCount++;
+
+        Values.setUserCount(userCount);
+
+        Values.setGuildCount(bot.getServers().size());
+
+        Values.setCommandCount(bot.getListeners().size());
+    }
+
+    private static void addCommands(DiscordApi bot)
+    {
         //Crafting
         bot.addListener(new ProficiencyCommand());
         bot.addListener(new CookingCommand());
@@ -111,123 +264,30 @@ public class ToramBot
         bot.addListener(new LatestCommand());
         bot.addListener(new MaintenanceCommand());
         bot.addListener(new EventsCommand());
+    }
 
-        System.out.println("Started! Type in \"stop\" to stop the bot!");
-
-        String input;
-        Scanner scanner = new Scanner(System.in);
-
-        Timer activity = updateActivity(bot);
-        Timer dyeImage = updateDyesImage(bot, token);
-
-        while(true)
+    private static void setupDiscordBotListApi(DiscordApi bot)
+    {
+        try
         {
-            System.out.print("User input: ");
-            input = scanner.nextLine();
-            if (input.equalsIgnoreCase("stop"))
-            {
-                bot.disconnect();
-                activity.cancel();
-                dyeImage.cancel();
-                return;
-            }
+            AESHelper aesHelper = new AESHelper(bot.getToken());
+            String token = aesHelper.decryptData("OjImYbN/dPbEBjjxc+X5sjV5dHC+lU95tnSXwpt2PmQlJXwaXgBRAwdpZtmAGmkYEuu5PU+GMD/+RFibTqrM0367bNnkEE2Hrr77BtP7zyvXocbkRW8G0BRedaLf3EMndt0G/39av7zbWCo2RVYQ99LYhzG8gXWbfd04pJtd6JaXILD0Z3VBfElICQm7D/lS/WufLRG7n2YZsC+jrURXfg==");
+
+            DiscordBotListAPI api = new DiscordBotListAPI.Builder()
+                    .token(token)
+                    .botId("600302983305101323")
+                    .build();
+
+            Values.setApi(api);
+
+            api.setStats(bot.getServers().size());
+
+            if(Values.getApi() != null)
+                bot.addListener(new VoteCommand());
+        }
+        catch (Exception ignore)
+        {
+
         }
     }
-
-    private static Timer updateActivity(DiscordApi bot)
-    {
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask()
-        {
-
-            int status = 0;
-
-            @Override
-            public void run()
-            {
-
-                switch(status)
-                {
-                    case 0:
-
-                        List<String> doNotCheckThese =Arrays.asList
-                                (
-                                    "264445053596991498",
-                                    "446425626988249089"
-                                );
-
-                        long userCount = 0;
-
-                        for (Server server : bot.getServers())
-                            if(!doNotCheckThese.contains(server.getIdAsString()))
-                                for (User user : server.getMembers())
-                                    if (!user.isBot())
-                                        userCount++;
-
-                        bot.updateActivity(Values.getPrefix() + "help | " + userCount + " users!");
-                        break;
-                    case 1:
-                        bot.updateActivity(Values.getPrefix() + "invite | " + bot.getServers().size() + " servers!");
-                        break;
-                }
-
-                status ++;
-                status = status % 2;
-            }
-        };
-
-        timer.schedule(task, 0, 1000*60);
-        return timer;
-    }
-
-    private static Timer updateDyesImage(DiscordApi bot, String token)
-    {
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    System.out.println("Starting dye!");
-                    ToramForumsUser user = new ToramForumsUser(token);
-                    user.setDye();
-                    user.close();
-
-                    if(Values.getDyeImage() == null)
-                    {
-                        System.out.println("An error happened while updating the dye data!");
-
-                        if(DyeCommand.instance != null)
-                        {
-                            bot.removeListener(DyeCommand.instance);
-                            DyeCommand.instance = null;
-                        }
-                    }
-                    else
-                        if(DyeCommand.instance == null)
-                        {
-                            bot.addListener(new DyeCommand());
-                            System.out.println("Updated dyes!");
-                        }
-                }
-                catch (Exception e)
-                {
-                    System.out.println("An error happened while updating the dye data!");
-                    e.printStackTrace();
-
-                    if(DyeCommand.instance != null)
-                    {
-                        bot.removeListener(DyeCommand.instance);
-                        DyeCommand.instance = null;
-                    }
-                }
-            }
-        };
-
-        timer.schedule(task,0, 250*60*60*24);
-        return timer;
-    }
-
 }

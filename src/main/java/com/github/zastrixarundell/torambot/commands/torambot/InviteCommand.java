@@ -23,7 +23,8 @@ public class InviteCommand implements MessageCreateListener
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Invite link for " + name)
-                .setDescription("You can invite " + name + " on your server with [this link](" +
+                .setDescription("Each invite helps this bot grow and will ultimately help this bot be used on a lot of " +
+                        "Discord guilds, so every invite is appreciated! You can invite " + name + " on your server with [this link](" +
                         Values.inviteLink + ").");
 
         Parser.parseFooter(embed, messageCreateEvent);

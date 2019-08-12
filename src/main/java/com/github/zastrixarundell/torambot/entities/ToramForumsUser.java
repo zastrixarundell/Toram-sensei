@@ -3,15 +3,15 @@ package com.github.zastrixarundell.torambot.entities;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.utils.AESHelper;
+import net.coobird.thumbnailator.Thumbnails;
 import org.joda.time.DateTime;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
-import java.security.Key;
-import java.util.Base64;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 public class ToramForumsUser implements Closeable
@@ -22,9 +22,8 @@ public class ToramForumsUser implements Closeable
 
     public ToramForumsUser(String token) throws Exception
     {
-        String key = token.substring(0, 32);
 
-        AESHelper aesHelper = new AESHelper(key);
+        AESHelper aesHelper = new AESHelper(token);
 
         String username, password;
 
@@ -37,14 +36,14 @@ public class ToramForumsUser implements Closeable
         //Try for main first
         try
         {
-            username = aesHelper.decryptData("3OztJIxzzY79H9YYEJs5Jr5QkWgsx5eU/hYy1zgEkN4=");
-            password = aesHelper.decryptData("L41kztOpWabG6q+r6HvLqQ==");
+            username = aesHelper.decryptData("81CjhzuvgfRKambn82RJ7/kjZQwia4ihURY1evbP20I=");
+            password = aesHelper.decryptData("rrXWhM2/o14taNAPd0XGfg==");
         }
         //It is most likely the beta bot
         catch(Exception e)
         {
-            username = aesHelper.decryptData("qCzlHTvYtB51mrv2eBpZYqmpE27WNzh+JvUcgs1GiMg=");
-            password = aesHelper.decryptData("yglXjxiQk4x71B3S8ogorQ==");
+            username = aesHelper.decryptData("vhiSaT+EaYprsfOqwV6IcciaE/bTVHcGry3SjaFatJ4=");
+            password = aesHelper.decryptData("ZJcf6FCERMvGSEg/qEFIMA==");
         }
 
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
@@ -80,50 +79,28 @@ public class ToramForumsUser implements Closeable
         for(HtmlElement element : li.getElementsByTagName("div"))
             if(element.getAttribute("class").equalsIgnoreCase("messagecontent"))
             {
-                HtmlImage htmlImage = (HtmlImage) element.getElementsByTagName("img")
-                        .get(element.getElementsByTagName("img").getLength() - 1);
-                ImageReader reader = htmlImage.getImageReader();
-                BufferedImage image = reader.read(0);
-                Values.setDyeImage(image);
+                ArrayList<BufferedImage> images = new ArrayList<>();
+
+                for(int i = 1; i < element.getElementsByTagName("img").size(); i++)
+                {
+                    HtmlImage htmlImage = (HtmlImage) element.getElementsByTagName("img").get(i);
+                    ImageReader reader = htmlImage.getImageReader();
+                    BufferedImage image = reader.read(0);
+                    images.add(resize(image, image.getWidth() / 2, image.getHeight() / 2));
+                }
+
+                Values.setDyeImages(images.toArray(new BufferedImage[0]));
                 break;
             }
 
         Values.setLastDyeUpdate(new DateTime());
     }
 
+    static BufferedImage resize(BufferedImage img, int newW, int newH) throws IOException
+    {
+        return Thumbnails.of(img).size(newW, newH).asBufferedImage();
+    }
+
     @Override
     public void close() { webClient.close(); }
-
-    private static class AESHelper
-    {
-
-        private static final String algorithm = "AES";
-
-        private Key key;
-
-        AESHelper(String aesKey)
-        {
-            key = new SecretKeySpec(aesKey.getBytes(), algorithm);
-        }
-
-        /*
-        public String encryptData(String data) throws Exception
-        {
-            Cipher cipher = Cipher.getInstance(algorithm);
-            cipher.init(Cipher.ENCRYPT_MODE, key);
-            byte[] encryptedBytes = cipher.doFinal(data.getBytes());
-            return Base64.getEncoder().encodeToString(encryptedBytes);
-        }
-        */
-
-        String decryptData(String data) throws Exception
-        {
-            Cipher cipher = Cipher.getInstance(algorithm);
-            cipher.init(Cipher.DECRYPT_MODE, key);
-            byte[] decodedBaseValues = Base64.getDecoder().decode(data);
-            byte[] deciphered = cipher.doFinal(decodedBaseValues);
-            return new String(deciphered);
-        }
-
-    }
 }

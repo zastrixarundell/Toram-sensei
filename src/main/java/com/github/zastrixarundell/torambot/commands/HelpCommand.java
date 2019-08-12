@@ -205,7 +205,7 @@ public class HelpCommand implements MessageCreateListener
                 .addField(Values.getPrefix() + "news", "This command is used to show the latest big news on the site. Big events, " +
                         "new chapter in the story line, etc.");
 
-        if (Values.getDyeImage() != null)
+        if (Values.getDyeImages() != null)
             embed.addField(Values.getPrefix() + "dye", "Get the latest monthly dyes!");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
@@ -224,6 +224,9 @@ public class HelpCommand implements MessageCreateListener
                 .addField(Values.getPrefix() + "invite", "You can use this command to get the invite link for this bot!")
                 .addField(Values.getPrefix() + "donate", "You can use this command to donate to the developer (it would help)!")
                 .addField(Values.getPrefix() + "support", "You can use this command to get the support sever for this bot!");
+
+                if(Values.getApi() != null)
+                    embed.addField(Values.getPrefix() + "vote", "You can use this command to vote for this bot!");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

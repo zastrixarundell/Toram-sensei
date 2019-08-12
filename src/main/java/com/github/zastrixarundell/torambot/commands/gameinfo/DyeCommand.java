@@ -31,21 +31,25 @@ public class DyeCommand implements MessageCreateListener
             DateTime time = new DateTime();
             Period period = new Period(Values.getLastDyeUpdate(), time);
 
-            EmbedBuilder embed = new EmbedBuilder()
-                    .setTitle("Latest monthly dyes")
-                    .setDescription("Here is the image of the latest monthly dyes!\n\n\n" +
-                            "Note: This can be late so check the title of the image.");
+            for(int i = 0; i < Values.getDyeImages().length; i++)
+            {
+                EmbedBuilder embed = new EmbedBuilder()
+                        .setTitle("Latest monthly dyes" + (Values.getDyeImages().length <= 1 ? "" : " (" + (i+1) + "/" + Values.getDyeImages().length + ")"))
+                        .setDescription("Here is the image of the latest monthly dyes!\n\n\n" +
+                                "Note: This can be late so check the title of the image.");
 
-            Parser.parseColor(embed, messageCreateEvent);
-            embed.setImage(Values.getDyeImage());
+                Parser.parseColor(embed, messageCreateEvent);
+                embed.setImage(Values.getDyeImages()[i]);
 
-            int hours = period.getHours();
-            int minutes = period.getMinutes();
+                int hours = period.getHours();
+                int minutes = period.getMinutes();
 
-            embed.setFooter("Last check was " + hours + (hours == 1 ? " hour" : " hours") + " and " +
-                    minutes + (minutes == 1 ? " minute" : " minutes") + " ago.");
+                embed.setFooter("Last check was " + hours + (hours == 1 ? " hour" : " hours") + " and " +
+                        minutes + (minutes == 1 ? " minute" : " minutes") + " ago.");
 
-            messageCreateEvent.getChannel().sendMessage(embed);
+                messageCreateEvent.getChannel().sendMessage(embed);
+            }
+
         };
 
         (new Thread(runnable)).start();

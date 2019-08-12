@@ -1,5 +1,9 @@
 # Changelog
 
+### 5.5.0
+- Changed **_dye_** to **_monthly_**.
+- Added a new **_dye_** command.
+
 ### 5.4.0
 - Added **_vote_** command.
 - Added discord bot list api.

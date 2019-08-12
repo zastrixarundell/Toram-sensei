@@ -22,6 +22,12 @@ public class Parser
         builder.setThumbnail("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/fight.gif");
     }
 
+    public static void parseColorList(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
+    {
+        //messageCreateEvent might be used in the future.
+        builder.setImage("https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/dyes.jpg");
+    }
+
     public static void parseDonationThumbnail(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
     {
         //messageCreateEvent might be used in the future.

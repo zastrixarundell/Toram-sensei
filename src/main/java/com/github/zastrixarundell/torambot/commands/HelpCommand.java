@@ -203,10 +203,12 @@ public class HelpCommand implements MessageCreateListener
                 .addField(Values.getPrefix() + "maintenance|maint", "This command is used to show the latest maintenance data.")
 
                 .addField(Values.getPrefix() + "news", "This command is used to show the latest big news on the site. Big events, " +
-                        "new chapter in the story line, etc.");
+                        "new chapter in the story line, etc.")
+
+                .addField(Values.getPrefix() + "dye (value)", "This command is used to show all of the dyes or see details about a specific color!");
 
         if (Values.getDyeImages() != null)
-            embed.addField(Values.getPrefix() + "dye", "Get the latest monthly dyes!");
+            embed.addField(Values.getPrefix() + "monthly|month", "Get the latest monthly dyes!");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

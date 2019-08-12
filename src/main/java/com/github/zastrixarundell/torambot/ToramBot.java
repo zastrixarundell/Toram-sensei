@@ -128,8 +128,6 @@ public class ToramBot
 
                 status ++;
                 status = status % (Values.getApi() != null ? 3 : 2);
-
-                System.gc();
             }
         };
 
@@ -147,44 +145,42 @@ public class ToramBot
             {
                 try
                 {
-                    System.out.println("Starting user!");
+                    System.out.println("Starting forums user!");
                     ToramForumsUser user = new ToramForumsUser(token);
-                    System.out.println("Starting dye!");
+                    System.out.println("Starting monthly dyes!");
                     user.setDye();
-                    System.out.println("Finished dye!");
+                    System.out.println("Finished monthly dyes!");
                     user.close();
 
                     if(Values.getDyeImages() == null)
                     {
-                        System.out.println("There are no dyes!");
+                        System.out.println("There are monthly dyes!");
 
-                        if(DyeCommand.instance != null)
+                        if(MonthlyCommand.instance != null)
                         {
-                            bot.removeListener(DyeCommand.instance);
-                            DyeCommand.instance = null;
+                            bot.removeListener(MonthlyCommand.instance);
+                            MonthlyCommand.instance = null;
                         }
                     }
                     else
-                        if(DyeCommand.instance == null)
+                        if(MonthlyCommand.instance == null)
                         {
-                            bot.addListener(new DyeCommand());
-                            System.out.println("Updated dyes!");
+                            bot.addListener(new MonthlyCommand());
+                            System.out.println("Updated monthly dyes!");
                         }
                 }
                 catch (Exception e)
                 {
                     Values.setDyeImages(null);
-                    System.out.println("An error happened while updating the dye data!");
+                    System.out.println("An error happened while updating the monthly dye data!");
                     e.printStackTrace();
 
-                    if(DyeCommand.instance != null)
+                    if(MonthlyCommand.instance != null)
                     {
-                        bot.removeListener(DyeCommand.instance);
-                        DyeCommand.instance = null;
+                        bot.removeListener(MonthlyCommand.instance);
+                        MonthlyCommand.instance = null;
                     }
                 }
-
-                System.gc();
             }
         };
 
@@ -264,6 +260,7 @@ public class ToramBot
         bot.addListener(new LatestCommand());
         bot.addListener(new MaintenanceCommand());
         bot.addListener(new EventsCommand());
+        bot.addListener(new DyeCommand());
     }
 
     private static void setupDiscordBotListApi(DiscordApi bot)

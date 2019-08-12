@@ -4,13 +4,11 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.github.zastrixarundell.torambot.Values;
 import com.github.zastrixarundell.torambot.utils.AESHelper;
-import net.coobird.thumbnailator.Thumbnails;
 import org.joda.time.DateTime;
 
 import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 
@@ -86,7 +84,7 @@ public class ToramForumsUser implements Closeable
                     HtmlImage htmlImage = (HtmlImage) element.getElementsByTagName("img").get(i);
                     ImageReader reader = htmlImage.getImageReader();
                     BufferedImage image = reader.read(0);
-                    images.add(resize(image, image.getWidth() / 2, image.getHeight() / 2));
+                    images.add(image);
                 }
 
                 Values.setDyeImages(images.toArray(new BufferedImage[0]));
@@ -94,11 +92,6 @@ public class ToramForumsUser implements Closeable
             }
 
         Values.setLastDyeUpdate(new DateTime());
-    }
-
-    static BufferedImage resize(BufferedImage img, int newW, int newH) throws IOException
-    {
-        return Thumbnails.of(img).size(newW, newH).asBufferedImage();
     }
 
     @Override

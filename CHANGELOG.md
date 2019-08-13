@@ -2,6 +2,7 @@
 
 ### 5.5.1
 - Fixed level boost on **_level_** command.
+- Removed level range on **_level_**.
 
 ### 5.5.0
 - Changed **_dye_** to **_monthly_**.

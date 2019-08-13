@@ -169,11 +169,9 @@ public class HelpCommand implements MessageCreateListener
                 .setTitle("Player Info Commands")
                 .setDescription("Commands which allow players to get info about player-related info.")
 
-                .addField(Values.getPrefix() + "level [your level] (level range) (EXP boost)",
-                        "Get what you need to farm to level up fast. " +
-                                "Only [your level] needs to be present here, if the arguments " +
-                                "in normal brackets aren't specified the commands uses 9 for the level " +
-                                "range value and 0 for the EXP boost value.")
+                .addField(Values.getPrefix() + "level [your level] (EXP boost)",
+                        "Only [your level] needs to be present here. If the exp boost is not defined you will " +
+                                "get the standard exp value.")
 
                 .addField(Values.getPrefix() + "points [current skill points] [your level] [target level]",
                         "Calculate skill points. All of the arguments need to " +

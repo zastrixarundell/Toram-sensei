@@ -34,13 +34,12 @@ public class LevelCommand implements MessageCreateListener
             return;
         }
 
-        int level, range, bonus;
+        int level, bonus;
 
         try
         {
             level = Integer.parseInt(arguments.get(0));
-            range = arguments.size() >= 2 ? Integer.parseInt(arguments.get(1)) : 9;
-            bonus = arguments.size() >= 3 ? Integer.parseInt(arguments.get(2)) : 0;
+            bonus = arguments.size() > 1 ? Integer.parseInt(arguments.get(1)) : 0;
         }
         catch (NumberFormatException e)
         {
@@ -55,7 +54,7 @@ public class LevelCommand implements MessageCreateListener
             {
                 Document document = Jsoup.connect("http://coryn.club/leveling.php")
                         .data("lv", String.valueOf(level))
-                        .data("gap", String.valueOf(range))
+                        .data("gap", "9")
                         .data("bonusEXP", String.valueOf(bonus))
                         .get();
 
@@ -154,10 +153,9 @@ public class LevelCommand implements MessageCreateListener
                 .setTitle("Level Command: ")
                 .setDescription("You can use this command to get " +
                         "what you need to farm to gain EXP the fastest!")
-                .addField(Values.getPrefix() + "level [your level] (level range) (EXP boost)",
-                        "Only [your level] needs to be present here, if the arguments " +
-                                "in normal brackets aren't specified the commands uses 9 for the level " +
-                                "range value and 0 for the EXP boost value.");
+                .addField(Values.getPrefix() + "level [your level] (EXP boost)",
+                        "Only [your level] needs to be present here. If the exp boost is not defined you will " +
+                                "get the standard exp value.");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

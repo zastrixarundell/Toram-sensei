@@ -1,5 +1,8 @@
 # Changelog
 
+### 5.5.1
+- Fixed level boost on **_level_** command.
+
 ### 5.5.0
 - Changed **_dye_** to **_monthly_**.
 - Added a new **_dye_** command.

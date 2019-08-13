@@ -56,7 +56,7 @@ public class LevelCommand implements MessageCreateListener
                 Document document = Jsoup.connect("http://coryn.club/leveling.php")
                         .data("lv", String.valueOf(level))
                         .data("gap", String.valueOf(range))
-                        .data("bonus", String.valueOf(bonus))
+                        .data("bonusEXP", String.valueOf(bonus))
                         .get();
 
                 Elements tables = document.getElementsByClass("table table-striped");

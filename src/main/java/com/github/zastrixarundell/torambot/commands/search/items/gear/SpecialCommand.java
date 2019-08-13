@@ -92,13 +92,10 @@ public class SpecialCommand implements MessageCreateListener
 
         StringBuilder stringBuilder = new StringBuilder();
 
+        for (int i = 0; i < item.getObtainedFrom().size() && i < 10; i++)
         {
-
-            for (int i = 0; i < item.getObtainedFrom().size() && i < 10; i++)
-            {
-                String key = item.getObtainedFrom().get(i);
-                stringBuilder.append(i == 0 ? key : "\n" + key);
-            }
+            String key = item.getObtainedFrom().get(i);
+            stringBuilder.append(i == 0 ? key : "\n" + key);
         }
 
         embed.addInlineField("Obtained from:", stringBuilder.toString());

@@ -18,7 +18,8 @@ public class DyeCommand implements MessageCreateListener
     {
 
         if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "dye"))
-            return;
+            if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "dyes"))
+                return;
 
         if (!messageCreateEvent.getMessageAuthor().isRegularUser())
             return;
@@ -87,7 +88,7 @@ public class DyeCommand implements MessageCreateListener
     private void errorOnFindingColor(MessageCreateEvent messageCreateEvent)
     {
         EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Error while searching for color")
+                .setTitle("Error while searching for dye")
                 .setDescription("Uh oh, looks like the dye you were searching for doesn't exist, you will now be shown the list of all of the dyes which Toram has.");
 
         Parser.parseFooter(embed, messageCreateEvent);

@@ -1,3 +1,21 @@
+/*
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *                     Version 2, December 2004
+ *
+ * Copyright (C) 2019, Zastrix Arundell, https://github.com/ZastrixArundell
+ *
+ *  Everyone is permitted to copy and distribute verbatim or modified
+ *  copies of this license document, and changing it is allowed as long
+ *  as the name is changed.
+ *
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ *
+ *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ *
+ *
+ */
+
 package com.github.zastrixarundell.torambot;
 
 import com.github.zastrixarundell.torambot.commands.HelpCommand;
@@ -37,6 +55,8 @@ import java.util.*;
 
 public class ToramBot
 {
+
+
 
     public static void main(String[] args)
     {
@@ -196,15 +216,15 @@ public class ToramBot
                         "446425626988249089"
                 );
 
-        int userCount = 0;
+        Set<String> userIDs = new HashSet<>();
 
         for (Server server : bot.getServers())
             if(!doNotCheckThese.contains(server.getIdAsString()))
                 for (User user : server.getMembers())
                     if (!user.isBot())
-                        userCount++;
+                        userIDs.add(user.getIdAsString());
 
-        Values.setUserCount(userCount);
+        Values.setUserCount(userIDs.size());
 
         Values.setGuildCount(bot.getServers().size());
 

@@ -32,16 +32,16 @@ public class MonthlyCommand implements MessageCreateListener
             DateTime time = new DateTime();
             Period period = new Period(Values.getLastDyeUpdate(), time);
 
-            for(int i = 0; i < Values.getDyeImages().length; i++)
+            for(int i = 0; i < Values.getDyeImages().size(); i++)
             {
                 EmbedBuilder embed = new EmbedBuilder()
-                        .setTitle("Latest monthly dyes" + (Values.getDyeImages().length <= 1 ? "" : " (" + (i+1) + "/" + Values.getDyeImages().length + ")"))
+                        .setTitle("Latest monthly dyes" + (Values.getDyeImages().size() <= 1 ? "" : " (" + (i+1) + "/" + Values.getDyeImages().size() + ")"))
                         .setDescription("Here is the image of the latest monthly dyes!\n\n\n" +
                                 "Note: This can be late so check the title of the image.");
 
                 Parser.parseColor(embed, messageCreateEvent);
                 Parser.parseThumbnail(embed, messageCreateEvent);
-                embed.setImage(Values.getDyeImages()[i]);
+                embed.setImage(Values.getDyeImages().get(i));
 
                 int hours = period.getHours();
                 int minutes = period.getMinutes();

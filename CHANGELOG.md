@@ -1,5 +1,12 @@
 # Changelog
 
+### 5.5.2
+- Minimized Jar.
+- Set donations to paypal.
+- TimerTasks are under entities.tasks
+- Removed command count.
+- Added cloudinary AES encryption.
+
 ### 5.5.1
 - Fixed level boost on **_level_** command.
 - Removed level range on **_level_**.

@@ -43,20 +43,17 @@ import com.github.zastrixarundell.torambot.commands.search.items.gear.ShieldComm
 import com.github.zastrixarundell.torambot.commands.search.items.gear.SpecialCommand;
 
 import com.github.zastrixarundell.torambot.commands.torambot.VoteCommand;
-import com.github.zastrixarundell.torambot.entities.ToramForumsUser;
+import com.github.zastrixarundell.torambot.objects.tasks.MessageTask;
+import com.github.zastrixarundell.torambot.objects.tasks.MonthlyDyesTask;
 import com.github.zastrixarundell.torambot.utils.AESHelper;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
-import org.javacord.api.entity.server.Server;
-import org.javacord.api.entity.user.User;
 
 import java.util.*;
 
 public class ToramBot
 {
-
-
 
     public static void main(String[] args)
     {
@@ -80,6 +77,7 @@ public class ToramBot
         catch (Exception e)
         {
             System.out.println("Error! Is the token correct?");
+            System.exit(0);
             return;
         }
 
@@ -87,14 +85,8 @@ public class ToramBot
 
         bot.updateActivity("Starting up! Please wait!");
 
-        updateCount(bot);
         addCommands(bot);
-
-        //vote command is here
         setupDiscordBotListApi(bot);
-
-        //Just to refresh
-        updateCount(bot);
 
         System.out.println("Started! Type in \"stop\" to stop the bot!");
 
@@ -102,133 +94,43 @@ public class ToramBot
         Scanner scanner = new Scanner(System.in);
 
         Timer activity = updateActivity(bot);
-        Timer dyeImage = updateDyesImage(bot, token);
+        Timer dyeImage = updateDyesImage(bot);
 
-        while(true)
+        try
         {
-            System.out.print("User input: ");
-            input = scanner.nextLine();
-            if (input.equalsIgnoreCase("stop"))
+            while (true)
             {
-                bot.disconnect();
-                activity.cancel();
-                dyeImage.cancel();
-                System.exit(0);
+                System.out.print("User input: ");
+                input = scanner.nextLine();
+                if (input.equalsIgnoreCase("stop"))
+                {
+                    bot.disconnect();
+                    activity.cancel();
+                    dyeImage.cancel();
+                    System.exit(0);
+                }
             }
+        }
+        catch(Exception ignore)
+        {
+
         }
     }
 
     private static Timer updateActivity(DiscordApi bot)
     {
         Timer timer = new Timer();
-        TimerTask task = new TimerTask()
-        {
-
-            int status = 0;
-
-            @Override
-            public void run()
-            {
-                updateCount(bot);
-
-                if(Values.getApi() != null)
-                    Values.getApi().setStats(bot.getServers().size());
-
-                switch(status)
-                {
-                    case 0:
-                        bot.updateActivity(Values.getPrefix() + "help | " + Values.getUserCount() + " users!");
-                        break;
-                    case 1:
-                        bot.updateActivity(Values.getPrefix() + "invite | " + Values.getGuildCount() + " servers!");
-                        break;
-                    case 2:
-                        Values.getApi().getBot("600302983305101323").whenComplete((bot1, throwable) -> bot.updateActivity(Values.getPrefix() + "vote | " + bot1.getMonthlyPoints() + " votes this month!"));
-                }
-
-                status ++;
-                status = status % (Values.getApi() != null ? 3 : 2);
-            }
-        };
-
+        TimerTask task = new MessageTask(bot);
         timer.schedule(task, 0, 1000*60);
         return timer;
     }
 
-    private static Timer updateDyesImage(DiscordApi bot, String token)
+    private static Timer updateDyesImage(DiscordApi bot)
     {
         Timer timer = new Timer();
-        TimerTask task = new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    System.out.println("Starting forums user!");
-                    ToramForumsUser user = new ToramForumsUser(token);
-                    System.out.println("Starting monthly dyes!");
-                    user.setDye();
-                    System.out.println("Finished monthly dyes!");
-                    user.close();
-
-                    if(Values.getDyeImages() == null)
-                    {
-                        System.out.println("There are monthly dyes!");
-
-                        if(MonthlyCommand.instance != null)
-                        {
-                            bot.removeListener(MonthlyCommand.instance);
-                            MonthlyCommand.instance = null;
-                        }
-                    }
-                    else
-                        if(MonthlyCommand.instance == null)
-                        {
-                            bot.addListener(new MonthlyCommand());
-                            System.out.println("Updated monthly dyes!");
-                        }
-                }
-                catch (Exception e)
-                {
-                    Values.setDyeImages(null);
-                    System.out.println("An error happened while updating the monthly dye data!");
-                    e.printStackTrace();
-
-                    if(MonthlyCommand.instance != null)
-                    {
-                        bot.removeListener(MonthlyCommand.instance);
-                        MonthlyCommand.instance = null;
-                    }
-                }
-            }
-        };
-
+        TimerTask task = new MonthlyDyesTask(bot);
         timer.schedule(task,0, 250*60*60*24);
         return timer;
-    }
-
-    private static void updateCount(DiscordApi bot)
-    {
-        List<String> doNotCheckThese =Arrays.asList
-                (
-                        "264445053596991498",
-                        "446425626988249089"
-                );
-
-        Set<String> userIDs = new HashSet<>();
-
-        for (Server server : bot.getServers())
-            if(!doNotCheckThese.contains(server.getIdAsString()))
-                for (User user : server.getMembers())
-                    if (!user.isBot())
-                        userIDs.add(user.getIdAsString());
-
-        Values.setUserCount(userIDs.size());
-
-        Values.setGuildCount(bot.getServers().size());
-
-        Values.setCommandCount(bot.getListeners().size());
     }
 
     private static void addCommands(DiscordApi bot)
@@ -288,6 +190,7 @@ public class ToramBot
         try
         {
             AESHelper aesHelper = new AESHelper(bot.getToken());
+
             String token = aesHelper.decryptData("OjImYbN/dPbEBjjxc+X5sjV5dHC+lU95tnSXwpt2PmQlJXwaXgBRAwdpZtmAGmkYEuu5PU+GMD/+RFibTqrM0367bNnkEE2Hrr77BtP7zyvXocbkRW8G0BRedaLf3EMndt0G/39av7zbWCo2RVYQ99LYhzG8gXWbfd04pJtd6JaXILD0Z3VBfElICQm7D/lS/WufLRG7n2YZsC+jrURXfg==");
 
             DiscordBotListAPI api = new DiscordBotListAPI.Builder()

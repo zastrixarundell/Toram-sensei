@@ -1,15 +1,21 @@
 package com.github.zastrixarundell.torambot.entities;
 
+import com.cloudinary.Cloudinary;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.github.zastrixarundell.torambot.Values;
 import com.github.zastrixarundell.torambot.utils.AESHelper;
 import org.joda.time.DateTime;
 
+import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class ToramForumsUser implements Closeable
@@ -17,32 +23,17 @@ public class ToramForumsUser implements Closeable
 
     private HtmlPage page;
     private WebClient webClient;
+    private Cloudinary cloudinary;
+    private AESHelper aesHelper;
 
     public ToramForumsUser(String token) throws Exception
     {
-
-        AESHelper aesHelper = new AESHelper(token);
+        aesHelper = new AESHelper(token);
 
         String username, password;
 
-        /*
-            Using AES here so that multiple bots don't use this command as it will basically be spamming the site.
-
-            AES just deciphers the credentials with my known bot tokens.
-         */
-
-        //Try for main first
-        try
-        {
-            username = aesHelper.decryptData("81CjhzuvgfRKambn82RJ7/kjZQwia4ihURY1evbP20I=");
-            password = aesHelper.decryptData("rrXWhM2/o14taNAPd0XGfg==");
-        }
-        //It is most likely the beta bot
-        catch(Exception e)
-        {
-            username = aesHelper.decryptData("vhiSaT+EaYprsfOqwV6IcciaE/bTVHcGry3SjaFatJ4=");
-            password = aesHelper.decryptData("ZJcf6FCERMvGSEg/qEFIMA==");
-        }
+        username = aesHelper.decryptData("81CjhzuvgfRKambn82RJ7/kjZQwia4ihURY1evbP20I=");
+        password = aesHelper.decryptData("rrXWhM2/o14taNAPd0XGfg==");
 
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
 
@@ -77,23 +68,47 @@ public class ToramForumsUser implements Closeable
         for(HtmlElement element : li.getElementsByTagName("div"))
             if(element.getAttribute("class").equalsIgnoreCase("messagecontent"))
             {
-                ArrayList<BufferedImage> images = new ArrayList<>();
+                ArrayList<String> images = new ArrayList<>();
+
+                setupCloudinary();
+
+                cloudinary.api().deleteAllResources(null);
 
                 for(int i = 1; i < element.getElementsByTagName("img").size(); i++)
                 {
                     HtmlImage htmlImage = (HtmlImage) element.getElementsByTagName("img").get(i);
                     ImageReader reader = htmlImage.getImageReader();
                     BufferedImage image = reader.read(0);
-                    images.add(image);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    ImageIO.write(image, "png", stream);
+                    String base = Base64.getEncoder().encodeToString(stream.toByteArray());
+                    Map response = cloudinary.uploader().upload("data:image/png;base64," + base, null);
+                    images.add((String) response.get("url"));
                 }
 
-                Values.setDyeImages(images.toArray(new BufferedImage[0]));
+                Values.setDyeImages(images);
                 break;
             }
 
         Values.setLastDyeUpdate(new DateTime());
     }
 
+    private void setupCloudinary() throws Exception
+    {
+        Map<String, String> map = new HashMap<>();
+
+        String secret = aesHelper.decryptData("zpxkrVMylScivPMiapdGpJ84eg/nhcqccGws1vd7dYY=");
+
+        map.put("cloud_name", "zastrix");
+        map.put("api_key", "922812555643244");
+        map.put("api_secret", secret);
+
+        cloudinary = new Cloudinary(map);
+    }
+
     @Override
-    public void close() { webClient.close(); }
+    public void close()
+    {
+        webClient.close();
+    }
 }

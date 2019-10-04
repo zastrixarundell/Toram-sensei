@@ -34,6 +34,4 @@ public class AESHelper
         return new String(deciphered);
     }
 
-
-
 }

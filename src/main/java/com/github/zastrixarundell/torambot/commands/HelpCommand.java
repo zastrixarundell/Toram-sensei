@@ -67,9 +67,7 @@ public class HelpCommand implements MessageCreateListener
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(title)
                 .setDescription("Hi, I am a bot created by [Zastrix](https://toramonline.com/index.php?members/zastrix.100975/) " +
-                        "solely for the purpose of assisting players in Toram. I currently have " +
-                        messageCreateEvent.getApi().getMessageCreateListeners().size() + " commands. " +
-                        " You can search for the commands by their categories:")
+                        "solely for the purpose of assisting players in Toram. You can search for the commands by their categories:")
 
                 .addField("Item Search Commands", Values.getPrefix() + "help items")
                 .addField("Monster Search Commands:", Values.getPrefix() + "help monsters")

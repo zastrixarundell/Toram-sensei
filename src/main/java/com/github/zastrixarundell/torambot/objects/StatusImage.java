@@ -39,7 +39,6 @@ public class StatusImage
 
         graphics.drawString("Guilds: " + Values.getGuildCount(), 393, 180+20);
         graphics.drawString("Users: " + Values.getUserCount(), 393, 240+20);
-        graphics.drawString("Commands: " + Values.getCommandCount(), 393, 299+20);
 
         graphics.dispose();
     }

@@ -31,7 +31,7 @@ public class Parser
     public static void parseDonationThumbnail(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)
     {
         //messageCreateEvent might be used in the future.
-        builder.setThumbnail(Values.patreonLogo);
+        builder.setThumbnail(Values.donationLogo);
     }
 
     public static void parseFooter(EmbedBuilder builder, MessageCreateEvent messageCreateEvent)

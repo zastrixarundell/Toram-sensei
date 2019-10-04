@@ -3,7 +3,7 @@
 ### 5.5.2
 - Minimized Jar.
 - Set donations to paypal.
-- TimerTasks are under entities.tasks
+- TimerTasks are under objects.tasks
 - Removed command count.
 - Added cloudinary AES encryption.
 

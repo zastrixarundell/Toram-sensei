@@ -2,47 +2,44 @@ package com.github.zastrixarundell.torambot.commands.crafting;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.util.ArrayList;
 
-public class ProficiencyCommand implements MessageCreateListener
+public class ProficiencyCommand extends DiscordCommand
 {
 
-    @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    public ProficiencyCommand()
     {
+        super("proficiency", "prof");
+    }
 
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "proficiency"))
-            if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "prof"))
-                return;
-
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        if (Parser.argumentsParser(messageCreateEvent).isEmpty())
-            sendDefault(messageCreateEvent);
+    @Override
+    protected void runCommand(MessageCreateEvent event)
+    {
+        if (Parser.argumentsParser(event).isEmpty())
+            sendDefault(event);
         else
         {
             int level;
 
             try
             {
-                level = Integer.parseInt(Parser.argumentsParser(messageCreateEvent).get(0));
+                level = Integer.parseInt(Parser.argumentsParser(event).get(0));
             }
             catch (Exception e)
             {
-                sendError(messageCreateEvent);
+                sendError(event);
                 return;
             }
 
-            sendMessage(level, getWhichType(level), messageCreateEvent);
+            sendMessage(level, getWhichType(level), event);
         }
 
-        sendBetaInfo(messageCreateEvent);
-
+        sendBetaInfo(event);
     }
 
     private void sendBetaInfo(MessageCreateEvent messageCreateEvent)

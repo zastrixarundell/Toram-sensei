@@ -2,48 +2,45 @@ package com.github.zastrixarundell.torambot.commands.player;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
-public class CookingCommand implements MessageCreateListener
+public class CookingCommand extends DiscordCommand
 {
 
-    @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    public CookingCommand()
     {
+        super("food", "cooking", "cook");
+    }
 
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "food"))
-            if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "cooking"))
-                if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "cook"))
-                    return;
-
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        if(Parser.argumentsParser(messageCreateEvent).size() > 0)
+    @Override
+    protected void runCommand(MessageCreateEvent event)
+    {
+        if(Parser.argumentsParser(event).size() > 0)
         {
             int exp;
 
             try
             {
-                exp = Integer.parseInt(Parser.argumentsParser(messageCreateEvent).get(0));
+                exp = Integer.parseInt(Parser.argumentsParser(event).get(0));
             }
             catch (Exception e)
             {
-                sendError(messageCreateEvent);
+                sendError(event);
                 return;
             }
 
             int level = getWhichLevel(exp);
 
             if(level == -1)
-                sendError(messageCreateEvent);
+                sendError(event);
 
-            sendMessage(exp, level, messageCreateEvent);
+            sendMessage(exp, level, event);
         }
         else
-            sendDefault(messageCreateEvent);
+            sendDefault(event);
 
     }
 

@@ -2,31 +2,25 @@ package com.github.zastrixarundell.torambot.commands.gameinfo;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 import org.joda.time.DateTime;
 import org.joda.time.Period;
 
-public class MonthlyCommand implements MessageCreateListener
+public class MonthlyCommand extends DiscordCommand
 {
+
     public static MonthlyCommand instance = null;
 
     public MonthlyCommand()
     {
-        instance = this;
+        super("monthly", "month");
     }
 
     @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    protected void runCommand(MessageCreateEvent event)
     {
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "monthly"))
-            if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "month"))
-            return;
-
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
         Runnable runnable = () ->
         {
             DateTime time = new DateTime();
@@ -39,8 +33,8 @@ public class MonthlyCommand implements MessageCreateListener
                         .setDescription("Here is the image of the latest monthly dyes!\n\n\n" +
                                 "Note: This can be late so check the title of the image.");
 
-                Parser.parseColor(embed, messageCreateEvent);
-                Parser.parseThumbnail(embed, messageCreateEvent);
+                Parser.parseColor(embed, event);
+                Parser.parseThumbnail(embed, event);
                 embed.setImage(Values.getDyeImages().get(i));
 
                 int hours = period.getHours();
@@ -49,13 +43,12 @@ public class MonthlyCommand implements MessageCreateListener
                 embed.setFooter("Last check was " + hours + (hours == 1 ? " hour" : " hours") + " and " +
                         minutes + (minutes == 1 ? " minute" : " minutes") + " ago.");
 
-                messageCreateEvent.getChannel().sendMessage(embed);
+                event.getChannel().sendMessage(embed);
             }
 
         };
 
-        (new Thread(runnable)).start();
-
+        executeRunnable(event, runnable);
     }
 
 }

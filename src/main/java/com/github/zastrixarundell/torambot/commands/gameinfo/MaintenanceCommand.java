@@ -2,6 +2,7 @@ package com.github.zastrixarundell.torambot.commands.gameinfo;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -10,20 +11,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class MaintenanceCommand implements MessageCreateListener
+public class MaintenanceCommand extends DiscordCommand
 {
 
-    @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    public MaintenanceCommand()
     {
+        super("maint", "maintenance");
+    }
 
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "maintenance"))
-            if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "maint"))
-                return;
-
+    @Override
+    protected void runCommand(MessageCreateEvent event)
+    {
         Runnable runnable = () ->
         {
             try
@@ -55,10 +53,10 @@ public class MaintenanceCommand implements MessageCreateListener
                                         .setThumbnail(Values.toramLogo)
                                         .setFooter("Publish Date: " + link.getElementsByTag("time").text());
 
-                                Parser.parseFooter(embed, messageCreateEvent);
-                                Parser.parseColor(embed, messageCreateEvent);
+                                Parser.parseFooter(embed, event);
+                                Parser.parseColor(embed, event);
 
-                                messageCreateEvent.getChannel().sendMessage(embed);
+                                event.getChannel().sendMessage(embed);
                                 System.out.println(embed.toString());
                                 break;
                             }
@@ -67,11 +65,11 @@ public class MaintenanceCommand implements MessageCreateListener
             }
             catch (Exception exception)
             {
-                sendErrorMessage(messageCreateEvent);
+                sendErrorMessage(event);
             }
         };
 
-        (new Thread(runnable)).start();
+        executeRunnable(event, runnable);
 
     }
 

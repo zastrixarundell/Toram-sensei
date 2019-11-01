@@ -1,8 +1,27 @@
-package com.github.zastrixarundell.torambot.commands.search.items.extra;
+/*
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *                     Version 2, December 2004
+ *
+ * Copyright (C) 2019, Zastrix Arundell, https://github.com/ZastrixArundell
+ *
+ *  Everyone is permitted to copy and distribute verbatim or modified
+ *  copies of this license document, and changing it is allowed as long
+ *  as the name is changed.
+ *
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ *
+ *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ *
+ *
+ */
+
+package com.github.zastrixarundell.torambot.commands.search.items;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
-import com.github.zastrixarundell.torambot.objects.Item;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
+import com.github.zastrixarundell.torambot.objects.toram.Item;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -14,7 +33,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UpgradeCommand implements MessageCreateListener
+public class UpgradeCommand extends DiscordCommand
 {
 
     private static final int sizeOfPage = 2000;
@@ -23,6 +42,8 @@ public class UpgradeCommand implements MessageCreateListener
 
     public UpgradeCommand()
     {
+        super("upgrade", "enhance");
+
         try
         {
             Document document = Jsoup.connect("http://coryn.club/item.php")
@@ -40,30 +61,19 @@ public class UpgradeCommand implements MessageCreateListener
     }
 
     @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    protected void runCommand(MessageCreateEvent event)
     {
-
-        //Cancel if the sender is a bot
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        //Cancel if the command is not <prefix>item
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "upgrade"))
-            if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "enhance"))
-                return;
-
-        ArrayList<String> arguments = Parser.argumentsParser(messageCreateEvent);
+        ArrayList<String> arguments = Parser.argumentsParser(event);
 
         if (arguments.isEmpty())
         {
-            emptySearch(messageCreateEvent);
+            emptySearch(event);
             return;
         }
 
         String data = String.join(" ", arguments);
 
-        Runnable runnable;
-        runnable = () ->
+        Runnable runnable = () ->
         {
             try
             {
@@ -82,20 +92,20 @@ public class UpgradeCommand implements MessageCreateListener
 
                 if(itemList.isEmpty())
                 {
-                    noResults(messageCreateEvent);
+                    noResults(event);
                     return;
                 }
 
-                itemList.forEach(item -> sendItemEmbed(item, messageCreateEvent));
+                itemList.forEach(item -> sendItemEmbed(item, event));
             }
             catch (Exception e)
             {
-                sendErrorMessage(messageCreateEvent);
+                sendErrorMessage(event);
                 body = null;
             }
         };
 
-        (new Thread(runnable)).start();
+        executeRunnable(event, runnable);
     }
 
     private ArrayList<Item> getItems(Element body, String data)
@@ -169,7 +179,7 @@ public class UpgradeCommand implements MessageCreateListener
     {
     EmbedBuilder embed = new EmbedBuilder()
             .setTitle("Empty search!")
-            .setDescription("You can not find an item without specifying the item!");
+            .setDescription("You can not find an upgrade xtal without specifying what to upgrade!");
 
     Parser.parseThumbnail(embed, messageCreateEvent);
     Parser.parseFooter(embed, messageCreateEvent);
@@ -181,8 +191,8 @@ public class UpgradeCommand implements MessageCreateListener
     private void sendErrorMessage(MessageCreateEvent messageCreateEvent)
     {
         EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Error while getting item!")
-                .setDescription("An error happened! Does the item even exist? The item may not be added yet.");
+                .setTitle("Error while getting the upgrade!")
+                .setDescription("An error happened! Report to the bot owner!");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

@@ -2,6 +2,7 @@ package com.github.zastrixarundell.torambot.commands.gameinfo;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -10,35 +11,32 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class DyeCommand implements MessageCreateListener
+public class DyeCommand extends DiscordCommand
 {
 
-    @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    public DyeCommand()
     {
+        super("dye", "dyes");
+    }
 
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "dye"))
-            if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "dyes"))
-                return;
-
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        List<String> arguments = Parser.argumentsParser(messageCreateEvent);
+    @Override
+    protected void runCommand(MessageCreateEvent event)
+    {
+        List<String> arguments = Parser.argumentsParser(event);
 
         if(arguments.isEmpty())
         {
-            sendDyeList(messageCreateEvent);
+            sendDyeList(event);
             return;
         }
 
         try
         {
-            sendCustomColorEmbed(messageCreateEvent, Integer.parseInt(arguments.get(0)));
+            sendCustomColorEmbed(event, Integer.parseInt(arguments.get(0)));
         }
         catch (Exception exception)
         {
-            errorOnFindingColor(messageCreateEvent);
+            errorOnFindingColor(event);
         }
 
     }

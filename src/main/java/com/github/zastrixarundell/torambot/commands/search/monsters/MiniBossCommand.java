@@ -1,11 +1,10 @@
 package com.github.zastrixarundell.torambot.commands.search.monsters;
 
 import com.github.zastrixarundell.torambot.Parser;
-import com.github.zastrixarundell.torambot.Values;
-import com.github.zastrixarundell.torambot.objects.Monster;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
+import com.github.zastrixarundell.torambot.objects.toram.Monster;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,27 +12,19 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class MiniBossCommand implements MessageCreateListener
+public class MiniBossCommand extends DiscordCommand
 {
 
+    public MiniBossCommand() { super("miniboss", "mb", "mboss", "mini"); }
+
     @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    protected void runCommand(MessageCreateEvent event)
     {
-
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "miniboss"))
-            if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "mb"))
-                if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "mboss"))
-                    if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "mini"))
-                        return;
-
-        ArrayList<String> arguments = Parser.argumentsParser(messageCreateEvent);
+        ArrayList<String> arguments = Parser.argumentsParser(event);
 
         if (arguments.isEmpty())
         {
-            sendError(messageCreateEvent, "Empty Search", "You can't search for a mini boss without specifying which one!");
+            sendError(event, "Empty Search", "You can't search for a mini boss without specifying which one!");
             return;
         }
 
@@ -46,23 +37,23 @@ public class MiniBossCommand implements MessageCreateListener
                 Document document = Jsoup.connect("http://coryn.club/monster.php")
                         .data("name", data)
                         .data("type", "M")
+                        .data("show", "5")
                         .get();
                 Elements tables = document.getElementsByClass("table table-striped");
                 Element body = tables.first().getElementsByTag("tbody").first();
 
-                generateMonsters(body).forEach(monster -> sendMonsterMessage(monster, messageCreateEvent));
+                generateMonsters(body).forEach(monster -> sendMonsterMessage(monster, event));
 
             }
             catch (Exception e)
             {
-                sendError(messageCreateEvent, "Error while getting the mini boss!",
+                sendError(event, "Error while getting the mini boss!",
                         "An error happened while getting the miniboss info! Does the specified miniboss even " +
                                 "exist?");
             }
         };
 
-        (new Thread(runnable)).start();
-
+        executeRunnable(event, runnable);
     }
 
     private void sendMonsterMessage(Monster object, MessageCreateEvent messageCreateEvent)

@@ -1,26 +1,39 @@
-package com.github.zastrixarundell.torambot.commands;
+/*
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *                     Version 2, December 2004
+ *
+ * Copyright (C) 2019, Zastrix Arundell, https://github.com/ZastrixArundell
+ *
+ *  Everyone is permitted to copy and distribute verbatim or modified
+ *  copies of this license document, and changing it is allowed as long
+ *  as the name is changed.
+ *
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ *
+ *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ *
+ *
+ */
+
+package com.github.zastrixarundell.torambot.commands.torambot;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.util.ArrayList;
 
-public class HelpCommand implements MessageCreateListener
+public class HelpCommand extends DiscordCommand
 {
 
+    public HelpCommand() { super("help"); }
+
     @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    protected void runCommand(MessageCreateEvent messageCreateEvent)
     {
-
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "help"))
-            return;
-
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
         ArrayList<String> arguments = Parser.argumentsParser(messageCreateEvent);
 
         if(arguments.size() == 0)
@@ -54,7 +67,6 @@ public class HelpCommand implements MessageCreateListener
         }
 
         sendCategoryError(messageCreateEvent, category);
-
     }
 
     private void sendGeneralHelp(MessageCreateEvent messageCreateEvent)
@@ -67,7 +79,8 @@ public class HelpCommand implements MessageCreateListener
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(title)
                 .setDescription("Hi, I am a bot created by [Zastrix](https://toramonline.com/index.php?members/zastrix.100975/) " +
-                        "solely for the purpose of assisting players in Toram. You can search for the commands by their categories:")
+                        "solely for the purpose of assisting players in Toram.\n\nIf you want automatic updates for Toram, just make " +
+                        "a channel named `#toram-sensei-news` and see the magic happen!\n\nYou can search for the commands by their categories:")
 
                 .addField("Item Search Commands", Values.getPrefix() + "help items")
                 .addField("Monster Search Commands:", Values.getPrefix() + "help monsters")
@@ -108,15 +121,15 @@ public class HelpCommand implements MessageCreateListener
 
                 .addField("Weapons:", "The following commands are used for searching weapons.")
 
-                .addInlineField(Values.getPrefix() + "onehanded|1h [name]", "Search for one handed swords!")
-                .addInlineField(Values.getPrefix() + "twohanded|2h [name]", "Search for two handed swords!")
+                .addInlineField(Values.getPrefix() + "onehanded|1h|ohs [name]", "Search for one handed swords!")
+                .addInlineField(Values.getPrefix() + "twohanded|2h|ths [name]", "Search for two handed swords!")
                 .addInlineField(Values.getPrefix() + "bow [name]", "Search for bows!")
                 .addInlineField(Values.getPrefix() + "bowgun|gun [name]", "Search for bowguns!")
                 .addInlineField(Values.getPrefix() + "arrow [name]", "Search for arrows!")
                 .addInlineField(Values.getPrefix() + "dagger [name]", "Search for daggers!")
                 .addInlineField(Values.getPrefix() + "halberd|hb [name]", "Search for halberds!")
                 .addInlineField(Values.getPrefix() + "katana|kat [name]", "Search for katanas!")
-                .addInlineField(Values.getPrefix() + "knuckles [name]", "Search for knuckles!")
+                .addInlineField(Values.getPrefix() + "knuckles|knuckle [name]", "Search for knuckles!")
                 .addInlineField(Values.getPrefix() + "magicdevice|md [name]", "Search for magic devices!")
                 .addInlineField(Values.getPrefix() + "staff [name]", "Search for staffs!")
 
@@ -125,7 +138,7 @@ public class HelpCommand implements MessageCreateListener
                 .addInlineField(Values.getPrefix() + "additional|add [name]", "Search for additional gear!")
                 .addInlineField(Values.getPrefix() + "armor|arm [name]", "Search for armor!")
                 .addInlineField(Values.getPrefix() + "shield [name]", "Search for shields!")
-                .addInlineField(Values.getPrefix() + "special [name]", "Search for special gear!")
+                .addInlineField(Values.getPrefix() + "special|spec [name]", "Search for special gear!")
 
                 .addField("Extra:", "Some extra search options.")
 
@@ -148,8 +161,6 @@ public class HelpCommand implements MessageCreateListener
 
                 .addField(Values.getPrefix() + "monster [name]", "Get info about any monster type!")
 
-                .addField(Values.getPrefix() + "normalmonster|nmonster [name]", "Get info about a normal monster!")
-
                 .addField(Values.getPrefix() + "miniboss|mboss|mini|mb [name]", "Get info about a miniboss!")
 
                 .addField(Values.getPrefix() + "boss [name]", "Get info about a boss!");
@@ -167,7 +178,7 @@ public class HelpCommand implements MessageCreateListener
                 .setTitle("Player Info Commands")
                 .setDescription("Commands which allow players to get info about player-related info.")
 
-                .addField(Values.getPrefix() + "level [your level] (EXP boost)",
+                .addField(Values.getPrefix() + "level|leveling [your level] (EXP boost)",
                         "Only [your level] needs to be present here. If the exp boost is not defined you will " +
                                 "get the standard exp value.")
 
@@ -221,10 +232,8 @@ public class HelpCommand implements MessageCreateListener
 
                 .addField(Values.getPrefix() + "invite", "You can use this command to get the invite link for this bot!")
                 .addField(Values.getPrefix() + "donate", "You can use this command to donate to the developer (it would help)!")
-                .addField(Values.getPrefix() + "support", "You can use this command to get the support sever for this bot!");
-
-                if(Values.getApi() != null)
-                    embed.addField(Values.getPrefix() + "vote", "You can use this command to vote for this bot!");
+                .addField(Values.getPrefix() + "support", "You can use this command to get the support sever for this bot!")
+                .addField(Values.getPrefix() + "vote", "You can use this command to vote for this bot!");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

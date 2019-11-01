@@ -18,33 +18,27 @@
 
 package com.github.zastrixarundell.torambot;
 
-import com.github.zastrixarundell.torambot.commands.HelpCommand;
+import com.github.zastrixarundell.torambot.commands.search.items.DiscordItemCommand;
+import com.github.zastrixarundell.torambot.commands.torambot.HelpCommand;
 import com.github.zastrixarundell.torambot.commands.gameinfo.*;
 import com.github.zastrixarundell.torambot.commands.player.CookingCommand;
 import com.github.zastrixarundell.torambot.commands.crafting.MatsCommand;
 import com.github.zastrixarundell.torambot.commands.crafting.ProficiencyCommand;
 import com.github.zastrixarundell.torambot.commands.player.LevelCommand;
 import com.github.zastrixarundell.torambot.commands.player.PointsCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.ItemCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.weapons.*;
 import com.github.zastrixarundell.torambot.commands.search.monsters.BossCommand;
 import com.github.zastrixarundell.torambot.commands.search.monsters.MiniBossCommand;
 import com.github.zastrixarundell.torambot.commands.search.monsters.MonsterCommand;
-import com.github.zastrixarundell.torambot.commands.search.monsters.NormalMonsterComand;
 import com.github.zastrixarundell.torambot.commands.torambot.DonateCommand;
 import com.github.zastrixarundell.torambot.commands.torambot.InviteCommand;
 import com.github.zastrixarundell.torambot.commands.torambot.SupportCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.extra.GemCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.extra.UpgradeCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.extra.XtalCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.gear.AdditionalCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.gear.ArmorCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.gear.ShieldCommand;
-import com.github.zastrixarundell.torambot.commands.search.items.gear.SpecialCommand;
-
+import com.github.zastrixarundell.torambot.commands.search.items.UpgradeCommand;
+import com.github.zastrixarundell.torambot.commands.search.items.XtalCommand;
 import com.github.zastrixarundell.torambot.commands.torambot.VoteCommand;
 import com.github.zastrixarundell.torambot.objects.tasks.MessageTask;
 import com.github.zastrixarundell.torambot.objects.tasks.MonthlyDyesTask;
+import com.github.zastrixarundell.torambot.objects.tasks.UpdateDisplayer;
+import com.github.zastrixarundell.torambot.objects.toram.ItemType;
 import com.github.zastrixarundell.torambot.utils.AESHelper;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.javacord.api.DiscordApi;
@@ -95,6 +89,7 @@ public class ToramBot
 
         Timer activity = updateActivity(bot);
         Timer dyeImage = updateDyesImage(bot);
+        Timer updates = updateUpdates(bot);
 
         try
         {
@@ -107,6 +102,7 @@ public class ToramBot
                     bot.disconnect();
                     activity.cancel();
                     dyeImage.cancel();
+                    updates.cancel();
                     System.exit(0);
                 }
             }
@@ -133,6 +129,14 @@ public class ToramBot
         return timer;
     }
 
+    private static Timer updateUpdates(DiscordApi bot)
+    {
+        Timer timer = new Timer();
+        TimerTask task = new UpdateDisplayer(bot);
+        timer.schedule(task,0, 1000*60*5);
+        return timer;
+    }
+
     private static void addCommands(DiscordApi bot)
     {
         //Crafting
@@ -141,29 +145,13 @@ public class ToramBot
         bot.addListener(new MatsCommand());
 
         //items
-        bot.addListener(new ItemCommand());
-        bot.addListener(new AdditionalCommand());
-        bot.addListener(new ArmorCommand());
-        bot.addListener(new ArrowCommand());
-        bot.addListener(new BowCommand());
-        bot.addListener(new BowGunCommand());
-        bot.addListener(new DaggerCommand());
-        bot.addListener(new GemCommand());
-        bot.addListener(new HalberdCommand());
-        bot.addListener(new KatanaCommand());
-        bot.addListener(new KnucklesCommand());
-        bot.addListener(new MagicDeviceCommand());
-        bot.addListener(new OneHandedSwordCommand());
-        bot.addListener(new ShieldCommand());
-        bot.addListener(new SpecialCommand());
-        bot.addListener(new StaffCommand());
-        bot.addListener(new TwoHandedSwordCommand());
+        for (ItemType type : ItemType.values())
+            bot.addListener(new DiscordItemCommand(type));
         bot.addListener(new XtalCommand());
         bot.addListener(new UpgradeCommand());
 
         //monsters
         bot.addListener(new MonsterCommand());
-        bot.addListener(new NormalMonsterComand());
         bot.addListener(new MiniBossCommand());
         bot.addListener(new BossCommand());
 
@@ -176,6 +164,7 @@ public class ToramBot
         bot.addListener(new InviteCommand());
         bot.addListener(new DonateCommand());
         bot.addListener(new SupportCommand());
+        bot.addListener(new VoteCommand());
 
         //gameinfo
         bot.addListener(new NewsCommand());
@@ -202,8 +191,7 @@ public class ToramBot
 
             api.setStats(bot.getServers().size());
 
-            if(Values.getApi() != null)
-                bot.addListener(new VoteCommand());
+
         }
         catch (Exception ignore)
         {

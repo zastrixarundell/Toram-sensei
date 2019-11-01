@@ -2,24 +2,19 @@ package com.github.zastrixarundell.torambot.commands.torambot;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 
-public class SupportCommand implements MessageCreateListener
+public class SupportCommand extends DiscordCommand
 {
 
+    public SupportCommand() { super("support"); }
+
     @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    protected void runCommand(MessageCreateEvent event)
     {
-
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "support"))
-            return;
-
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        String name = messageCreateEvent.getApi().getYourself().getName();
+        String name = event.getApi().getYourself().getName();
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Support link for: " + name)
@@ -27,12 +22,11 @@ public class SupportCommand implements MessageCreateListener
                         " issues, want to suggest a feature or just join out of fun!");
 
 
-        Parser.parseFooter(embed, messageCreateEvent);
-        Parser.parseThumbnail(embed, messageCreateEvent);
-        Parser.parseColor(embed, messageCreateEvent);
+        Parser.parseFooter(embed, event);
+        Parser.parseThumbnail(embed, event);
+        Parser.parseColor(embed, event);
 
-        messageCreateEvent.getChannel().sendMessage(embed);
-
+        event.getChannel().sendMessage(embed);
     }
 
 }

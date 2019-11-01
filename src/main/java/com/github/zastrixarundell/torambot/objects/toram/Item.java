@@ -1,4 +1,22 @@
-package com.github.zastrixarundell.torambot.objects;
+/*
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *                     Version 2, December 2004
+ *
+ * Copyright (C) 2019, Zastrix Arundell, https://github.com/ZastrixArundell
+ *
+ *  Everyone is permitted to copy and distribute verbatim or modified
+ *  copies of this license document, and changing it is allowed as long
+ *  as the name is changed.
+ *
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ *
+ *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ *
+ *
+ */
+
+package com.github.zastrixarundell.torambot.objects.toram;
 
 import com.github.zastrixarundell.torambot.Parser;
 import org.jsoup.nodes.Element;
@@ -97,23 +115,23 @@ public class Item
         try
         {
             Element myTabContent = itemData.getElementById("myTabContent");
-            Element obtainedFromTable = myTabContent.getElementsByClass("pad5-table").last();
-            Element obtainedFromBody = obtainedFromTable.getElementsByTag("tbody").last();
 
-            for (Element trElement : obtainedFromBody.getElementsByTag("tr"))
-                try
-                {
-                    String mats = trElement.getElementsByTag("td").last().text();
-                    this.mats = new ArrayList<>(Arrays.asList(mats.split("- ")));
-                }
-                catch (Exception ignore)
-                {
+            for (Element element : myTabContent.getAllElements())
+            {
+                if(element.id() == null)
+                    continue;
 
+                if(element.id().contains("recipe"))
+                {
+                    Element trElement = element.getElementsByTag("td").last();
+                    this.mats = new ArrayList<>(Arrays.asList(trElement.text().split("- ")));
                 }
+            }
+
         }
         catch (Exception e)
         {
-            obtainedFrom.add("N/A");
+            mats.add("N/A");
         }
     }
 

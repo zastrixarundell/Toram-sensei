@@ -1,11 +1,30 @@
-package com.github.zastrixarundell.torambot.commands.search.items.weapons;
+/*
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *                     Version 2, December 2004
+ *
+ * Copyright (C) 2019, Zastrix Arundell, https://github.com/ZastrixArundell
+ *
+ *  Everyone is permitted to copy and distribute verbatim or modified
+ *  copies of this license document, and changing it is allowed as long
+ *  as the name is changed.
+ *
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ *
+ *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ *
+ *
+ */
+
+package com.github.zastrixarundell.torambot.commands.search.items;
 
 import com.github.zastrixarundell.torambot.Parser;
-import com.github.zastrixarundell.torambot.Values;
-import com.github.zastrixarundell.torambot.objects.Item;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
+import com.github.zastrixarundell.torambot.objects.toram.Item;
+import com.github.zastrixarundell.torambot.objects.toram.ItemType;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,54 +32,54 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class OneHandedSwordCommand implements MessageCreateListener
+public class DiscordItemCommand extends DiscordCommand
 {
+    private ItemType itemType;
+
+    public DiscordItemCommand(ItemType type)
+    {
+        super(type.getCallers());
+        this.itemType = type;
+    }
 
     @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    protected void runCommand(MessageCreateEvent event)
     {
-
-        //Cancel if the sender is a bot
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        //Cancel if the command is not <prefix>item
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "onehanded"))
-            if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "1h"))
-                return;
-
-        ArrayList<String> arguments = Parser.argumentsParser(messageCreateEvent);
+        ArrayList<String> arguments = Parser.argumentsParser(event);
 
         if (arguments.isEmpty())
         {
-            emptySearch(messageCreateEvent);
+            emptySearch(event);
             return;
         }
 
         String data = String.join(" ", arguments);
 
-        Runnable runnable;
-        runnable = () ->
+        Runnable runnable = () ->
         {
             try
             {
-                Document document = Jsoup.connect("http://coryn.club/item.php")
+                Connection connection = Jsoup.connect("http://coryn.club/item.php")
                         .data("name", data)
-                        .data("type", "4")
-                        .get();
+                        .data("show", "5");
+
+                if(itemType != null)
+                    connection = connection.data("type", itemType.getCode());
+
+                Document document = connection.get();
 
                 Element table = document.getElementsByClass("table table-striped").first();
                 Element body = table.getElementsByTag("tbody").first();
 
-                getItems(body).forEach(item -> sendItemEmbed(item, messageCreateEvent));
+                getItems(body).forEach(item -> sendItemEmbed(item, event));
             }
             catch (Exception e)
             {
-                sendErrorMessage(messageCreateEvent);
+                sendErrorMessage(event);
             }
         };
 
-        (new Thread(runnable)).start();
+        executeRunnable(event, runnable);
     }
 
     private ArrayList<Item> getItems(Element body)
@@ -116,7 +135,7 @@ public class OneHandedSwordCommand implements MessageCreateListener
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Empty search!")
-                .setDescription("You can not find an item without specifying the item!");
+                .setDescription("You can not find " + itemType.getLongText() + " without specifying it!");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
@@ -128,8 +147,8 @@ public class OneHandedSwordCommand implements MessageCreateListener
     private void sendErrorMessage(MessageCreateEvent messageCreateEvent)
     {
         EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Error while getting item!")
-                .setDescription("An error happened! Does the item even exist? The item may not be added yet.");
+                .setTitle("Error while getting the " + itemType.getName() + "!")
+                .setDescription("An error happened! Does the " + itemType.getName() + " even exist? It may not be added yet.");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
@@ -137,5 +156,4 @@ public class OneHandedSwordCommand implements MessageCreateListener
 
         messageCreateEvent.getChannel().sendMessage(embed);
     }
-
 }

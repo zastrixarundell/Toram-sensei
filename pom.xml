@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.zastrixarundell</groupId>
     <artifactId>ToramBot</artifactId>
-    <version>5.5.2</version>
+    <version>6.0.1</version>
 
     <repositories>
         <repository>
@@ -52,6 +52,12 @@
             <artifactId>cloudinary</artifactId>
             <version>1.0.14</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.18</version>
+        </dependency>
+
     </dependencies>
 
 

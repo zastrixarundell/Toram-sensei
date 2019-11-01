@@ -2,7 +2,8 @@ package com.github.zastrixarundell.torambot.commands.crafting;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
-import com.github.zastrixarundell.torambot.objects.Item;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
+import com.github.zastrixarundell.torambot.objects.toram.Item;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -13,41 +14,29 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class MatsCommand implements MessageCreateListener
+public class MatsCommand extends DiscordCommand
 {
 
-    @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    public MatsCommand()
     {
-        //Cancel if the sender is a bot
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
+        super("recipe", "mats");
+    }
 
-        //Cancel if the command is not <prefix>item
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "recipe"))
-            if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "mats"))
-                return;
-
-        ArrayList<String> arguments = Parser.argumentsParser(messageCreateEvent);
+    @Override
+    protected void runCommand(MessageCreateEvent event)
+    {
+        ArrayList<String> arguments = Parser.argumentsParser(event);
 
         if (arguments.isEmpty())
         {
-            emptySearch(messageCreateEvent);
+            emptySearch(event);
             return;
         }
 
-        //Join all of the data
         String data = String.join(" ", arguments);
 
-        /*
-            Running this in the a new thread as I don't want the whole bot to halt
-            while it is doing this.
-         */
-
-        Runnable runnable;
-        runnable = () ->
+        Runnable runnable = () ->
         {
-
             ArrayList<Item> justForCheck = new ArrayList<>();
 
             try
@@ -62,13 +51,13 @@ public class MatsCommand implements MessageCreateListener
 
                 getItems(body).forEach(item ->
                 {
-                    sendItemEmbed(item, messageCreateEvent);
+                    sendItemEmbed(item, event);
                     justForCheck.add(item);
                 });
             }
-            catch (Exception ignore)
+            catch (Exception e)
             {
-
+                e.printStackTrace();
             }
 
             try
@@ -83,21 +72,21 @@ public class MatsCommand implements MessageCreateListener
 
                 getItems(body).forEach(item ->
                 {
-                    sendItemEmbed(item, messageCreateEvent);
+                    sendItemEmbed(item, event);
                     justForCheck.add(item);
                 });
             }
-            catch (Exception ignore)
+            catch (Exception e)
             {
-
+                e.printStackTrace();
             }
 
             if (justForCheck.isEmpty())
-                sendErrorMessage(messageCreateEvent);
+                sendErrorMessage(event);
 
         };
 
-        (new Thread(runnable)).start();
+        executeRunnable(event, runnable);
     }
 
     private void emptySearch(MessageCreateEvent messageCreateEvent)

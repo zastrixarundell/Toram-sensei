@@ -1,11 +1,28 @@
 # Changelog
 
+### 6.0.1
+- Removed " Back" from the automatic news.
+- Fixed the issue where it would spam the servers with the notifications.
+
+### 6.0.0
+- Made abstract classes for the commands and drastically improvised the code.
+- Using Javacords' thread pool rather than creating new threads.
+- Auto-generated item commands.
+- Added automatic news updates! 
+- Connecting to a MySQL database for cached data.
+- Fixed the mats command.
+
+### 5.5.3
+- Fixed Ad URL's... again...
+- Not showing vote multiplier (doesn't seem to work any way).
+
+
 ### 5.5.2
 - Minimized Jar.
 - Set donations to paypal.
 - TimerTasks are under objects.tasks
 - Removed command count.
-- Added cloudinary AES encryption.
+- Added cloudinary with AES encryption.
 
 ### 5.5.1
 - Fixed level boost on **_level_** command.

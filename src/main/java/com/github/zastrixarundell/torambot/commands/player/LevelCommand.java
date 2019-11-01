@@ -2,7 +2,8 @@ package com.github.zastrixarundell.torambot.commands.player;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
-import com.github.zastrixarundell.torambot.objects.NPC;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
+import com.github.zastrixarundell.torambot.objects.toram.NPC;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
@@ -13,24 +14,22 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class LevelCommand implements MessageCreateListener
+public class LevelCommand extends DiscordCommand
 {
 
-    @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    public LevelCommand()
     {
+        super("level", "leveling");
+    }
 
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "level"))
-            return;
-
-        ArrayList<String> arguments = Parser.argumentsParser(messageCreateEvent);
+    @Override
+    protected void runCommand(MessageCreateEvent event)
+    {
+        ArrayList<String> arguments = Parser.argumentsParser(event);
 
         if (arguments.isEmpty())
         {
-            sendCommandUsage(messageCreateEvent);
+            sendCommandUsage(event);
             return;
         }
 
@@ -43,7 +42,7 @@ public class LevelCommand implements MessageCreateListener
         }
         catch (NumberFormatException e)
         {
-            sendError(messageCreateEvent, "Can't determine level!", "Are you sure you formatted this correct? There was" +
+            sendError(event, "Can't determine level!", "Are you sure you formatted this correct? There was" +
                     " an error while turning the values into numbers!");
             return;
         }
@@ -100,31 +99,31 @@ public class LevelCommand implements MessageCreateListener
                 }
 
                 if (boss != null)
-                    showNPC(messageCreateEvent, boss, "Boss");
+                    showNPC(event, boss, "Boss");
                 else
-                    sendError(messageCreateEvent, "There is no boss!",
+                    sendError(event, "There is no boss!",
                             "There is no Boss to farm for the specified level!");
 
                 if (miniboss != null)
-                    showNPC(messageCreateEvent, miniboss, "Mini Boss");
+                    showNPC(event, miniboss, "Mini Boss");
                 else
-                    sendError(messageCreateEvent, "There is no Mini Boss!",
+                    sendError(event, "There is no Mini Boss!",
                             "There is no Mini Boss to farm for the specified level!");
 
                 if (monster != null)
-                    showNPC(messageCreateEvent, monster, "Normal Monster");
+                    showNPC(event, monster, "Normal Monster");
                 else
-                    sendError(messageCreateEvent, "There is no Monster!",
+                    sendError(event, "There is no Monster!",
                             "There is no Monster to farm for the specified level!");
             }
             catch (Exception e)
             {
-                sendError(messageCreateEvent, "Error while getting EXP!",
+                sendError(event, "Error while getting EXP!",
                         "An error happened when getting the level, did you put in the correct inputs?");
             }
         };
 
-        (new Thread(runnable)).start();
+        executeRunnable(event, runnable);
 
     }
 
@@ -136,9 +135,7 @@ public class LevelCommand implements MessageCreateListener
                 .addField("Location:", npc.getLocation())
                 .setUrl(npc.getLink());
 
-        if (!npc.getExp().isEmpty())
-            for (String key : npc.getExp().keySet())
-                embed.addField(key + ":", npc.getExp().get(key));
+                npc.getExp().forEach(exp -> embed.addField(exp[0], exp[1]));
 
         Parser.parseMonsterThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

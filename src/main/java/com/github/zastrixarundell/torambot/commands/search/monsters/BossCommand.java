@@ -1,11 +1,10 @@
 package com.github.zastrixarundell.torambot.commands.search.monsters;
 
 import com.github.zastrixarundell.torambot.Parser;
-import com.github.zastrixarundell.torambot.Values;
-import com.github.zastrixarundell.torambot.objects.Monster;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
+import com.github.zastrixarundell.torambot.objects.toram.Monster;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,24 +12,19 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class BossCommand implements MessageCreateListener
+public class BossCommand extends DiscordCommand
 {
 
+    public BossCommand() { super("boss"); }
+
     @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    protected void runCommand(MessageCreateEvent event)
     {
-
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "boss"))
-            return;
-
-        ArrayList<String> arguments = Parser.argumentsParser(messageCreateEvent);
+        ArrayList<String> arguments = Parser.argumentsParser(event);
 
         if (arguments.isEmpty())
         {
-            sendError(messageCreateEvent, "Empty Search", "You can't search for a boss without specifying which one!");
+            sendError(event, "Empty Search", "You can't search for a boss without specifying which one!");
             return;
         }
 
@@ -43,23 +37,23 @@ public class BossCommand implements MessageCreateListener
                 Document document = Jsoup.connect("http://coryn.club/monster.php")
                         .data("name", data)
                         .data("type", "B")
+                        .data("show", "5")
                         .get();
                 Elements tables = document.getElementsByClass("table table-striped");
                 Element body = tables.first().getElementsByTag("tbody").first();
 
-                generateMonsters(body).forEach(monster -> sendMonsterMessage(monster, messageCreateEvent));
+                generateMonsters(body).forEach(monster -> sendMonsterMessage(monster, event));
 
             }
             catch (Exception e)
             {
-                sendError(messageCreateEvent, "Error while getting the boss!",
+                sendError(event, "Error while getting the boss!",
                         "An error happened while getting the boss info! Does the specified boss even " +
                                 "exist?");
             }
         };
 
-        (new Thread(runnable)).start();
-
+        executeRunnable(event, runnable);
     }
 
     private void sendMonsterMessage(Monster object, MessageCreateEvent messageCreateEvent)

@@ -2,35 +2,30 @@ package com.github.zastrixarundell.torambot.commands.torambot;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 
-public class DonateCommand implements MessageCreateListener
+public class DonateCommand extends DiscordCommand
 {
 
+    public DonateCommand() { super("donate"); }
+
     @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    protected void runCommand(MessageCreateEvent event)
     {
-
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "donate"))
-            return;
-
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
-        String name = messageCreateEvent.getApi().getYourself().getName();
+        String name = event.getApi().getYourself().getName();
 
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Donate to suport: " + name)
                 .setDescription("Thank you! This really helps " + name + " to be continued! You can donate on " +
                 "[this link](" + Values.donationLink + ")!");
 
-        Parser.parseFooter(embed, messageCreateEvent);
-        Parser.parseDonationThumbnail(embed, messageCreateEvent);
-        Parser.parseColor(embed, messageCreateEvent);
+        Parser.parseFooter(embed, event);
+        Parser.parseDonationThumbnail(embed, event);
+        Parser.parseColor(embed, event);
 
-        messageCreateEvent.getChannel().sendMessage(embed);
+        event.getChannel().sendMessage(embed);
 
     }
 

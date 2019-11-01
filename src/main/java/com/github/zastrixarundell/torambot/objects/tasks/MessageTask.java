@@ -15,10 +15,7 @@ public class MessageTask extends TimerTask
     private DiscordApi bot;
     private int status = 0;
 
-    public MessageTask(DiscordApi bot)
-    {
-        this.bot = bot;
-    }
+    public MessageTask(DiscordApi bot) { this.bot = bot; }
 
     @Override
     public void run()
@@ -27,6 +24,8 @@ public class MessageTask extends TimerTask
 
         if(Values.getApi() != null)
             Values.getApi().setStats(bot.getServers().size());
+
+        status = status % (Values.getApi() != null ? 3 : 2);
 
         switch(status)
         {
@@ -41,7 +40,6 @@ public class MessageTask extends TimerTask
         }
 
         status ++;
-        status = status % (Values.getApi() != null ? 3 : 2);
     }
 
     private static void updateCount(DiscordApi bot)

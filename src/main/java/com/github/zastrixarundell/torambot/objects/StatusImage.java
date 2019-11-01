@@ -13,6 +13,11 @@ public class StatusImage
 
     //Will be used in the future
 
+    /*
+        Heroku uses the $PORT environment variable and it listens to the port *80*.
+        This means that REST api applications can only work on port 80.
+     */
+
     private BufferedImage bufferedImage;
 
     public StatusImage() throws Exception
@@ -32,7 +37,7 @@ public class StatusImage
 
         graphics.setColor(Color.white);
 
-        Font font = new Font("DejaVu Sans", Font.TYPE1_FONT, 24);
+        Font font = new Font("DejaVu Sans", Font.BOLD, 24);
         graphics.setFont(font);
 
         graphics.drawString("Toram-sensei", 452, 62);

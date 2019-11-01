@@ -2,33 +2,32 @@ package com.github.zastrixarundell.torambot.commands.player;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
+import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.util.ArrayList;
 
-public class PointsCommand implements MessageCreateListener
+public class PointsCommand extends DiscordCommand
 {
 
-    @Override
-    public void onMessageCreate(MessageCreateEvent messageCreateEvent)
+    public PointsCommand()
     {
+        super("points");
+    }
 
-        if (!messageCreateEvent.getMessageContent().toLowerCase().startsWith(Values.getPrefix() + "points"))
-            return;
-
-        if (!messageCreateEvent.getMessageAuthor().isRegularUser())
-            return;
-
+    @Override
+    protected void runCommand(MessageCreateEvent event)
+    {
         ArrayList<String> arguments = new ArrayList<>();
 
-        for (int i = 1; i < messageCreateEvent.getMessageContent().split(" ").length; i++)
-            arguments.add(messageCreateEvent.getMessageContent().split(" ")[i]);
+        for (int i = 1; i < event.getMessageContent().split(" ").length; i++)
+            arguments.add(event.getMessageContent().split(" ")[i]);
 
         if (arguments.size() < 3)
         {
-            sendCommandUsage(messageCreateEvent);
+            sendCommandUsage(event);
             return;
         }
 
@@ -42,7 +41,7 @@ public class PointsCommand implements MessageCreateListener
         }
         catch (NumberFormatException e)
         {
-            sendMessage(messageCreateEvent, "Can't determine level!", "Are you sure you formatted this correct? There was" +
+            sendMessage(event, "Can't determine level!", "Are you sure you formatted this correct? There was" +
                     " an error while turning the values into numbers!");
             return;
         }
@@ -50,7 +49,7 @@ public class PointsCommand implements MessageCreateListener
         for (; level <= target; level++)
             current += (level % 5) == 0 ? 2 : 1;
 
-        sendMessage(messageCreateEvent, "Calculated skill points: " + current, "This is the amount of " +
+        sendMessage(event, "Calculated skill points: " + current, "This is the amount of " +
                 "skill points you will have.");
     }
 

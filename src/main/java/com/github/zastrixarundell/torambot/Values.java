@@ -5,6 +5,8 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Values
 {
@@ -19,7 +21,7 @@ public class Values
 
     public final static String toramLogo = "https://toramonline.com/index.php?media/toram-online-logo.50/full&d=1463410056";
 
-    public final static String inviteLink = "http://ceesty.com/w2Ncfe";
+    public final static String inviteLink = "https://discordapp.com/oauth2/authorize?client_id=600302983305101323&scope=bot&permissions=0";
 
     public final static String donationLink = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9U8Z5E9L485G2&source=url";
 
@@ -53,7 +55,6 @@ public class Values
         {
 
         }
-
     }
 
     public static String getVersion() { return version; }

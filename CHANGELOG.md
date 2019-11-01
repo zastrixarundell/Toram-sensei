@@ -1,6 +1,9 @@
 # Changelog
 
-### 6.0.1
+###
+- Fixed some text format issues for automatic news.
+
+### 6.0.2
 - Removed " Back" from the automatic news.
 - Fixed the issue where it would spam the servers with the notifications.
 

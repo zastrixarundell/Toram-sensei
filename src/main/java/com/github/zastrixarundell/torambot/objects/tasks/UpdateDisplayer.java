@@ -75,6 +75,8 @@ public class UpdateDisplayer extends TimerTask
                 Element id = document.getElementById("news");
                 String text = id.text().replaceAll("\\\\n", "\n").replaceAll("\\*", "");
 
+                text = text.replaceAll("\n ", "\n");
+
                 if(text.endsWith(" Back"))
                     text = text.substring(0, text.length() - 5);
 

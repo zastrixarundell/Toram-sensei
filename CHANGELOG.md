@@ -1,6 +1,10 @@
 # Changelog
 
-###
+### 6.1.0
+- Using system env. variables
+- Fixed typos.
+
+### 6.0.3
 - Fixed some text format issues for automatic news.
 
 ### 6.0.2

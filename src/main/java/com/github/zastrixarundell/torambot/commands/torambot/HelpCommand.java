@@ -93,6 +93,8 @@ public class HelpCommand extends DiscordCommand
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
+        embed.setFooter("With love from Serbia <3");
+
         messageCreateEvent.getChannel().sendMessage(embed);
     }
 
@@ -159,7 +161,7 @@ public class HelpCommand extends DiscordCommand
                 .setTitle("Monster Search Commands")
                 .setDescription("Commands which allow you to search for Toram items.")
 
-                .addField(Values.getPrefix() + "monster [name]", "Get info about any monster type!")
+                .addField(Values.getPrefix() + "monster [name]", "Get info normal monsters!")
 
                 .addField(Values.getPrefix() + "miniboss|mboss|mini|mb [name]", "Get info about a miniboss!")
 
@@ -249,7 +251,7 @@ public class HelpCommand extends DiscordCommand
                 .setDescription("Commands which give you basic info about crafting/creating items.")
 
                 .addField(Values.getPrefix() + "proficiency|prof (proficiency level)", "Depending on your proficiency level " +
-                        "this will show you what to synthesize in order to gain most proficiency. Leave black for overall list.")
+                        "this will show you what to synthesize in order to gain most proficiency. Leave blank for overall list.")
 
                 .addField(Values.getPrefix() + "recipe|mats [item]", "Find the recipe of the searched item.");
 

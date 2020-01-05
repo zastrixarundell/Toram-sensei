@@ -50,7 +50,6 @@ public class ToramBot
 
     public static void main(String[] args)
     {
-
         String token = System.getenv("DISCORD_TOKEN");
         String prefix = System.getenv("BOT_COMMAND_PREFIX");
 

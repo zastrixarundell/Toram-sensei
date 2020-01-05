@@ -16,7 +16,7 @@ public class EventsCommand extends DiscordCommand
 
     public EventsCommand()
     {
-        super("event");
+        super("events");
     }
 
     @Override

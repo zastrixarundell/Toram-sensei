@@ -40,6 +40,8 @@ public class MonthlyCommand extends DiscordCommand
                 int hours = period.getHours();
                 int minutes = period.getMinutes();
 
+                embed.setUrl("https://toramonline.com/index.php?threads/weapon-shield-dyes-july-2019-white.23149/");
+
                 embed.setFooter("Last check was " + hours + (hours == 1 ? " hour" : " hours") + " and " +
                         minutes + (minutes == 1 ? " minute" : " minutes") + " ago.");
 

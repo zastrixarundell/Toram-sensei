@@ -1,5 +1,9 @@
 # Changelog
 
+### 6.1.1
+- Fixed typos.
+- Showing time on all gameinfo commands from the toram website.
+
 ### 6.1.0
 - Using system env. variables
 - Fixed typos.

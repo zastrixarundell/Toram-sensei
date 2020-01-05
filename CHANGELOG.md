@@ -1,5 +1,8 @@
 # Changelog
 
+### 6.2.0
+- Is now automatically deployed on each master push.
+
 ### 6.1.1
 - Fixed typos.
 - Showing time on all gameinfo commands from the toram website.

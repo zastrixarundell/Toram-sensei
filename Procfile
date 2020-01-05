@@ -1,1 +1,1 @@
-worker: java -cp target/classes:target/dependency/* com.github.zastrixarundell.torambot.ToramBot
+worker: java -Xmx1G -Xms1G -jar target/ToramBot-*.jar

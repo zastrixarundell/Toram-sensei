@@ -1,1 +1,1 @@
-worker: while true; do java -Xmx1G -Xms1G $JAVA_OPTS -cp target/classes:target/dependency/* ToramBot; done
+worker: while true; do java -Xmx1G -Xms1G -cp target/classes:target/dependency/* ToramBot; done

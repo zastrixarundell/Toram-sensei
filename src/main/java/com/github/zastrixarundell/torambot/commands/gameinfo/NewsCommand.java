@@ -50,6 +50,7 @@ public class NewsCommand extends DiscordCommand
                                 .setDescription(text)
                                 .setUrl("https:" + link.attr("href"))
                                 .setThumbnail(Values.toramLogo)
+                                .setFooter("Publish Date: " + document.getElementsByTag("time").first().text())
                                 .setImage(link.getElementsByTag("img").attr("src"));
 
                         Parser.parseFooter(embed, event);

@@ -52,7 +52,7 @@ public class LatestCommand extends DiscordCommand
                                         .setDescription(text)
                                         .setUrl("https://en.toram.jp" + link.attr("href"))
                                         .setThumbnail(Values.toramLogo)
-                                        .setFooter("Publish Date: " + link.getElementsByTag("time").text());
+                                        .setFooter("Publish Date: " + document.getElementsByTag("time").first().text());
 
                                 Parser.parseFooter(embed, event);
                                 Parser.parseColor(embed, event);

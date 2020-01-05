@@ -1,1 +1,1 @@
-worker: ./mvnw clean package; java -Xmx1G -Xms1G -jar target/ToramBot-*.jar
+worker: ./mvnw clean package; while true; do java -Xmx1G -Xms1G -jar target/ToramBot-*.jar; done

@@ -4,7 +4,6 @@ import com.cloudinary.Cloudinary;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import com.github.zastrixarundell.torambot.Values;
-import com.github.zastrixarundell.torambot.utils.AESHelper;
 import org.joda.time.DateTime;
 
 import javax.imageio.ImageIO;
@@ -12,6 +11,7 @@ import javax.imageio.ImageReader;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -24,16 +24,11 @@ public class ToramForumsUser implements Closeable
     private HtmlPage page;
     private WebClient webClient;
     private Cloudinary cloudinary;
-    private AESHelper aesHelper;
 
-    public ToramForumsUser(String token) throws Exception
+    public ToramForumsUser(String token) throws IOException
     {
-        aesHelper = new AESHelper(token);
-
-        String username, password;
-
-        username = aesHelper.decryptData("81CjhzuvgfRKambn82RJ7/kjZQwia4ihURY1evbP20I=");
-        password = aesHelper.decryptData("rrXWhM2/o14taNAPd0XGfg==");
+        String username = System.getenv("FORUMS_USERNAME");
+        String password = System.getenv("FORUMS_PASSWORD");
 
         java.util.logging.Logger.getLogger("com.gargoylesoftware").setLevel(Level.OFF);
 
@@ -93,14 +88,16 @@ public class ToramForumsUser implements Closeable
         Values.setLastDyeUpdate(new DateTime());
     }
 
-    private void setupCloudinary() throws Exception
+    private void setupCloudinary()
     {
         Map<String, String> map = new HashMap<>();
 
-        String secret = aesHelper.decryptData("zpxkrVMylScivPMiapdGpJ84eg/nhcqccGws1vd7dYY=");
+        String secret = System.getenv("CLOUDINARY_API_SECRET");
+        String cloudName = System.getenv("CLOUDINARY_NAME");
+        String key = System.getenv("CLOUDINARY_API_KEY");
 
-        map.put("cloud_name", "zastrix");
-        map.put("api_key", "922812555643244");
+        map.put("cloud_name", cloudName);
+        map.put("api_key", key);
         map.put("api_secret", secret);
 
         cloudinary = new Cloudinary(map);

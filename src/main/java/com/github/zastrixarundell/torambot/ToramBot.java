@@ -39,7 +39,6 @@ import com.github.zastrixarundell.torambot.objects.tasks.MessageTask;
 import com.github.zastrixarundell.torambot.objects.tasks.MonthlyDyesTask;
 import com.github.zastrixarundell.torambot.objects.tasks.UpdateDisplayer;
 import com.github.zastrixarundell.torambot.objects.toram.ItemType;
-import com.github.zastrixarundell.torambot.utils.AESHelper;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -52,17 +51,12 @@ public class ToramBot
     public static void main(String[] args)
     {
 
-        if(args.length == 0)
-        {
-            System.out.println("The token is not specified... shutting down!");
-            System.exit(-1);
-        }
+        String token = System.getenv("DISCORD_TOKEN");
+        String prefix = System.getenv("BOT_COMMAND_PREFIX");
 
-        if(args.length > 1) { Values.setPrefix(args[1]); }
-
+        Values.setPrefix(prefix);
         System.out.println("Prefix set to: " + Values.getPrefix());
 
-        String token = args[0];
         DiscordApi bot;
         try
         {
@@ -178,9 +172,7 @@ public class ToramBot
     {
         try
         {
-            AESHelper aesHelper = new AESHelper(bot.getToken());
-
-            String token = aesHelper.decryptData("OjImYbN/dPbEBjjxc+X5sjV5dHC+lU95tnSXwpt2PmQlJXwaXgBRAwdpZtmAGmkYEuu5PU+GMD/+RFibTqrM0367bNnkEE2Hrr77BtP7zyvXocbkRW8G0BRedaLf3EMndt0G/39av7zbWCo2RVYQ99LYhzG8gXWbfd04pJtd6JaXILD0Z3VBfElICQm7D/lS/WufLRG7n2YZsC+jrURXfg==");
+            String token = System.getenv("DISCORD_BOT_LIST_API");
 
             DiscordBotListAPI api = new DiscordBotListAPI.Builder()
                     .token(token)

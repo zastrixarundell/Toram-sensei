@@ -1,1 +1,1 @@
-worker: while true; do java -Xmx1G -Xms1G -jar target/ToramBot-*.jar; done
+worker: while true; do java -Xmx1G -Xms1G -cp target/classes:target/dependency/* com.github.zastrixarundell.torambot.ToramBot; done

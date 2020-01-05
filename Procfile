@@ -1,1 +1,1 @@
-worker: java -Xmx1G -Xms1G -cp target/classes:target/dependency/* com.github.zastrixarundell.torambot.ToramBot
+worker: mvn clean package; while true; do java -Xmx1G -Xms1G -jar target/ToramBot-*.jar; done

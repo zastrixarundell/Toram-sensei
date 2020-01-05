@@ -18,7 +18,6 @@
 
 package com.github.zastrixarundell.torambot.objects.tasks;
 
-import com.github.zastrixarundell.torambot.utils.AESHelper;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.server.Server;
@@ -26,7 +25,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.IOException;
 import java.sql.*;
 import java.util.Optional;
 import java.util.TimerTask;
@@ -46,9 +44,8 @@ public class UpdateDisplayer extends TimerTask
     {
         try
         {
-            AESHelper aesHelper = new AESHelper(api.getToken());
-            String password = aesHelper.decryptData("9HaK+ECJkE9gwm2ZoKxHKg==");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/IB1Vx1nsqX", "IB1Vx1nsqX", password);
+            String sqlUrl = System.getenv("SQL_URL");
+            Connection connection = DriverManager.getConnection("jdbc:" + sqlUrl);
             createTable(connection);
             Optional<String> cache = getCachedURL(connection);
 
@@ -156,7 +153,6 @@ public class UpdateDisplayer extends TimerTask
     private boolean shouldBroadcast(Optional<String> oldUrl, String newUrl)
     {
         return oldUrl.map(s -> !s.equals(newUrl)).orElse(true);
-
     }
 
 }

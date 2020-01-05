@@ -25,7 +25,6 @@
             <groupId>org.javacord</groupId>
             <artifactId>javacord</artifactId>
             <version>3.0.4</version>
-            <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.jsoup</groupId>

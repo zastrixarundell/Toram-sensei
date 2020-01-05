@@ -161,7 +161,7 @@ public class HelpCommand extends DiscordCommand
                 .setTitle("Monster Search Commands")
                 .setDescription("Commands which allow you to search for Toram items.")
 
-                .addField(Values.getPrefix() + "monster [name]", "Get info normal monsters!")
+                .addField(Values.getPrefix() + "monster [name]", "Get info about normal monsters!")
 
                 .addField(Values.getPrefix() + "miniboss|mboss|mini|mb [name]", "Get info about a miniboss!")
 

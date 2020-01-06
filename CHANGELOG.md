@@ -1,5 +1,8 @@
 # Changelog
 
+### 6.2.2
+- Added shutdown hook.
+
 ### 6.2.1
 - Showing multiple results with **_level_** command.
 

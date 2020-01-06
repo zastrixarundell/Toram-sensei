@@ -104,6 +104,22 @@ public class ToramBot
         {
 
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() ->
+        {
+            try
+            {
+                bot.disconnect();
+                activity.cancel();
+                dyeImage.cancel();
+                updates.cancel();
+                System.exit(0);
+            }
+            catch (Exception ignore)
+            {
+
+            }
+        }));
     }
 
     private static Timer updateActivity(DiscordApi bot)

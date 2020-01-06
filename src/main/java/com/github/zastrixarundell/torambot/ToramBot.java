@@ -113,7 +113,6 @@ public class ToramBot
                 activity.cancel();
                 dyeImage.cancel();
                 updates.cancel();
-                System.exit(0);
             }
             catch (Exception ignore)
             {

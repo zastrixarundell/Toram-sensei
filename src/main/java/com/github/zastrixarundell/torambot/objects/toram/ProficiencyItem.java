@@ -18,7 +18,7 @@
 
 package com.github.zastrixarundell.torambot.objects.toram;
 
-public class ProficiencyItem
+public class ProficiencyItem implements Comparable<ProficiencyItem>
 {
 
     private int startProficiency, stopProficiency;
@@ -57,4 +57,9 @@ public class ProficiencyItem
         SYNTHESIST, BLACKSMITH
     }
 
+    @Override
+    public int compareTo(ProficiencyItem proficiencyItem)
+    {
+        return this.startProficiency - proficiencyItem.getStartProficiency();
+    }
 }

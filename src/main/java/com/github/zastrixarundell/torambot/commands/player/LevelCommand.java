@@ -187,7 +187,7 @@ public class LevelCommand extends DiscordCommand
         Parser.parseFooter(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
 
-        embed.setFooter("Image is from Castlevania.");
+        embed.setFooter("P.S. The GIF is from Castlevania.");
 
         messageCreateEvent.getChannel().sendMessage(embed);
     }

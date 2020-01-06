@@ -3,11 +3,14 @@ package com.github.zastrixarundell.torambot.commands.crafting;
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
 import com.github.zastrixarundell.torambot.commands.DiscordCommand;
+import com.github.zastrixarundell.torambot.objects.toram.ProficiencyItem;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 
 public class ProficiencyCommand extends DiscordCommand
 {
@@ -184,6 +187,27 @@ public class ProficiencyCommand extends DiscordCommand
 
     private void sendDefault(MessageCreateEvent messageCreateEvent)
     {
+
+        Collection<ProficiencyItem> synthItems = new HashSet<>();
+
+        ProficiencyItem.ProficiencyType type = ProficiencyItem.ProficiencyType.SYNTHESIST;
+
+        synthItems.add(new ProficiencyItem(0, 10, "Revita I", type));
+        synthItems.add(new ProficiencyItem(10, 30, "Revita II", type));
+        synthItems.add(new ProficiencyItem(30, 55, "Revita III", type));
+        synthItems.add(new ProficiencyItem(30, 65, "Regera III", type));
+
+        synthItems.add(new ProficiencyItem(55, 70, "Revita IV", type));
+        synthItems.add(new ProficiencyItem(65, 100, "Vaccine III", type));
+        synthItems.add(new ProficiencyItem(70, 105, "Revita V", type));
+        synthItems.add(new ProficiencyItem(105, 120, "Loincloth", type));
+        synthItems.add(new ProficiencyItem(120, 132, "Revita VI", type));
+        synthItems.add(new ProficiencyItem(132, 150, "Orichalcum", type));
+        synthItems.add(new ProficiencyItem(150, 200, "High Purity Orichalcum", type));
+
+
+
+        
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Alchemy proficiency guide")
                 .setDescription("Showing the default guide.")

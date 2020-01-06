@@ -59,15 +59,27 @@ public class LevelCommand extends DiscordCommand
 
                 Elements tables = document.getElementsByClass("table table-striped");
 
-                NPC boss, miniboss, monster;
-                boss = miniboss = monster = null;
 
                 //Start Boss
+                NPC bossOne = null, bossTwo = null, bossThree = null;
+
                 try
                 {
                     Element bossTable = tables.first();
                     Element body = bossTable.getElementsByTag("tbody").first();
-                    boss = new NPC(body.getElementsByTag("tr").first());
+
+                    Element bossOneE = body.getElementsByTag("tr").get(0);
+                    Element bossTwoE = body.getElementsByTag("tr").get(1);
+                    Element bossThreeE = body.getElementsByTag("tr").get(2);
+
+                    if(bossOneE != null)
+                        bossOne = new NPC(bossOneE);
+
+                    if(bossOneE != null)
+                        bossTwo = new NPC(bossTwoE);
+
+                    if(bossOneE != null)
+                        bossThree = new NPC(bossThreeE);
                 }
                 catch (Exception ignore)
                 {
@@ -75,11 +87,24 @@ public class LevelCommand extends DiscordCommand
                 }
 
                 //Start MiniBoss
+                NPC miniBossOne = null, miniBossTwo = null, miniBossThree = null;
                 try
                 {
                     Element minibossTable = tables.get(1);
                     Element body = minibossTable.getElementsByTag("tbody").first();
-                    miniboss = new NPC(body.getElementsByTag("tr").first());
+
+                    Element miniBossOneE = body.getElementsByTag("tr").get(0);
+                    Element miniBossTwoE = body.getElementsByTag("tr").get(1);
+                    Element miniBossThreeE = body.getElementsByTag("tr").get(2);
+
+                    if(miniBossOneE != null)
+                        miniBossOne = new NPC(miniBossOneE);
+
+                    if(miniBossTwoE != null)
+                        miniBossTwo = new NPC(miniBossTwoE);
+
+                    if(miniBossThreeE != null)
+                        miniBossThree = new NPC(miniBossThreeE);
                 }
                 catch (Exception ignore)
                 {
@@ -87,31 +112,44 @@ public class LevelCommand extends DiscordCommand
                 }
 
                 //Start Monster
+                NPC monsterOne = null, monsterTwo = null, monsterThree = null;
                 try
                 {
                     Element monsterTable = tables.last();
                     Element body = monsterTable.getElementsByTag("tbody").first();
-                    monster = new NPC(body.getElementsByTag("tr").first());
+
+                    Element monsterOneE = body.getElementsByTag("tr").get(0);
+                    Element monsterTwoE = body.getElementsByTag("tr").get(1);
+                    Element monsterThreeE = body.getElementsByTag("tr").get(2);
+
+                    if(monsterOneE != null)
+                        monsterOne = new NPC(monsterOneE);
+
+                    if(monsterTwoE != null)
+                        monsterTwo = new NPC(monsterTwoE);
+
+                    if(monsterThreeE != null)
+                        monsterThree = new NPC(monsterThreeE);
                 }
                 catch (Exception ignore)
                 {
 
                 }
 
-                if (boss != null)
-                    showNPC(event, boss, "Boss");
+                if (bossOne != null)
+                    showNPC(event, bossOne, bossTwo, bossThree, "Bosses:");
                 else
                     sendError(event, "There is no boss!",
                             "There is no Boss to farm for the specified level!");
 
-                if (miniboss != null)
-                    showNPC(event, miniboss, "Mini Boss");
+                if (miniBossOne != null)
+                    showNPC(event, miniBossOne, miniBossTwo, miniBossThree, "Mini Bosses:");
                 else
                     sendError(event, "There is no Mini Boss!",
                             "There is no Mini Boss to farm for the specified level!");
 
-                if (monster != null)
-                    showNPC(event, monster, "Normal Monster");
+                if (monsterOne != null)
+                    showNPC(event, monsterOne, monsterTwo, monsterThree, "Normal Monsters:");
                 else
                     sendError(event, "There is no Monster!",
                             "There is no Monster to farm for the specified level!");
@@ -127,15 +165,23 @@ public class LevelCommand extends DiscordCommand
 
     }
 
-    private void showNPC(MessageCreateEvent messageCreateEvent, NPC npc, String type)
+    private void showNPC(MessageCreateEvent messageCreateEvent, NPC npcOne, NPC npcTwo, NPC npcThree, String type)
     {
         EmbedBuilder embed = new EmbedBuilder()
-                .setTitle(type + ": " + npc.getName())
-                .addField("Level:", npc.getLevel())
-                .addField("Location:", npc.getLocation())
-                .setUrl(npc.getLink());
+                .setTitle(type)
+                .addField(
+                        npcOne.getName() + " - " + npcOne.getLevel() + " - " + npcOne.getLocation(),
+                        npcOne.getExp().get(0)[0] + " - " + npcOne.getExp().get(0)[1]);
 
-                npc.getExp().forEach(exp -> embed.addField(exp[0], exp[1]));
+        if(npcTwo != null)
+            embed.addField(
+                    npcTwo.getName() + " - " + npcTwo.getLevel() + " - " + npcTwo.getLocation(),
+                    npcTwo.getExp().get(0)[0] + " - " + npcTwo.getExp().get(0)[1]);
+
+        if(npcThree != null)
+            embed.addField(
+                    npcThree.getName() + " - " + npcThree.getLevel() + " - " + npcThree.getLocation(),
+                    npcThree.getExp().get(0)[0] + " - " + npcThree.getExp().get(0)[1]);
 
         Parser.parseMonsterThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

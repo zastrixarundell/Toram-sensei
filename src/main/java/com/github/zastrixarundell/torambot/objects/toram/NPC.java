@@ -61,4 +61,5 @@ public class NPC
     public List<String[]> getExp() { return exp; }
 
     public String getLink() { return link; }
+
 }

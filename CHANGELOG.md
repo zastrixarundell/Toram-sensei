@@ -2,6 +2,7 @@
 
 ### 6.2.2
 - Added shutdown hook.
+- Showing Castlevania source. 
 
 ### 6.2.1
 - Showing multiple results with **_level_** command.

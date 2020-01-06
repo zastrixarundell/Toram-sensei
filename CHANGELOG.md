@@ -3,6 +3,8 @@
 ### 6.2.2
 - Added shutdown hook.
 - Showing Castlevania source. 
+- Fixed **_item_** command.
+- Added flower nectar x10 and using Objects for Prof. guide (BS will be added soon).
 
 ### 6.2.1
 - Showing multiple results with **_level_** command.

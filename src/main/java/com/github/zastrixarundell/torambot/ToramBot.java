@@ -155,6 +155,7 @@ public class ToramBot
         //items
         for (ItemType type : ItemType.values())
             bot.addListener(new DiscordItemCommand(type));
+
         bot.addListener(new XtalCommand());
         bot.addListener(new UpgradeCommand());
 

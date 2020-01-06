@@ -63,7 +63,7 @@ public class DiscordItemCommand extends DiscordCommand
                         .data("name", data)
                         .data("show", "5");
 
-                if(itemType != null)
+                if(itemType.getCode() != null)
                     connection = connection.data("type", itemType.getCode());
 
                 Document document = connection.get();
@@ -75,6 +75,7 @@ public class DiscordItemCommand extends DiscordCommand
             }
             catch (Exception e)
             {
+                e.printStackTrace();
                 sendErrorMessage(event);
             }
         };

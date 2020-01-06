@@ -1,5 +1,8 @@
 # Changelog
 
+### 6.2.1
+- Showing multiple results with **_level_** command.
+
 ### 6.2.0
 - Is now automatically deployed on each master push.
 

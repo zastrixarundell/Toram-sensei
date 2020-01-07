@@ -1,4 +1,22 @@
-package com.github.zastrixarundell.torambot.commands.player;
+/*
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *                     Version 2, December 2004
+ *
+ * Copyright (C) 2020, Zastrix Arundell, https://github.com/ZastrixArundell
+ *
+ *  Everyone is permitted to copy and distribute verbatim or modified
+ *  copies of this license document, and changing it is allowed as long
+ *  as the name is changed.
+ *
+ *             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ *    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ *
+ *   0. You just DO WHAT THE FUCK YOU WANT TO.
+ *
+ *
+ */
+
+package com.github.zastrixarundell.torambot.commands.crafting;
 
 import com.github.zastrixarundell.torambot.Parser;
 import com.github.zastrixarundell.torambot.Values;
@@ -32,10 +50,13 @@ public class CookingCommand extends DiscordCommand
                 return;
             }
 
-            int level = getWhichLevel(exp);
-
-            if(level == -1)
+            if(exp < 0)
+            {
                 sendError(event);
+                return;
+            }
+
+            int level = getWhichLevel(exp);
 
             sendMessage(exp, level, event);
         }
@@ -63,57 +84,20 @@ public class CookingCommand extends DiscordCommand
 
     private int getWhichLevel(int exp)
     {
-        if(exp == 0)
-            return 0;
+        for (int i = FoodLevels.values().length - 1; i >= 0; i--)
+            if(exp >= FoodLevels.values()[i].exp)
+                return FoodLevels.values()[i].level;
 
-        if(exp >= 1 && exp < 3)
-            return 1;
-
-        if(exp >= 3 && exp < 9)
-            return 2;
-
-        if(exp >= 9 && exp < 21)
-            return 3;
-
-        if(exp >= 21 && exp < 45)
-            return 4;
-
-        if(exp >= 45 && exp < 93)
-            return 5;
-
-        if(exp >= 93 && exp < 189)
-            return 6;
-
-        if(exp >= 189 && exp < 381)
-            return 7;
-
-        if(exp >= 381 && exp < 765)
-            return 8;
-
-        if(exp >= 765 && exp < 1533)
-            return 9;
-
-        if(exp >= 1533)
-            return 10;
-
-        return -1;
+        return 0;
     }
 
     private void sendDefault(MessageCreateEvent messageCreateEvent)
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Food EXP list")
-                .setDescription("Showing levels for cooking EXP.")
-                .addField("Level: 1", "Exp needed: 1")
-                .addField("Level: 2", "Exp needed: 3")
-                .addField("Level: 3", "Exp needed: 9")
-                .addField("Level: 4", "Exp needed: 21")
-                .addField("Level: 5", "Exp needed: 45")
-                .addField("Level: 6", "Exp needed: 93")
-                .addField("Level: 7", "Exp needed: 189")
-                .addField("Level: 8", "Exp needed: 381")
-                .addField("Level: 9", "Exp needed: 765")
-                .addField("Level: 10", "Exp needed: 1533");
+                .setDescription("Showing levels for cooking EXP.");
+
+        addAllLevels(embed);
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
@@ -125,23 +109,55 @@ public class CookingCommand extends DiscordCommand
     private void sendError(MessageCreateEvent messageCreateEvent)
     {
         EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Alchemy proficiency guide")
-                .setDescription("There was an error with the level, have you specified it?\n\nShowing the default levels.")
-                .addField("Level: 1", "Exp needed: 1")
-                .addField("Level: 2", "Exp needed: 3")
-                .addField("Level: 3", "Exp needed: 9")
-                .addField("Level: 4", "Exp needed: 21")
-                .addField("Level: 5", "Exp needed: 45")
-                .addField("Level: 6", "Exp needed: 93")
-                .addField("Level: 7", "Exp needed: 189")
-                .addField("Level: 8", "Exp needed: 381")
-                .addField("Level: 9", "Exp needed: 765")
-                .addField("Level: 10", "Exp needed: 1533");
+                .setTitle("Food EXP list")
+                .setDescription("There was an error with the exp, have you specified it?\n\n" +
+                        "Negative or too big numbers don't work.\n\n" +
+                        "Showing the default levels.");
+
+        addAllLevels(embed);
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseColor(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
 
         messageCreateEvent.getChannel().sendMessage(embed);
+    }
+
+    public void addAllLevels(EmbedBuilder embed)
+    {
+        for (FoodLevels value : FoodLevels.values())
+            embed.addField("Level: " + value.level, "Exp needed: " + value.exp);
+    }
+
+    private enum FoodLevels
+    {
+        ONE(1, 1),
+        TWO(2, 3),
+        THREE(3, 9),
+        FOUR(4, 21),
+        FIVE(5, 45),
+        SIX(6, 93),
+        SEVEN(7, 189),
+        EIGHT(8, 381),
+        NINE(9, 765),
+        TEN(10, 1533);
+
+        int level, exp;
+
+        FoodLevels(int level, int exp)
+        {
+            this.level = level;
+            this.exp = exp;
+        }
+
+        public int getExp()
+        {
+            return exp;
+        }
+
+        public int getLevel()
+        {
+            return level;
+        }
     }
 }

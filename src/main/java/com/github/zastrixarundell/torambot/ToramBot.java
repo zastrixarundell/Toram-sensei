@@ -21,7 +21,7 @@ package com.github.zastrixarundell.torambot;
 import com.github.zastrixarundell.torambot.commands.search.items.DiscordItemCommand;
 import com.github.zastrixarundell.torambot.commands.torambot.HelpCommand;
 import com.github.zastrixarundell.torambot.commands.gameinfo.*;
-import com.github.zastrixarundell.torambot.commands.player.CookingCommand;
+import com.github.zastrixarundell.torambot.commands.crafting.CookingCommand;
 import com.github.zastrixarundell.torambot.commands.crafting.MatsCommand;
 import com.github.zastrixarundell.torambot.commands.crafting.ProficiencyCommand;
 import com.github.zastrixarundell.torambot.commands.player.LevelCommand;

@@ -186,7 +186,10 @@ public class HelpCommand extends DiscordCommand
 
                 .addField(Values.getPrefix() + "points [current skill points] [your level] [target level]",
                         "Calculate skill points. All of the arguments need to " +
-                                "be present or else it will not work!");
+                                "be present or else it will not work!")
+
+                .addField(Values.getPrefix() + "food|cooking|cook (food EXP)", "Depending on your food EXP " +
+                        "this will show you what level you are. Leave blank for overall list.");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
@@ -247,14 +250,18 @@ public class HelpCommand extends DiscordCommand
                 .setTitle("Crafting Commands")
                 .setDescription("Commands which give you basic info about crafting/creating items.")
 
-                .addField(Values.getPrefix() + "proficiency|prof (proficiency level)", "Depending on your proficiency level " +
+                .addField(Values.getPrefix() + "synth|alch|alchemy|synthesis (proficiency level)", "Depending on your proficiency level " +
                         "this will show you what to synthesize in order to gain most proficiency. Leave blank for overall list.")
+
+                .addField(Values.getPrefix() + "bs|blacksmith (proficiency level)", "Depending on your proficiency level " +
+                        "this will show you what to create in order to gain most proficiency. Leave blank for overall list.")
 
                 .addField(Values.getPrefix() + "recipe|mats [item]", "Find the recipe of the searched item.")
 
                 .addField(Values.getPrefix() + "food|cooking|cook (food EXP)", "Depending on your food EXP " +
-                        "this will show you what level you are. Leave blank for overall list.");
+                        "this will show you what level you are. Leave blank for overall list.")
 
+                .addField(Values.getPrefix() + "recipe|mats [item]", "Find the recipe of the searched item.");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

@@ -250,8 +250,11 @@ public class HelpCommand extends DiscordCommand
                 .setTitle("Crafting Commands")
                 .setDescription("Commands which give you basic info about crafting/creating items.")
 
-                .addField(Values.getPrefix() + "proficiency|prof (proficiency level)", "Depending on your proficiency level " +
+                .addField(Values.getPrefix() + "synth|alch|alchemy|synthesis (proficiency level)", "Depending on your proficiency level " +
                         "this will show you what to synthesize in order to gain most proficiency. Leave blank for overall list.")
+
+                .addField(Values.getPrefix() + "bs|blacksmith (proficiency level)", "Depending on your proficiency level " +
+                        "this will show you what to create in order to gain most proficiency. Leave blank for overall list.")
 
                 .addField(Values.getPrefix() + "recipe|mats [item]", "Find the recipe of the searched item.");
 

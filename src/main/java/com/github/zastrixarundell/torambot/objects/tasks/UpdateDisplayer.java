@@ -103,9 +103,10 @@ public class UpdateDisplayer extends TimerTask
 
     private void createTable(Connection connection) throws SQLException
     {
-        String statement = "CREATE TABLE IF NOT EXISTS toram_sensei_data (" +
-                "keyID VARCHAR(256) NOT NULL PRIMARY KEY," +
-                "value VARCHAR(256)" +
+        String statement = "CREATE TABLE IF NOT EXISTS news (" +
+                "id int NOT NULL," +
+                "value VARCHAR(256)," +
+                "PRIMARY KEY (id)" +
                 ");";
 
         Statement sqlStatement = connection.createStatement();
@@ -116,18 +117,13 @@ public class UpdateDisplayer extends TimerTask
     {
         try
         {
-            String statement = "SELECT * FROM toram_sensei_data";
+            String statement = "SELECT * FROM news";
             Statement sqlStatement = connection.createStatement();
             ResultSet resultSet = sqlStatement.executeQuery(statement);
 
-            while(resultSet.next())
-            {
-                String key = resultSet.getString("keyID");
-                if(key.equals("cached_url"))
-                    return Optional.of(resultSet.getString("value"));
-            }
+            resultSet.next();
 
-            return Optional.empty();
+            return Optional.of(resultSet.getString("value"));
         }
         catch (Exception e)
         {
@@ -138,14 +134,14 @@ public class UpdateDisplayer extends TimerTask
 
     private void saveURL(Connection connection, String url) throws SQLException
     {
-        String command = "INSERT INTO toram_sensei_data(keyID, value)\n" +
+        String command = "INSERT INTO news(id, value)\n" +
                 "VALUES (?, ?)\n" +
                 "ON DUPLICATE KEY UPDATE\n" +
-                "keyID = VALUES(keyID)," +
+                "id = VALUES(id)," +
                 "value = VALUES(value);";
 
         PreparedStatement pstmt = connection.prepareStatement(command);
-        pstmt.setString(1, "cached_url");
+        pstmt.setInt(1, 1);
         pstmt.setString(2, url);
         pstmt.executeUpdate();
     }

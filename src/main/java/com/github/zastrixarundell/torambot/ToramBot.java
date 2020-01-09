@@ -21,7 +21,7 @@ package com.github.zastrixarundell.torambot;
 import com.github.zastrixarundell.torambot.commands.search.items.DiscordItemCommand;
 import com.github.zastrixarundell.torambot.commands.torambot.HelpCommand;
 import com.github.zastrixarundell.torambot.commands.gameinfo.*;
-import com.github.zastrixarundell.torambot.commands.player.CookingCommand;
+import com.github.zastrixarundell.torambot.commands.crafting.CookingCommand;
 import com.github.zastrixarundell.torambot.commands.crafting.MatsCommand;
 import com.github.zastrixarundell.torambot.commands.crafting.ProficiencyCommand;
 import com.github.zastrixarundell.torambot.commands.player.LevelCommand;
@@ -39,6 +39,7 @@ import com.github.zastrixarundell.torambot.objects.tasks.MessageTask;
 import com.github.zastrixarundell.torambot.objects.tasks.MonthlyDyesTask;
 import com.github.zastrixarundell.torambot.objects.tasks.UpdateDisplayer;
 import com.github.zastrixarundell.torambot.objects.toram.ItemType;
+import com.github.zastrixarundell.torambot.objects.toram.ProficiencyItem;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -148,7 +149,9 @@ public class ToramBot
     private static void addCommands(DiscordApi bot)
     {
         //Crafting
-        bot.addListener(new ProficiencyCommand());
+        for (ProficiencyItem.ProficiencyType type : ProficiencyItem.ProficiencyType.values())
+            bot.addListener(new ProficiencyCommand(type));
+
         bot.addListener(new CookingCommand());
         bot.addListener(new MatsCommand());
 

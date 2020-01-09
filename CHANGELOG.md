@@ -1,6 +1,7 @@
 # Changelog
 
 ### 6.2.3
+- Updated database table to news.
 - Moved **_cooking_** to crafting.
 - Removed **_prof_** and added **_bs_** and **_alch_**. (separated them).
 

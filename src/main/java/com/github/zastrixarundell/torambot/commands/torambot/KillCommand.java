@@ -19,13 +19,9 @@
 package com.github.zastrixarundell.torambot.commands.torambot;
 
 import com.github.zastrixarundell.torambot.Parser;
-import com.github.zastrixarundell.torambot.Values;
 import com.github.zastrixarundell.torambot.commands.DiscordCommand;
-import org.javacord.api.entity.message.embed.Embed;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-
-import java.util.ArrayList;
 
 public class KillCommand extends DiscordCommand
 {

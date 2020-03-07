@@ -5,7 +5,6 @@ import com.github.zastrixarundell.torambot.Values;
 import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 
 import java.util.ArrayList;
 

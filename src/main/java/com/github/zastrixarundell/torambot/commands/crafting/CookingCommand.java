@@ -19,19 +19,14 @@
 package com.github.zastrixarundell.torambot.commands.crafting;
 
 import com.github.zastrixarundell.torambot.Parser;
-import com.github.zastrixarundell.torambot.Values;
 import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 
 public class CookingCommand extends DiscordCommand
 {
 
-    public CookingCommand()
-    {
-        super("food", "cooking", "cook");
-    }
+    public CookingCommand() { super("food", "cooking", "cook"); }
 
     @Override
     protected void runCommand(MessageCreateEvent event)
@@ -148,16 +143,6 @@ public class CookingCommand extends DiscordCommand
         {
             this.level = level;
             this.exp = exp;
-        }
-
-        public int getExp()
-        {
-            return exp;
-        }
-
-        public int getLevel()
-        {
-            return level;
         }
     }
 }

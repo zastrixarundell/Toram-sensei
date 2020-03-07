@@ -1,12 +1,10 @@
 package com.github.zastrixarundell.torambot.commands.crafting;
 
 import com.github.zastrixarundell.torambot.Parser;
-import com.github.zastrixarundell.torambot.Values;
 import com.github.zastrixarundell.torambot.commands.DiscordCommand;
 import com.github.zastrixarundell.torambot.objects.toram.Item;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.javacord.api.listener.message.MessageCreateListener;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

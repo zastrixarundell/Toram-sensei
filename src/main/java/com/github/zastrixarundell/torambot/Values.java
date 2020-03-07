@@ -4,6 +4,7 @@ import org.discordbots.api.client.DiscordBotListAPI;
 import org.joda.time.DateTime;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -48,7 +49,7 @@ public class Values
         try
         {
             final Properties properties = new Properties();
-            properties.load(Values.class.getClassLoader().getResourceAsStream("values.properties"));
+            properties.load(Objects.requireNonNull(Values.class.getClassLoader().getResourceAsStream("values.properties")));
             version = properties.getProperty("version");
         }
         catch (Exception ignore)

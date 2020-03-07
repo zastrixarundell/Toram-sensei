@@ -11,7 +11,7 @@ import java.util.*;
 public class ProficiencyCommand extends DiscordCommand
 {
 
-    private ArrayList<ProficiencyItem> items = new ArrayList<>();
+    private ArrayList<ProficiencyItem> items;
     private ProficiencyItem.ProficiencyType type;
 
     public ProficiencyCommand(ProficiencyItem.ProficiencyType type)

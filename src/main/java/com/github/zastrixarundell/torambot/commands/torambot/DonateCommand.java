@@ -17,7 +17,7 @@ public class DonateCommand extends DiscordCommand
         String name = event.getApi().getYourself().getName();
 
         EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Donate to suport: " + name)
+                .setTitle("Donate to support: " + name)
                 .setDescription("Thank you! This really helps " + name + " to be continued! You can donate on " +
                 "[this link](" + Values.donationLink + ")!");
 

@@ -1,5 +1,8 @@
 # Changelog
 
+### 6.2.4
+- Updated and optimized some backend code and removed redundant classes.
+
 ### 6.2.3
 - Updated database table to news.
 - Moved **_cooking_** to crafting.

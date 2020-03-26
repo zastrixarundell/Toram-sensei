@@ -50,15 +50,27 @@ public class UpdateDisplayer extends TimerTask
             Optional<String> cache = getCachedURL(connection);
 
             Document document = Jsoup.connect("http://en.toram.jp/information/")
-                    .data("type_code", "event")
+                    .data("type_code", "all")
                     .get();
 
             Element section = document.getElementById("news");
             Element box = section.getElementsByClass("useBox").first();
+
             Element urlElement = box.getElementsByTag("a").first();
             String url = urlElement.attr("href");
 
-            System.out.println(url);
+            Element imageElement = urlElement.getElementsByTag("img").first();
+            String imageUrl = imageElement.attr("src");
+
+            if(imageUrl.contains("other.png"))
+            {
+                System.out.println("Orb shop url: " + url);
+                saveURL(connection, url);
+                connection.close();
+                return;
+            }
+
+            System.out.println("New url: " + url);
 
             if(cache.isPresent())
                 System.out.println("Old: " + cache.get());

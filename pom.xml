@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.zastrixarundell</groupId>
     <artifactId>ToramBot</artifactId>
-    <version>6.2.4</version>
+    <version>6.2.5</version>
 
     <repositories>
         <repository>

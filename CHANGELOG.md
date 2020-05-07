@@ -1,5 +1,8 @@
 # Changelog
 
+### 6.2.5
+- Removed duplicate mats command on help. 
+
 ### 6.2.4
 - Updated and optimized some backend code and removed redundant classes.
 

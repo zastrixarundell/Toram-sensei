@@ -21,31 +21,32 @@ package com.github.zastrixarundell.toramsensei.objects.toram;
 public enum ItemType
 {
 
-    ARROW("7", "arrow"),
-    BOW("9", "bow"),
-    BOW_GUN("10", "bowgun", "gun"),
-    DAGGER("11", "dagger"),
-    HALBERD("26", "halberd", "hb"),
-    KATANA("27", "katana", "kat"),
-    KNUCKLES("13", "knuckles", "knuckle"),
-    MAGIC_DEVICE("15", "magicdevice", "md"),
-    ONE_HANDED_SWORD("4", "onehanded", "1h", "ohs"),
-    STAFF("19", "staff"),
-    TWO_HANDED_SWORD("5", "twohanded", "2h", "ths"),
-    ADDITIONAL("6", "additional", "add"),
-    ARMOR("8", "armor", "arm"),
-    SHIELD("17", "shield"),
-    SPECIAL("18", "special", "spec"),
-    GEM("12", "gem"),
-    ITEM(null, "item");
+    ARROW("7", "atk", "arrow"),
+    BOW("9", "atk","bow"),
+    BOW_GUN("10", "atk", "bowgun", "gun"),
+    DAGGER("11", "atk", "dagger"),
+    HALBERD("26", "atk", "halberd", "hb"),
+    KATANA("27", "atk","katana", "kat"),
+    KNUCKLES("13", "atk","knuckles", "knuckle"),
+    MAGIC_DEVICE("15", "atk","magicdevice", "md"),
+    ONE_HANDED_SWORD("4", "atk","onehanded", "1h", "ohs"),
+    STAFF("19", "atk","staff"),
+    TWO_HANDED_SWORD("5", "atk", "twohanded", "2h", "ths"),
+    ADDITIONAL("6", "def","additional", "add"),
+    ARMOR("8", "def","armor", "arm"),
+    SHIELD("17", "def","shield"),
+    SPECIAL("18", "def","special", "spec"),
+    GEM("12", null,"gem"),
+    ITEM(null, null,"item");
 
-    String code, longText, name;
+    String code, longText, name, type;
     String[] callers;
 
-    ItemType(String code, String ... callers)
+    ItemType(String code, String type, String ... callers)
     {
         this.callers = callers;
         this.code = code;
+        this.type = type;
         name = String.join(" ", name().toLowerCase().split("_"));
         longText = (name().toLowerCase().startsWith("a") ? "an " : "a ") + name;
     }
@@ -57,4 +58,6 @@ public enum ItemType
     public String getName() { return name; }
 
     public String[] getCallers() { return callers; }
+
+    public String getType() { return type; }
 }

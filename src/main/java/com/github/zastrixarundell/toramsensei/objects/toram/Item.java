@@ -28,10 +28,12 @@ import java.util.Arrays;
 public class Item
 {
 
-    private String name, price, proc, app;
-    private ArrayList<String> stats = new ArrayList<>();
+    private final String name, price, proc;
+    private final ArrayList<String> stats = new ArrayList<>();
+    private final ArrayList<String> obtainedFrom = new ArrayList<>();
+
+    private String app;
     private ArrayList<String> mats = new ArrayList<>();
-    private ArrayList<String> obtainedFrom = new ArrayList<>();
 
     public Item(Element itemData)
     {
@@ -40,11 +42,7 @@ public class Item
 
         //Price and proc
         Element itemPropMini = itemData.getElementsByClass("item-prop").first();
-        Elements divElements = new Elements();
-
-        for (Element element : itemPropMini.getElementsByTag("div"))
-            if(element.parent() == itemPropMini)
-                divElements.add(element);
+        Elements divElements = getChildrenElements(itemPropMini);
 
         price = divElements.first().getElementsByTag("p").last().text();
         proc = divElements.last().getElementsByTag("p").last().text();;
@@ -62,16 +60,20 @@ public class Item
             app = null;
         }
 
+        Elements listElements = itemData.getElementsByTag("li");
+
+
         //Stats
         try
         {
-            Element myTabContent = itemData.getElementById("myTabContent");
-            Element realStatTable = myTabContent.getElementsByClass("stat-table").last();
-            Element statBody = realStatTable.getElementsByTag("tbody").first();
+            Element statsList = listElements.first().getElementsByClass("item-basestat").first();
+            Elements statData = getChildrenElements(statsList);
 
-            for (Element trElement : statBody.getElementsByTag("tr"))
-                stats.add(trElement.getElementsByTag("td").first().ownText() + ": " +
-                        trElement.getElementsByTag("td").get(1).text());
+            for (int i = 1; i < statData.size(); i++)
+            {
+                Elements statChildren = getChildrenElements(statData.get(i));
+                stats.add(statChildren.first().text() + ": " + statChildren.last().text());
+            }
         }
         catch (Exception e)
         {
@@ -134,6 +136,17 @@ public class Item
         {
             mats.add("N/A");
         }
+    }
+
+    private Elements getChildrenElements(Element element)
+    {
+        Elements elements = new Elements();
+
+        for (Element child : element.children())
+            if(child.parent() == element)
+                elements.add(child);
+
+        return elements;
     }
 
     public String getName()

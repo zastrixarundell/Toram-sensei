@@ -20,6 +20,7 @@ package com.github.zastrixarundell.toramsensei.objects.toram;
 
 import com.github.zastrixarundell.toramsensei.Parser;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,17 +36,18 @@ public class Item
     public Item(Element itemData)
     {
         //Name, type and duration
-        name = Parser.nameParser(itemData.getElementsByTag("h4").first().text());
+        name = Parser.nameParser(itemData.getElementsByClass("card-title").first().text());
 
         //Price and proc
-        Element ppStatTable = itemData.getElementsByClass("stat-table").first();
-        Element tableBody = ppStatTable.getElementsByTag("tbody").first();
+        Element itemPropMini = itemData.getElementsByClass("item-prop").first();
+        Elements divElements = new Elements();
 
-        Element priceTr = tableBody.getElementsByTag("tr").first();
-        price = priceTr.getElementsByTag("td").last().ownText();
+        for (Element element : itemPropMini.getElementsByTag("div"))
+            if(element.parent() == itemPropMini)
+                divElements.add(element);
 
-        Element procTr = tableBody.getElementsByTag("tr").get(1);
-        proc = procTr.getElementsByTag("td").last().ownText();
+        price = divElements.first().getElementsByTag("p").last().text();
+        proc = divElements.last().getElementsByTag("p").last().text();;
 
         //Image
         try
@@ -63,7 +65,6 @@ public class Item
         //Stats
         try
         {
-
             Element myTabContent = itemData.getElementById("myTabContent");
             Element realStatTable = myTabContent.getElementsByClass("stat-table").last();
             Element statBody = realStatTable.getElementsByTag("tbody").first();

@@ -62,7 +62,7 @@ public class DiscordItemCommand extends DiscordCommand
                 Connection connection = Jsoup.connect("http://coryn.club/item.php")
                         .data("name", data)
                         .data("show", "5")
-                        .data("order", "atk ASC,name");
+                        .data("order", "atk DESC,name");
 
                 if(itemType.getCode() != null)
                     connection = connection.data("type", itemType.getCode());

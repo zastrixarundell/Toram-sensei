@@ -32,7 +32,7 @@ import java.util.TimerTask;
 public class UpdateDisplayer extends TimerTask
 {
 
-    private DiscordApi api;
+    private final DiscordApi api;
 
     public UpdateDisplayer(DiscordApi api)
     {
@@ -59,16 +59,20 @@ public class UpdateDisplayer extends TimerTask
             Element urlElement = box.getElementsByTag("a").first();
             String url = urlElement.attr("href");
 
-            Element imageElement = urlElement.getElementsByTag("img").first();
-            String imageUrl = imageElement.attr("src");
+            /*
+                Nuked this parts but going to keep it just in case.
 
-            if(imageUrl.contains("other.png"))
-            {
-                System.out.println("Orb shop url: " + url);
-                saveURL(connection, url);
-                connection.close();
-                return;
-            }
+                Element imageElement = urlElement.getElementsByTag("img").first();
+                String imageUrl = imageElement.attr("src");
+
+                if(imageUrl.contains("other.png"))
+                {
+                    System.out.println("Orb shop url: " + url);
+                    saveURL(connection, url);
+                    connection.close();
+                    return;
+                }
+             */
 
             System.out.println("New url: " + url);
 

@@ -1,11 +1,11 @@
 <p align="center"><img src="https://www.pngkit.com/png/full/383-3831540_-toram-online-logo.png" /></p>
 <i>Not affiliated with Toram</i>
 
-# ToramBot
+# Toram-sensei
 A Java Discord bot for your Discord Toram guild.
-<p align="center"><img src="https://raw.githubusercontent.com/ZastrixArundell/ToramBot/master/images/ts-banner.png" /></p>
+<p align="center"><img src="https://raw.githubusercontent.com/ZastrixArundell/toram-sensei/master/images/ts-banner.png" /></p>
 
-![Release version](https://img.shields.io/github/v/release/zastrixarundell/torambot) [![Build Status](https://travis-ci.com/zastrixarundell/dbio.svg?branch=master)](https://travis-ci.com/zastrixarundell/ToramBot) [![Support server badge](https://img.shields.io/static/v1?label=Support%20server&message=Click%20me&logo=discord&logoColor=white&color=7289da)](https://discord.gg/MdASH22) [![Invite me](https://img.shields.io/static/v1?label=Invite%20me&message=Click%20me&logo=discord&logoColor=white&color=7289da)](https://discordapp.com/oauth2/authorize?client_id=600302983305101323&scope=bot&permissions=0)
+![Release version](https://img.shields.io/github/v/release/zastrixarundell/toram-sensei) [![Build Status](https://travis-ci.com/zastrixarundell/Toram-sensei.svg?branch=master)](https://travis-ci.com/zastrixarundell/Toram-sensei) [![Support server badge](https://img.shields.io/static/v1?label=Support%20server&message=Click%20me&logo=discord&logoColor=white&color=7289da)](https://discord.gg/MdASH22) [![Invite me](https://img.shields.io/static/v1?label=Invite%20me&message=Click%20me&logo=discord&logoColor=white&color=7289da)](https://discordapp.com/oauth2/authorize?client_id=600302983305101323&scope=bot&permissions=0)
 
 # Setup
 

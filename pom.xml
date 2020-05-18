@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.gmail.zastrixarundell</groupId>
-    <artifactId>ToramBot</artifactId>
-    <version>6.2.5</version>
+    <artifactId>toram-sensei</artifactId>
+    <version>7.0.0</version>
 
     <repositories>
         <repository>
@@ -104,7 +104,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.github.zastrixarundell.torambot.ToramBot</mainClass>
+                            <mainClass>com.github.zastrixarundell.toramsensei.ToramSensei</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

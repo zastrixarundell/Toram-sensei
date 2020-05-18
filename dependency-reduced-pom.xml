@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.gmail.zastrixarundell</groupId>
-  <artifactId>ToramBot</artifactId>
-  <version>6.2.5</version>
+  <artifactId>toram-sensei</artifactId>
+  <version>7.0.0</version>
   <build>
     <resources>
       <resource>
@@ -40,7 +40,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>com.github.zastrixarundell.torambot.ToramBot</mainClass>
+              <mainClass>com.github.zastrixarundell.toramsensei.ToramSensei</mainClass>
             </manifest>
           </archive>
         </configuration>

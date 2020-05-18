@@ -34,7 +34,7 @@ import java.util.ArrayList;
 
 public class DiscordItemCommand extends DiscordCommand
 {
-    private ItemType itemType;
+    private final ItemType itemType;
 
     public DiscordItemCommand(ItemType type)
     {
@@ -61,17 +61,17 @@ public class DiscordItemCommand extends DiscordCommand
             {
                 Connection connection = Jsoup.connect("http://coryn.club/item.php")
                         .data("name", data)
-                        .data("show", "5");
+                        .data("show", "5")
+                        .data("order", "atk ASC,name");
 
                 if(itemType.getCode() != null)
                     connection = connection.data("type", itemType.getCode());
 
                 Document document = connection.get();
 
-                Element table = document.getElementsByClass("table table-striped").first();
-                Element body = table.getElementsByTag("tbody").first();
+                Element cardContainer = document.getElementsByClass("card-container").first();
 
-                getItems(body).forEach(item -> sendItemEmbed(item, event));
+                getItems(cardContainer).forEach(item -> sendItemEmbed(item, event));
             }
             catch (Exception e)
             {
@@ -83,19 +83,24 @@ public class DiscordItemCommand extends DiscordCommand
         executeRunnable(event, runnable);
     }
 
-    private ArrayList<Item> getItems(Element body)
+    private ArrayList<Item> getItems(Element cardContainer)
     {
-
-        Elements trs = body.getElementsByTag("tr");
+        Elements divs = cardContainer.getElementsByTag("div");
 
         ArrayList<Item> listOfItems = new ArrayList<>();
 
-        for(int size = 0, count = 0; size < trs.size() && count < 5; size++)
-            if(trs.get(size).parent() == body)
-            {
-                listOfItems.add(new Item(trs.get(size)));
-                count++;
-            }
+        for(int size = 0, count = 0; size < divs.size() && count < 5; size++)
+        {
+            Element div = divs.get(size);
+
+            if (div.parent() == cardContainer)
+                if (!div.hasClass("card-adsense"))
+                {
+                    listOfItems.add(new Item(divs.get(size)));
+                    count++;
+                }
+
+        }
 
         return listOfItems;
     }

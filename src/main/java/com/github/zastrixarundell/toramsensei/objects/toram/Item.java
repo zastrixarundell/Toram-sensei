@@ -108,25 +108,36 @@ public class Item
         //Recipe
         try
         {
-            Element myTabContent = itemData.getElementById("myTabContent");
 
-            for (Element element : myTabContent.getAllElements())
-            {
-                if(element.id() == null)
-                    continue;
+            Element cards = itemData.getElementsByClass("card-attach-bottom").last();
+            Element probablyRecipe = getChildrenElements(cards).last();
+            Element containerDiv = getChildrenElements(probablyRecipe).last();
 
-                if(element.id().contains("recipe"))
+            boolean contains = false;
+            for (String className : containerDiv.classNames())
+                if(className.toLowerCase().equals("item-prop"))
                 {
-                    Element trElement = element.getElementsByTag("td").last();
-                    this.mats = new ArrayList<>(Arrays.asList(trElement.text().split("- ")));
+                    contains = true;
+                    break;
                 }
-            }
 
+            if(!contains)
+                throw new Exception();
+
+            Elements materialList = getChildrenElements(getChildrenElements(getChildrenElements(getChildrenElements(containerDiv).last()).last()).first());
+
+            for (Element row : materialList)
+            {
+                System.out.println(row.text());
+                mats.add(row.text().substring(1));
+            }
         }
         catch (Exception e)
         {
             mats.add("N/A");
         }
+
+        System.out.print("");
     }
 
     private String capitalize(String string)

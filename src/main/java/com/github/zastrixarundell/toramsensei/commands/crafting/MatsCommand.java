@@ -2,6 +2,7 @@ package com.github.zastrixarundell.toramsensei.commands.crafting;
 
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
+import com.github.zastrixarundell.toramsensei.commands.search.items.DiscordItemCommand;
 import com.github.zastrixarundell.toramsensei.objects.toram.Item;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
@@ -44,10 +45,9 @@ public class MatsCommand extends DiscordCommand
                         .data("special", "nalch")
                         .get();
 
-                Element table = document.getElementsByClass("table table-striped").first();
-                Element body = table.getElementsByTag("tbody").first();
+                Element cardContainer = document.getElementsByClass("card-container").first();
 
-                getItems(body).forEach(item ->
+                DiscordItemCommand.getItems(cardContainer).forEach(item ->
                 {
                     sendItemEmbed(item, event);
                     justForCheck.add(item);
@@ -65,10 +65,9 @@ public class MatsCommand extends DiscordCommand
                         .data("special", "nsmith")
                         .get();
 
-                Element table = document.getElementsByClass("table table-striped").first();
-                Element body = table.getElementsByTag("tbody").first();
+                Element cardContainer = document.getElementsByClass("card-container").first();
 
-                getItems(body).forEach(item ->
+                DiscordItemCommand.getItems(cardContainer).forEach(item ->
                 {
                     sendItemEmbed(item, event);
                     justForCheck.add(item);
@@ -111,22 +110,6 @@ public class MatsCommand extends DiscordCommand
         Parser.parseColor(embed, messageCreateEvent);
 
         messageCreateEvent.getChannel().sendMessage(embed);
-    }
-
-    private ArrayList<Item> getItems(Element body)
-    {
-        Elements trs = body.getElementsByTag("tr");
-
-        ArrayList<Item> listOfItems = new ArrayList<>();
-
-        for (int size = 0, count = 0; size < trs.size() && count < 5; size++)
-            if (trs.get(size).parent() == body)
-            {
-                listOfItems.add(new Item(trs.get(size)));
-                count++;
-            }
-
-        return listOfItems;
     }
 
     private void sendItemEmbed(Item item, MessageCreateEvent messageCreateEvent)

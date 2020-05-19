@@ -83,7 +83,7 @@ public class DiscordItemCommand extends DiscordCommand
         executeRunnable(event, runnable);
     }
 
-    private ArrayList<Item> getItems(Element cardContainer)
+    public static ArrayList<Item> getItems(Element cardContainer)
     {
         Elements divs = cardContainer.getElementsByTag("div");
 

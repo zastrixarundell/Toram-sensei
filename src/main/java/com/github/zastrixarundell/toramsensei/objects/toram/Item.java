@@ -24,6 +24,7 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class Item
 {
@@ -38,14 +39,14 @@ public class Item
     public Item(Element itemData)
     {
         //Name, type and duration
-        name = Parser.nameParser(itemData.getElementsByClass("card-title").first().text());
+        name = capitalize(Parser.nameParser(itemData.getElementsByClass("card-title").first().text()));
 
         //Price and proc
         Element itemPropMini = itemData.getElementsByClass("item-prop").first();
         Elements divElements = getChildrenElements(itemPropMini);
 
-        price = divElements.first().getElementsByTag("p").last().text();
-        proc = divElements.last().getElementsByTag("p").last().text();;
+        price = capitalize(divElements.first().getElementsByTag("p").last().text());
+        proc = capitalize(divElements.last().getElementsByTag("p").last().text());
 
         //Image
         try
@@ -60,13 +61,10 @@ public class Item
             app = null;
         }
 
-        Elements listElements = itemData.getElementsByTag("li");
-
-
         //Stats
         try
         {
-            Element statsList = listElements.first().getElementsByClass("item-basestat").first();
+            Element statsList = itemData.getElementsByClass("item-basestat").first();
             Elements statData = getChildrenElements(statsList);
 
             for (int i = 1; i < statData.size(); i++)
@@ -81,32 +79,25 @@ public class Item
         }
 
         //ObtainedFrom
-        //pad5-table
         try
         {
-            Element myTabContent = itemData.getElementById("myTabContent");
-            Element obtainedFromTable = myTabContent.getElementsByClass("pad5-table").first();
-            Element obtainedFromBody = obtainedFromTable.getElementsByTag("tbody").last();
+            Elements obtainedFromContent = getChildrenElements(itemData.getElementsByClass("item-obtainfrom").first().parent());
 
-            for (Element trElement : obtainedFromBody.getElementsByTag("tr"))
+            Optional<Element> obtainedSourceListOptional = getFirstChildWithClassPartial(obtainedFromContent, "js-pagination");
+
+            if(!obtainedSourceListOptional.isPresent())
+                throw new Exception();
+
+            Element innerDiv = getChildrenElements(obtainedSourceListOptional.get()).first();
+
+            for (Element sourceRow : getChildrenElements(innerDiv))
             {
-                Element tdElement = trElement.getElementsByTag("td").first();
+                Elements divChildren = getChildrenElements(sourceRow);
 
-                String value = tdElement.getElementsByTag("font").first().ownText();
+                String monsterName = divChildren.first().text();
+                String monsterLocation = divChildren.last().text();
 
-                try
-                {
-                    value = value + " " +
-                            tdElement.getElementsByTag("font").last()
-                                    .getElementsByTag("a").first().ownText();
-                }
-                catch (Exception e)
-                {
-                    value = value + " " +
-                            tdElement.getElementsByTag("font").last().ownText();
-                }
-
-                obtainedFrom.add(value);
+                obtainedFrom.add(monsterName + " - " + monsterLocation);
             }
         }
         catch (Exception e)
@@ -138,6 +129,11 @@ public class Item
         }
     }
 
+    private String capitalize(String string)
+    {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
+    }
+
     private Elements getChildrenElements(Element element)
     {
         Elements elements = new Elements();
@@ -147,6 +143,16 @@ public class Item
                 elements.add(child);
 
         return elements;
+    }
+
+    private Optional<Element> getFirstChildWithClassPartial(Elements elements, String classPartial)
+    {
+        for (Element element : elements)
+            for (String className : element.classNames())
+                if(className.contains(classPartial))
+                    return Optional.of(element);
+
+        return Optional.empty();
     }
 
     public String getName()

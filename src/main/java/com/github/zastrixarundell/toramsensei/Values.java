@@ -22,11 +22,11 @@ public class Values
 
     public final static String inviteLink = "https://discordapp.com/oauth2/authorize?client_id=600302983305101323&scope=bot&permissions=0";
 
-    public final static String donationLink = "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9U8Z5E9L485G2&source=url";
+    public final static String donationLink = "https://www.patreon.com/zastrix_arundell";
 
     public final static String supportLink = "https://discord.gg/MdASH22";
 
-    public final static String donationLogo = "http://pngimg.com/uploads/paypal/paypal_PNG22.png";
+    public final static String donationLogo = "https://raw.githubusercontent.com/ZastrixArundell/Toram-sensei/master/images/patreon.png";
 
     private static DateTime lastDyeUpdate;
 

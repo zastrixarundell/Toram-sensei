@@ -65,7 +65,10 @@ public class DiscordItemCommand extends DiscordCommand
                         .data("order", itemType.getType() != null ? itemType.getType() + " DESC,name" : "name");
 
                 if(itemType.getCode() != null)
-                    connection = connection.data("type", itemType.getCode());
+                    connection.data("type", itemType.getCode());
+
+                if(itemType == ItemType.CRYSTA)
+                    connection.data("special", "xtal");
 
                 Document document = connection.get();
 
@@ -96,7 +99,7 @@ public class DiscordItemCommand extends DiscordCommand
             if (div.parent() == cardContainer)
                 if (!div.hasClass("card-adsense"))
                 {
-                    listOfItems.add(new Item(divs.get(size)));
+                    listOfItems.add(new Item(div));
                     count++;
                 }
 

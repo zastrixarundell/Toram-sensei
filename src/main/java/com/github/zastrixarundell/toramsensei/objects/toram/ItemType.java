@@ -37,6 +37,7 @@ public enum ItemType
     SHIELD("17", "def","shield"),
     SPECIAL("18", "def","special", "spec"),
     GEM("12", null,"gem"),
+    CRYSTA(null, null, "xtal", "crysta", "crystal"),
     ITEM(null, null,"item");
 
     String code, longText, name, type;

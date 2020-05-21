@@ -126,11 +126,7 @@ public class Item
 
             Elements materialList = getChildrenElements(getChildrenElements(getChildrenElements(getChildrenElements(containerDiv).last()).last()).first());
 
-            for (Element row : materialList)
-            {
-                System.out.println(row.text());
-                mats.add(row.text().substring(1));
-            }
+            materialList.forEach(row -> mats.add(row.text().substring(1)));
         }
         catch (Exception e)
         {

@@ -28,15 +28,16 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 
 public class UpgradeCommand extends DiscordCommand
 {
-
-    private static final int sizeOfPage = 2000;
-
-    private Element body = null;
+    /*
+        For some reason a HashSet can't be used here so I am using the name of the item
+        as they key for an unique identifier to remove copies.
+     */
+    private HashMap<String, Item> allUpgradeXtals = new HashMap<>();
 
     public UpgradeCommand()
     {
@@ -44,13 +45,7 @@ public class UpgradeCommand extends DiscordCommand
 
         try
         {
-            Document document = Jsoup.connect("http://coryn.club/item.php")
-                    .data("special", "xtal")
-                    .data("show", String.valueOf(sizeOfPage))
-                    .get();
-
-            Element table = document.getElementsByClass("table table-striped").first();
-            body = table.getElementsByTag("tbody").first();
+            setupXtals();
         }
         catch (Exception ignore)
         {
@@ -75,18 +70,16 @@ public class UpgradeCommand extends DiscordCommand
         {
             try
             {
-                if(body == null)
+                if(allUpgradeXtals.isEmpty())
+                    setupXtals();
+
+                List<Item> itemList = new ArrayList<>();
+
+                allUpgradeXtals.values().forEach(upgradeXtal ->
                 {
-                    Document document = Jsoup.connect("http://coryn.club/item.php")
-                            .data("special", "xtal")
-                            .data("show", String.valueOf(sizeOfPage))
-                            .get();
-
-                    Element table = document.getElementsByClass("table table-striped").first();
-                    body = table.getElementsByTag("tbody").first();
-                }
-
-                List<Item> itemList = getItems(body, data);
+                    if(String.join("", upgradeXtal.getStats()).toLowerCase().contains("upgrade for: " + data.toLowerCase()))
+                        itemList.add(upgradeXtal);
+                });
 
                 if(itemList.isEmpty())
                 {
@@ -99,31 +92,61 @@ public class UpgradeCommand extends DiscordCommand
             catch (Exception e)
             {
                 sendErrorMessage(event);
-                body = null;
+                e.printStackTrace();
+                allUpgradeXtals = new HashMap<>();
             }
         };
 
         executeRunnable(event, runnable);
     }
 
-    private ArrayList<Item> getItems(Element body, String data)
+    private void setupXtals() throws IOException
     {
+        Document document = Jsoup.connect("http://coryn.club/item.php")
+                .data("special", "xtal")
+                .data("show", "3000")
+                .data("order", "name ASC")
+                .get();
 
-        Elements trs = body.getElementsByTag("tr");
+        Element cardContainer = document.getElementsByClass("card-container").first();
+        getUpgradable(cardContainer).forEach(item -> allUpgradeXtals.put(item.getName(), item));
+
+        document = Jsoup.connect("http://coryn.club/item.php")
+                .data("special", "xtal")
+                .data("show", "3000")
+                .data("order", "name DESC")
+                .get();
+
+        cardContainer = document.getElementsByClass("card-container").first();
+        getUpgradable(cardContainer).forEach(item -> allUpgradeXtals.put(item.getName(), item));
+    }
+
+    private static Elements getChildrenElements(Element element)
+    {
+        Elements elements = new Elements();
+
+        for (Element child : element.children())
+            if(child.parent() == element)
+                elements.add(child);
+
+        return elements;
+    }
+
+    public static ArrayList<Item> getUpgradable(Element cardContainer)
+    {
+        Elements divs = getChildrenElements(cardContainer);
 
         ArrayList<Item> listOfItems = new ArrayList<>();
 
-        for(int size = 0, count = 0; size < trs.size() && count < 5; size++)
-            if(trs.get(size).parent() == body)
-            {
-                Item item = new Item(trs.get(size));
-
-                if(String.join("\n", item.getStats()).toLowerCase().contains("upgrade for: " + data.toLowerCase()))
+        for (Element div : divs)
+            if (div.parent() == cardContainer)
+                if (!div.hasClass("card-adsense"))
                 {
-                    listOfItems.add(item);
-                    count++;
+                    Item item = new Item(div);
+
+                    if (String.join("\n", item.getStats()).toLowerCase().contains("upgrade for"))
+                        listOfItems.add(item);
                 }
-            }
 
         return listOfItems;
     }

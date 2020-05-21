@@ -33,7 +33,6 @@ import com.github.zastrixarundell.toramsensei.commands.torambot.DonateCommand;
 import com.github.zastrixarundell.toramsensei.commands.torambot.InviteCommand;
 import com.github.zastrixarundell.toramsensei.commands.torambot.SupportCommand;
 import com.github.zastrixarundell.toramsensei.commands.search.items.UpgradeCommand;
-import com.github.zastrixarundell.toramsensei.commands.search.items.XtalCommand;
 import com.github.zastrixarundell.toramsensei.commands.torambot.VoteCommand;
 import com.github.zastrixarundell.toramsensei.objects.tasks.MessageTask;
 import com.github.zastrixarundell.toramsensei.objects.tasks.MonthlyDyesTask;
@@ -159,7 +158,6 @@ public class ToramSensei
         for (ItemType type : ItemType.values())
             bot.addListener(new DiscordItemCommand(type));
 
-        bot.addListener(new XtalCommand());
         bot.addListener(new UpgradeCommand());
 
         //monsters

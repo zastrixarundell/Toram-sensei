@@ -36,7 +36,7 @@ public class MatsCommand extends DiscordCommand
 
         Runnable runnable = () ->
         {
-            ArrayList<Item> justForCheck = new ArrayList<>();
+            ArrayList<Item> allItems = new ArrayList<>();
 
             try
             {
@@ -47,11 +47,7 @@ public class MatsCommand extends DiscordCommand
 
                 Element cardContainer = document.getElementsByClass("card-container").first();
 
-                DiscordItemCommand.getItems(cardContainer).forEach(item ->
-                {
-                    sendItemEmbed(item, event);
-                    justForCheck.add(item);
-                });
+                allItems.addAll(DiscordItemCommand.getItems(cardContainer));
             }
             catch (Exception e)
             {
@@ -67,19 +63,21 @@ public class MatsCommand extends DiscordCommand
 
                 Element cardContainer = document.getElementsByClass("card-container").first();
 
-                DiscordItemCommand.getItems(cardContainer).forEach(item ->
-                {
-                    sendItemEmbed(item, event);
-                    justForCheck.add(item);
-                });
+                allItems.addAll(DiscordItemCommand.getItems(cardContainer));
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
 
-            if (justForCheck.isEmpty())
+            if (allItems.isEmpty())
+            {
                 sendErrorMessage(event);
+                return;
+            }
+
+            for (int i = 0; i < allItems.size() && i < 5; i++)
+                sendItemEmbed(allItems.get(i), event);
 
         };
 
@@ -102,8 +100,9 @@ public class MatsCommand extends DiscordCommand
     private void sendErrorMessage(MessageCreateEvent messageCreateEvent)
     {
         EmbedBuilder embed = new EmbedBuilder()
-                .setTitle("Error while getting item!")
-                .setDescription("An error happened! Does the item even exist? The item may not be added yet.");
+                .setTitle("Error while getting item mats!")
+                .setDescription("An error happened! Does the specified!mats aaaa" +
+                        "item even exist? The item may not be added yet.");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

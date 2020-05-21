@@ -81,7 +81,7 @@ public class ToramSensei
         Scanner scanner = new Scanner(System.in);
 
         Timer activity = updateActivity(bot);
-        Timer dyeImage = updateDyesImage(bot);
+        //Timer dyeImage = updateDyesImage(bot);
         Timer updates = updateUpdates(bot);
 
         try
@@ -94,7 +94,7 @@ public class ToramSensei
                 {
                     bot.disconnect();
                     activity.cancel();
-                    dyeImage.cancel();
+                    //dyeImage.cancel();
                     updates.cancel();
                     System.exit(0);
                 }
@@ -111,7 +111,7 @@ public class ToramSensei
             {
                 bot.disconnect();
                 activity.cancel();
-                dyeImage.cancel();
+                //dyeImage.cancel();
                 updates.cancel();
             }
             catch (Exception ignore)

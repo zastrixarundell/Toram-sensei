@@ -20,32 +20,33 @@ package com.github.zastrixarundell.toramsensei.objects.toram;
 
 import com.github.zastrixarundell.toramsensei.Parser;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Optional;
 
 public class Item
 {
 
-    private String name, price, proc, app;
-    private ArrayList<String> stats = new ArrayList<>();
+    private final String name, price, proc;
+    private final ArrayList<String> stats = new ArrayList<>();
+    private final ArrayList<String> obtainedFrom = new ArrayList<>();
+
+    private String app;
     private ArrayList<String> mats = new ArrayList<>();
-    private ArrayList<String> obtainedFrom = new ArrayList<>();
 
     public Item(Element itemData)
     {
         //Name, type and duration
-        name = Parser.nameParser(itemData.getElementsByTag("h4").first().text());
+        name = capitalize(Parser.nameParser(itemData.getElementsByClass("card-title").first().text()));
 
         //Price and proc
-        Element ppStatTable = itemData.getElementsByClass("stat-table").first();
-        Element tableBody = ppStatTable.getElementsByTag("tbody").first();
+        Element itemPropMini = itemData.getElementsByClass("item-prop").first();
+        Elements divElements = getChildrenElements(itemPropMini);
 
-        Element priceTr = tableBody.getElementsByTag("tr").first();
-        price = priceTr.getElementsByTag("td").last().ownText();
-
-        Element procTr = tableBody.getElementsByTag("tr").get(1);
-        proc = procTr.getElementsByTag("td").last().ownText();
+        price = capitalize(divElements.first().getElementsByTag("p").last().text());
+        proc = capitalize(divElements.last().getElementsByTag("p").last().text());
 
         //Image
         try
@@ -63,14 +64,14 @@ public class Item
         //Stats
         try
         {
+            Element statsList = itemData.getElementsByClass("item-basestat").first();
+            Elements statData = getChildrenElements(statsList);
 
-            Element myTabContent = itemData.getElementById("myTabContent");
-            Element realStatTable = myTabContent.getElementsByClass("stat-table").last();
-            Element statBody = realStatTable.getElementsByTag("tbody").first();
-
-            for (Element trElement : statBody.getElementsByTag("tr"))
-                stats.add(trElement.getElementsByTag("td").first().ownText() + ": " +
-                        trElement.getElementsByTag("td").get(1).text());
+            for (int i = 1; i < statData.size(); i++)
+            {
+                Elements statChildren = getChildrenElements(statData.get(i));
+                stats.add(statChildren.first().text() + ": " + statChildren.last().text());
+            }
         }
         catch (Exception e)
         {
@@ -78,32 +79,25 @@ public class Item
         }
 
         //ObtainedFrom
-        //pad5-table
         try
         {
-            Element myTabContent = itemData.getElementById("myTabContent");
-            Element obtainedFromTable = myTabContent.getElementsByClass("pad5-table").first();
-            Element obtainedFromBody = obtainedFromTable.getElementsByTag("tbody").last();
+            Elements obtainedFromContent = getChildrenElements(itemData.getElementsByClass("item-obtainfrom").first().parent());
 
-            for (Element trElement : obtainedFromBody.getElementsByTag("tr"))
+            Optional<Element> obtainedSourceListOptional = getFirstChildWithClassPartial(obtainedFromContent, "js-pagination");
+
+            if(!obtainedSourceListOptional.isPresent())
+                throw new Exception();
+
+            Element innerDiv = getChildrenElements(obtainedSourceListOptional.get()).first();
+
+            for (Element sourceRow : getChildrenElements(innerDiv))
             {
-                Element tdElement = trElement.getElementsByTag("td").first();
+                Elements divChildren = getChildrenElements(sourceRow);
 
-                String value = tdElement.getElementsByTag("font").first().ownText();
+                String monsterName = divChildren.first().text();
+                String monsterLocation = divChildren.last().text();
 
-                try
-                {
-                    value = value + " " +
-                            tdElement.getElementsByTag("font").last()
-                                    .getElementsByTag("a").first().ownText();
-                }
-                catch (Exception e)
-                {
-                    value = value + " " +
-                            tdElement.getElementsByTag("font").last().ownText();
-                }
-
-                obtainedFrom.add(value);
+                obtainedFrom.add(monsterName + " - " + monsterLocation);
             }
         }
         catch (Exception e)
@@ -114,25 +108,58 @@ public class Item
         //Recipe
         try
         {
-            Element myTabContent = itemData.getElementById("myTabContent");
 
-            for (Element element : myTabContent.getAllElements())
-            {
-                if(element.id() == null)
-                    continue;
+            Element cards = itemData.getElementsByClass("card-attach-bottom").last();
+            Element probablyRecipe = getChildrenElements(cards).last();
+            Element containerDiv = getChildrenElements(probablyRecipe).last();
 
-                if(element.id().contains("recipe"))
+            boolean contains = false;
+            for (String className : containerDiv.classNames())
+                if(className.toLowerCase().equals("item-prop"))
                 {
-                    Element trElement = element.getElementsByTag("td").last();
-                    this.mats = new ArrayList<>(Arrays.asList(trElement.text().split("- ")));
+                    contains = true;
+                    break;
                 }
-            }
 
+            if(!contains)
+                throw new Exception();
+
+            Elements materialList = getChildrenElements(getChildrenElements(getChildrenElements(getChildrenElements(containerDiv).last()).last()).first());
+
+            materialList.forEach(row -> mats.add(row.text().substring(1)));
         }
         catch (Exception e)
         {
             mats.add("N/A");
         }
+
+        System.out.print("");
+    }
+
+    private String capitalize(String string)
+    {
+        return string.substring(0, 1).toUpperCase() + string.substring(1);
+    }
+
+    private Elements getChildrenElements(Element element)
+    {
+        Elements elements = new Elements();
+
+        for (Element child : element.children())
+            if(child.parent() == element)
+                elements.add(child);
+
+        return elements;
+    }
+
+    private Optional<Element> getFirstChildWithClassPartial(Elements elements, String classPartial)
+    {
+        for (Element element : elements)
+            for (String className : element.classNames())
+                if(className.contains(classPartial))
+                    return Optional.of(element);
+
+        return Optional.empty();
     }
 
     public String getName()

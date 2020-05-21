@@ -1,5 +1,12 @@
 # Changelog
 
+### 7.1.0
+- Ditched Xtal command class.
+- Updated all of the item commands to work with the new coryn.club webpage.
+
+### 7.0.0
+- Using package name of toram-sensei
+
 ### 6.2.5
 - Removed duplicate mats command on help. 
 

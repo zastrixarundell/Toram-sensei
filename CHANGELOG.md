@@ -1,5 +1,8 @@
 # Changelog
 
+### 7.1.1
+- Swithced to using patreon for support.
+
 ### 7.1.0
 - Ditched Xtal command class.
 - Updated all of the item commands to work with the new coryn.club webpage.

@@ -102,6 +102,12 @@ public class UpgradeCommand extends DiscordCommand
 
     private void setupXtals() throws IOException
     {
+        /*
+            Ya for some reason the webcrawler doesn't like load all of the xtals in one run so I gotta like
+            go ascending for like most of 'em and then go descending for the rest of the xtals which aren't like
+            loaded... oof... Hey, it works!
+         */
+
         Document document = Jsoup.connect("http://coryn.club/item.php")
                 .data("special", "xtal")
                 .data("show", "3000")

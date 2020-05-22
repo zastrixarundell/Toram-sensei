@@ -124,4 +124,30 @@ public class Monster
     {
         return weakness;
     }
+
+    public enum MonsterType
+    {
+        MONSTER("N", "monster"),
+        MINIBOSS("M", "miniboss", "mb", "mboss", "mini"),
+        BOSS("B", "boss");
+
+        private final String type;
+        private final String[] callers;
+
+        MonsterType(String type, String ... callers)
+        {
+            this.type = type;
+            this.callers = callers;
+        }
+
+        public String getType()
+        {
+            return type;
+        }
+
+        public String[] getCallers()
+        {
+            return callers;
+        }
+    }
 }

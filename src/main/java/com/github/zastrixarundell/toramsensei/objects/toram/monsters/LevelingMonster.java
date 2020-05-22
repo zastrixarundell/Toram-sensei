@@ -18,7 +18,6 @@
 
 package com.github.zastrixarundell.toramsensei.objects.toram.monsters;
 
-import com.github.zastrixarundell.toramsensei.Parser;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
@@ -33,16 +32,18 @@ public class LevelingMonster
     public LevelingMonster(Element npcData)
     {
         //Name, type and duration
-        level = npcData.getElementsByTag("td").first().ownText();
-        location = npcData.getElementsByTag("td").get(1).ownText();
-        link = "http://coryn.club/" + npcData.getElementsByTag("td").get(1)
-                .getElementsByTag("a").first()
+        level = npcData.getElementsByClass("level-col-1").first().text().split(" ")[1];
+        //level = npcData.getElementsByTag("td").first().ownText();
+
+        Element nameAndLocationCol = npcData.getElementsByClass("level-col-2").first();
+
+        name = nameAndLocationCol.getElementsByTag("p").first().text();
+        location = nameAndLocationCol.getElementsByTag("p").last().text();
+
+        link = "http://coryn.club/" + npcData.getElementsByTag("a").first()
                 .attr("href");
 
-        name = Parser.nameParser(npcData.getElementsByTag("td").get(1)
-                .getElementsByTag("a").first().ownText());
-
-        String stringExp = npcData.getElementsByTag("td").last().text();
+        String stringExp = npcData.getElementsByClass("level-col-3").first().text();
         stringExp = stringExp.replaceAll("%", "\t\n");
         stringExp = stringExp.replaceAll("\t", "%");
 

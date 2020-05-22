@@ -92,7 +92,7 @@ public class LevelCommand extends DiscordCommand
                 LevelingMonster miniBossOne = null, miniBossTwo = null, miniBossThree = null;
                 try
                 {
-                    Element[] elementsArray = getFirstThreeMonsterHtml(bossTable);
+                    Element[] elementsArray = getFirstThreeMonsterHtml(minibossTable);
 
                     Element miniBossOneE = elementsArray[0];
                     Element miniBossTwoE = elementsArray[1];
@@ -116,7 +116,7 @@ public class LevelCommand extends DiscordCommand
                 LevelingMonster monsterOne = null, monsterTwo = null, monsterThree = null;
                 try
                 {
-                    Element[] elementsArray = getFirstThreeMonsterHtml(bossTable);
+                    Element[] elementsArray = getFirstThreeMonsterHtml(monsterTable);
 
                     Element monsterOneE = elementsArray[0];
                     Element monsterTwoE = elementsArray[1];

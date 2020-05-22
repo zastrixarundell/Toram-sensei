@@ -37,7 +37,7 @@ import com.github.zastrixarundell.toramsensei.commands.torambot.VoteCommand;
 import com.github.zastrixarundell.toramsensei.objects.tasks.MessageTask;
 import com.github.zastrixarundell.toramsensei.objects.tasks.MonthlyDyesTask;
 import com.github.zastrixarundell.toramsensei.objects.tasks.UpdateDisplayer;
-import com.github.zastrixarundell.toramsensei.objects.toram.ProficiencyItem;
+import com.github.zastrixarundell.toramsensei.objects.toram.items.ProficiencyItem;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;

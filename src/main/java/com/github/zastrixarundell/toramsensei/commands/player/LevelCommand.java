@@ -3,7 +3,7 @@ package com.github.zastrixarundell.toramsensei.commands.player;
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.Values;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
-import com.github.zastrixarundell.toramsensei.objects.toram.NPC;
+import com.github.zastrixarundell.toramsensei.objects.toram.monsters.NPC;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jsoup.Jsoup;

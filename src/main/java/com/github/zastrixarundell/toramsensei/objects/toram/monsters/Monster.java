@@ -16,7 +16,7 @@
  *
  */
 
-package com.github.zastrixarundell.toramsensei.objects.toram;
+package com.github.zastrixarundell.toramsensei.objects.toram.monsters;
 
 import com.github.zastrixarundell.toramsensei.Parser;
 import org.jsoup.nodes.Element;

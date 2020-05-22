@@ -2,7 +2,7 @@ package com.github.zastrixarundell.toramsensei.commands.search.monsters;
 
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
-import com.github.zastrixarundell.toramsensei.objects.toram.Monster;
+import com.github.zastrixarundell.toramsensei.objects.toram.monsters.Monster;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jsoup.Jsoup;

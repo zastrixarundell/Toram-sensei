@@ -183,20 +183,11 @@ public class LevelCommand extends DiscordCommand
     private void showNPC(MessageCreateEvent messageCreateEvent, LevelingMonster levelingMonsterOne, LevelingMonster levelingMonsterTwo, LevelingMonster levelingMonsterThree, String type)
     {
         EmbedBuilder embed = new EmbedBuilder()
-                .setTitle(type)
-                .addField(
-                        levelingMonsterOne.getName() + " - " + levelingMonsterOne.getLevel() + " - " + levelingMonsterOne.getLocation(),
-                        levelingMonsterOne.getExp().get(0)[0] + " - " + levelingMonsterOne.getExp().get(0)[1]);
+                .setTitle(type);
 
-        if(levelingMonsterTwo != null)
-            embed.addField(
-                    levelingMonsterTwo.getName() + " - " + levelingMonsterTwo.getLevel() + " - " + levelingMonsterTwo.getLocation(),
-                    levelingMonsterTwo.getExp().get(0)[0] + " - " + levelingMonsterTwo.getExp().get(0)[1]);
-
-        if(levelingMonsterThree != null)
-            embed.addField(
-                    levelingMonsterThree.getName() + " - " + levelingMonsterThree.getLevel() + " - " + levelingMonsterThree.getLocation(),
-                    levelingMonsterThree.getExp().get(0)[0] + " - " + levelingMonsterThree.getExp().get(0)[1]);
+        addNPCField(embed, levelingMonsterOne);
+        addNPCField(embed, levelingMonsterTwo);
+        addNPCField(embed, levelingMonsterThree);
 
         Parser.parseMonsterThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);
@@ -205,6 +196,13 @@ public class LevelCommand extends DiscordCommand
         embed.setFooter("P.S. The GIF is from Castlevania.");
 
         messageCreateEvent.getChannel().sendMessage(embed);
+    }
+
+    private void addNPCField(EmbedBuilder embed, LevelingMonster npc)
+    {
+        if(npc != null)
+            embed.addField(npc.getName() + " - " + npc.getLevel() + " - " + npc.getLocation(),
+            npc.getExp().get(0)[0] + " - " + npc.getExp().get(0)[1]);
     }
 
     private void sendCommandUsage(MessageCreateEvent messageCreateEvent)

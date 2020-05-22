@@ -3,7 +3,7 @@ package com.github.zastrixarundell.toramsensei.commands.player;
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.Values;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
-import com.github.zastrixarundell.toramsensei.objects.toram.monsters.NPC;
+import com.github.zastrixarundell.toramsensei.objects.toram.monsters.LevelingMonster;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jsoup.Jsoup;
@@ -60,7 +60,7 @@ public class LevelCommand extends DiscordCommand
 
 
                 //Start Boss
-                NPC bossOne = null, bossTwo = null, bossThree = null;
+                LevelingMonster bossOne = null, bossTwo = null, bossThree = null;
 
                 try
                 {
@@ -72,13 +72,13 @@ public class LevelCommand extends DiscordCommand
                     Element bossThreeE = body.getElementsByTag("tr").get(2);
 
                     if(bossOneE != null)
-                        bossOne = new NPC(bossOneE);
+                        bossOne = new LevelingMonster(bossOneE);
 
                     if(bossOneE != null)
-                        bossTwo = new NPC(bossTwoE);
+                        bossTwo = new LevelingMonster(bossTwoE);
 
                     if(bossOneE != null)
-                        bossThree = new NPC(bossThreeE);
+                        bossThree = new LevelingMonster(bossThreeE);
                 }
                 catch (Exception ignore)
                 {
@@ -86,7 +86,7 @@ public class LevelCommand extends DiscordCommand
                 }
 
                 //Start MiniBoss
-                NPC miniBossOne = null, miniBossTwo = null, miniBossThree = null;
+                LevelingMonster miniBossOne = null, miniBossTwo = null, miniBossThree = null;
                 try
                 {
                     Element minibossTable = tables.get(1);
@@ -97,13 +97,13 @@ public class LevelCommand extends DiscordCommand
                     Element miniBossThreeE = body.getElementsByTag("tr").get(2);
 
                     if(miniBossOneE != null)
-                        miniBossOne = new NPC(miniBossOneE);
+                        miniBossOne = new LevelingMonster(miniBossOneE);
 
                     if(miniBossTwoE != null)
-                        miniBossTwo = new NPC(miniBossTwoE);
+                        miniBossTwo = new LevelingMonster(miniBossTwoE);
 
                     if(miniBossThreeE != null)
-                        miniBossThree = new NPC(miniBossThreeE);
+                        miniBossThree = new LevelingMonster(miniBossThreeE);
                 }
                 catch (Exception ignore)
                 {
@@ -111,7 +111,7 @@ public class LevelCommand extends DiscordCommand
                 }
 
                 //Start Monster
-                NPC monsterOne = null, monsterTwo = null, monsterThree = null;
+                LevelingMonster monsterOne = null, monsterTwo = null, monsterThree = null;
                 try
                 {
                     Element monsterTable = tables.last();
@@ -122,13 +122,13 @@ public class LevelCommand extends DiscordCommand
                     Element monsterThreeE = body.getElementsByTag("tr").get(2);
 
                     if(monsterOneE != null)
-                        monsterOne = new NPC(monsterOneE);
+                        monsterOne = new LevelingMonster(monsterOneE);
 
                     if(monsterTwoE != null)
-                        monsterTwo = new NPC(monsterTwoE);
+                        monsterTwo = new LevelingMonster(monsterTwoE);
 
                     if(monsterThreeE != null)
-                        monsterThree = new NPC(monsterThreeE);
+                        monsterThree = new LevelingMonster(monsterThreeE);
                 }
                 catch (Exception ignore)
                 {
@@ -164,23 +164,23 @@ public class LevelCommand extends DiscordCommand
 
     }
 
-    private void showNPC(MessageCreateEvent messageCreateEvent, NPC npcOne, NPC npcTwo, NPC npcThree, String type)
+    private void showNPC(MessageCreateEvent messageCreateEvent, LevelingMonster levelingMonsterOne, LevelingMonster levelingMonsterTwo, LevelingMonster levelingMonsterThree, String type)
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(type)
                 .addField(
-                        npcOne.getName() + " - " + npcOne.getLevel() + " - " + npcOne.getLocation(),
-                        npcOne.getExp().get(0)[0] + " - " + npcOne.getExp().get(0)[1]);
+                        levelingMonsterOne.getName() + " - " + levelingMonsterOne.getLevel() + " - " + levelingMonsterOne.getLocation(),
+                        levelingMonsterOne.getExp().get(0)[0] + " - " + levelingMonsterOne.getExp().get(0)[1]);
 
-        if(npcTwo != null)
+        if(levelingMonsterTwo != null)
             embed.addField(
-                    npcTwo.getName() + " - " + npcTwo.getLevel() + " - " + npcTwo.getLocation(),
-                    npcTwo.getExp().get(0)[0] + " - " + npcTwo.getExp().get(0)[1]);
+                    levelingMonsterTwo.getName() + " - " + levelingMonsterTwo.getLevel() + " - " + levelingMonsterTwo.getLocation(),
+                    levelingMonsterTwo.getExp().get(0)[0] + " - " + levelingMonsterTwo.getExp().get(0)[1]);
 
-        if(npcThree != null)
+        if(levelingMonsterThree != null)
             embed.addField(
-                    npcThree.getName() + " - " + npcThree.getLevel() + " - " + npcThree.getLocation(),
-                    npcThree.getExp().get(0)[0] + " - " + npcThree.getExp().get(0)[1]);
+                    levelingMonsterThree.getName() + " - " + levelingMonsterThree.getLevel() + " - " + levelingMonsterThree.getLocation(),
+                    levelingMonsterThree.getExp().get(0)[0] + " - " + levelingMonsterThree.getExp().get(0)[1]);
 
         Parser.parseMonsterThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

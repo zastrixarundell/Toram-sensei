@@ -24,13 +24,13 @@ import org.jsoup.nodes.Element;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NPC
+public class LevelingMonster
 {
 
     private String name, level, location, link;
     private List<String[]> exp = new ArrayList<>();
 
-    public NPC(Element npcData)
+    public LevelingMonster(Element npcData)
     {
         //Name, type and duration
         level = npcData.getElementsByTag("td").first().ownText();

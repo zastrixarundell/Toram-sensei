@@ -56,7 +56,11 @@ public class LevelCommand extends DiscordCommand
                         .data("bonusEXP", String.valueOf(bonus))
                         .get();
 
-                Elements tables = document.getElementsByClass("table table-striped");
+                Elements levelingTables = document.getElementsByClass("item-leveling");
+
+                Element bossTable = levelingTables.first();
+                Element minibossTable = levelingTables.get(1);
+                Element monsterTable = levelingTables.last();
 
 
                 //Start Boss
@@ -64,12 +68,11 @@ public class LevelCommand extends DiscordCommand
 
                 try
                 {
-                    Element bossTable = tables.first();
-                    Element body = bossTable.getElementsByTag("tbody").first();
+                    Element[] elementsArray = getFirstThreeMonsterHtml(bossTable);
 
-                    Element bossOneE = body.getElementsByTag("tr").get(0);
-                    Element bossTwoE = body.getElementsByTag("tr").get(1);
-                    Element bossThreeE = body.getElementsByTag("tr").get(2);
+                    Element bossOneE = elementsArray[0];
+                    Element bossTwoE = elementsArray[1];
+                    Element bossThreeE = elementsArray[2];
 
                     if(bossOneE != null)
                         bossOne = new LevelingMonster(bossOneE);
@@ -89,12 +92,11 @@ public class LevelCommand extends DiscordCommand
                 LevelingMonster miniBossOne = null, miniBossTwo = null, miniBossThree = null;
                 try
                 {
-                    Element minibossTable = tables.get(1);
-                    Element body = minibossTable.getElementsByTag("tbody").first();
+                    Element[] elementsArray = getFirstThreeMonsterHtml(bossTable);
 
-                    Element miniBossOneE = body.getElementsByTag("tr").get(0);
-                    Element miniBossTwoE = body.getElementsByTag("tr").get(1);
-                    Element miniBossThreeE = body.getElementsByTag("tr").get(2);
+                    Element miniBossOneE = elementsArray[0];
+                    Element miniBossTwoE = elementsArray[1];
+                    Element miniBossThreeE = elementsArray[2];
 
                     if(miniBossOneE != null)
                         miniBossOne = new LevelingMonster(miniBossOneE);
@@ -114,12 +116,11 @@ public class LevelCommand extends DiscordCommand
                 LevelingMonster monsterOne = null, monsterTwo = null, monsterThree = null;
                 try
                 {
-                    Element monsterTable = tables.last();
-                    Element body = monsterTable.getElementsByTag("tbody").first();
+                    Element[] elementsArray = getFirstThreeMonsterHtml(bossTable);
 
-                    Element monsterOneE = body.getElementsByTag("tr").get(0);
-                    Element monsterTwoE = body.getElementsByTag("tr").get(1);
-                    Element monsterThreeE = body.getElementsByTag("tr").get(2);
+                    Element monsterOneE = elementsArray[0];
+                    Element monsterTwoE = elementsArray[1];
+                    Element monsterThreeE = elementsArray[2];
 
                     if(monsterOneE != null)
                         monsterOne = new LevelingMonster(monsterOneE);
@@ -162,6 +163,21 @@ public class LevelCommand extends DiscordCommand
 
         executeRunnable(event, runnable);
 
+    }
+
+    public Element[] getFirstThreeMonsterHtml(Element table)
+    {
+        Element[] toReturn = new Element[]{null, null, null};
+
+        Elements monsterTable = table.getElementsByClass("level-row");
+
+        if(monsterTable.size() == 0)
+            return new Element[]{null, null, null};
+
+        for (int i = 0; i < 3 && i < monsterTable.size(); i++)
+            toReturn[i] = monsterTable.get(i);
+
+        return toReturn;
     }
 
     private void showNPC(MessageCreateEvent messageCreateEvent, LevelingMonster levelingMonsterOne, LevelingMonster levelingMonsterTwo, LevelingMonster levelingMonsterThree, String type)

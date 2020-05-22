@@ -20,45 +20,38 @@ package com.github.zastrixarundell.toramsensei.objects.toram.monsters;
 
 import com.github.zastrixarundell.toramsensei.Parser;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
 public class Monster
 {
-    private String name, hp, element, exp, tamable, location, weakness;
-    private ArrayList<String> items = new ArrayList<>();
+    private final String name, hp, element, exp, tamable, location, weakness, level;
+    private final ArrayList<String> items = new ArrayList<>();
 
     public Monster(Element monsterData)
     {
-        monsterData = monsterData.getElementsByTag("td").first();
+        String name = Parser.nameParser(monsterData.getElementsByClass("card-title-inverse").first().text());
 
-        name = Parser.nameParser(monsterData.getElementsByTag("h4").text());
+        // Stats
 
-        Element stats = monsterData.getElementsByClass("stat-table").first();
-        Element statBody = stats.getElementsByTag("tbody").first();
+        Element statDiv = monsterData.getElementsByClass("monster-no-pic").first();
 
-        Element tr;
+        Elements stats = getChildrenElements(getChildrenElements(getChildrenElements(statDiv).first()).first());
 
-        tr = statBody.getElementsByTag("tr").first();
-        hp = tr.getElementsByTag("td").first().ownText();
-        element = tr.getElementsByTag("td").last().ownText();
+        level = stats.first().getElementsByTag("p").last().text();
+        String type = stats.get(1).getElementsByTag("p").last().text();
 
-        tr = statBody.getElementsByTag("tr").get(1);
-        exp = tr.getElementsByTag("td").first().ownText();
-        tamable = tr.getElementsByTag("td").last().ownText();
+        if(type.equalsIgnoreCase("-"))
+            type = "";
+        else
+            type = " " + type;
 
-        tr = statBody.getElementsByTag("tr").last();
-        location = tr.getElementsByTag("td").first().text();
+        this.name = name + type + " - Level: " + level;
 
-        Element drops = monsterData.getElementsByClass("pad5-table").first();
-        Element dropBody = drops.getElementsByTag("tbody").first();
+        hp = stats.get(2).getElementsByTag("p").last().text();
 
-        dropBody.getElementsByTag("tr").forEach(elementTr ->
-            {
-                Element element = elementTr.getElementsByTag("td").first();
-                items.add(element.text());
-            }
-        );
+        element = stats.get(3).getElementsByTag("p").last().text();
 
         switch(element.toLowerCase())
         {
@@ -83,6 +76,28 @@ public class Monster
             default:
                 weakness = "No weakness";
         }
+
+        exp = stats.get(4).getElementsByTag("p").last().text();
+        tamable = stats.get(5).getElementsByTag("p").last().text();
+
+        Element spawnAtDiv = monsterData.getElementsByClass("item-prop").get(1);
+
+        location = getChildrenElements(spawnAtDiv).last().text();
+
+        Elements drops = getChildrenElements(monsterData.getElementsByClass("monster-drop-list").first());
+
+        drops.forEach(dropRow -> items.add(dropRow.text()));
+    }
+
+    private Elements getChildrenElements(Element element)
+    {
+        Elements elements = new Elements();
+
+        for (Element child : element.children())
+            if(child.parent() == element)
+                elements.add(child);
+
+        return elements;
     }
 
     public String getName()

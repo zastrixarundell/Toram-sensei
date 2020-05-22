@@ -26,15 +26,14 @@ import com.github.zastrixarundell.toramsensei.commands.player.LevelCommand;
 import com.github.zastrixarundell.toramsensei.commands.player.PointsCommand;
 import com.github.zastrixarundell.toramsensei.commands.search.items.DiscordItemCommand;
 import com.github.zastrixarundell.toramsensei.commands.search.items.UpgradeCommand;
-import com.github.zastrixarundell.toramsensei.commands.search.monsters.BossCommand;
-import com.github.zastrixarundell.toramsensei.commands.search.monsters.MiniBossCommand;
-import com.github.zastrixarundell.toramsensei.commands.search.monsters.MonsterCommand;
+import com.github.zastrixarundell.toramsensei.commands.search.monsters.MonsterSearchCommand;
 import com.github.zastrixarundell.toramsensei.commands.torambot.*;
 import com.github.zastrixarundell.toramsensei.objects.tasks.MessageTask;
 import com.github.zastrixarundell.toramsensei.objects.tasks.MonthlyDyesTask;
 import com.github.zastrixarundell.toramsensei.objects.tasks.UpdateDisplayer;
 import com.github.zastrixarundell.toramsensei.objects.toram.items.Item;
 import com.github.zastrixarundell.toramsensei.objects.toram.items.ProficiencyItem;
+import com.github.zastrixarundell.toramsensei.objects.toram.monsters.Monster;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
@@ -159,9 +158,9 @@ public class ToramSensei
         bot.addListener(new UpgradeCommand());
 
         //monsters
-        bot.addListener(new MonsterCommand());
-        bot.addListener(new MiniBossCommand());
-        bot.addListener(new BossCommand());
+        for (Monster.MonsterType type : Monster.MonsterType.values())
+            bot.addListener(new MonsterSearchCommand(type));
+
 
         //player
         bot.addListener(new LevelCommand());

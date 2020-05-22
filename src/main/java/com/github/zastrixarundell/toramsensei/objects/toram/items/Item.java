@@ -107,7 +107,6 @@ public class Item
         //Recipe
         try
         {
-
             Element cards = itemData.getElementsByClass("card-attach-bottom").last();
             Element probablyRecipe = getChildrenElements(cards).last();
             Element containerDiv = getChildrenElements(probablyRecipe).last();

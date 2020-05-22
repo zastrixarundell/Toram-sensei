@@ -1,5 +1,9 @@
 # Changelog
 
+### 7.2.0
+- Fixed eveything with `>level` and monster search.
+- Release.
+
 ### 7.1.1
 - Swithced to using patreon for support.
 

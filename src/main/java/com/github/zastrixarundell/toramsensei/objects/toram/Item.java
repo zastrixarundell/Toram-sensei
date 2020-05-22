@@ -23,7 +23,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 public class Item
@@ -195,6 +194,51 @@ public class Item
     public ArrayList<String> getMats()
     {
         return mats;
+    }
+
+    public enum ItemType
+    {
+
+        ARROW("7", "atk", "arrow"),
+        BOW("9", "atk","bow"),
+        BOW_GUN("10", "atk", "bowgun", "gun"),
+        DAGGER("11", "atk", "dagger"),
+        HALBERD("26", "atk", "halberd", "hb"),
+        KATANA("27", "atk","katana", "kat"),
+        KNUCKLES("13", "atk","knuckles", "knuckle"),
+        MAGIC_DEVICE("15", "atk","magicdevice", "md"),
+        ONE_HANDED_SWORD("4", "atk","onehanded", "1h", "ohs"),
+        STAFF("19", "atk","staff"),
+        TWO_HANDED_SWORD("5", "atk", "twohanded", "2h", "ths"),
+        ADDITIONAL("6", "def","additional", "add"),
+        ARMOR("8", "def","armor", "arm"),
+        SHIELD("17", "def","shield"),
+        SPECIAL("18", "def","special", "spec"),
+        GEM("12", null,"gem"),
+        CRYSTA(null, null, "xtal", "crysta", "crystal"),
+        ITEM(null, null,"item");
+
+        String code, longText, name, type;
+        String[] callers;
+
+        ItemType(String code, String type, String ... callers)
+        {
+            this.callers = callers;
+            this.code = code;
+            this.type = type;
+            name = String.join(" ", name().toLowerCase().split("_"));
+            longText = (name().toLowerCase().startsWith("a") ? "an " : "a ") + name;
+        }
+
+        public String getCode() { return code; }
+
+        public String getLongText() { return longText; }
+
+        public String getName() { return name; }
+
+        public String[] getCallers() { return callers; }
+
+        public String getType() { return type; }
     }
 
 }

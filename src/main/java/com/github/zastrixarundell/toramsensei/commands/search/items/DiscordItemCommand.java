@@ -20,8 +20,7 @@ package com.github.zastrixarundell.toramsensei.commands.search.items;
 
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
-import com.github.zastrixarundell.toramsensei.objects.toram.Item;
-import com.github.zastrixarundell.toramsensei.objects.toram.ItemType;
+import com.github.zastrixarundell.toramsensei.objects.toram.items.Item;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jsoup.Connection;
@@ -34,9 +33,9 @@ import java.util.ArrayList;
 
 public class DiscordItemCommand extends DiscordCommand
 {
-    private final ItemType itemType;
+    private final Item.ItemType itemType;
 
-    public DiscordItemCommand(ItemType type)
+    public DiscordItemCommand(Item.ItemType type)
     {
         super(type.getCallers());
         this.itemType = type;
@@ -67,7 +66,7 @@ public class DiscordItemCommand extends DiscordCommand
                 if(itemType.getCode() != null)
                     connection.data("type", itemType.getCode());
 
-                if(itemType == ItemType.CRYSTA)
+                if(itemType == Item.ItemType.CRYSTA)
                     connection.data("special", "xtal");
 
                 Document document = connection.get();

@@ -3,13 +3,12 @@ package com.github.zastrixarundell.toramsensei.commands.crafting;
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
 import com.github.zastrixarundell.toramsensei.commands.search.items.DiscordItemCommand;
-import com.github.zastrixarundell.toramsensei.objects.toram.Item;
+import com.github.zastrixarundell.toramsensei.objects.toram.items.Item;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 

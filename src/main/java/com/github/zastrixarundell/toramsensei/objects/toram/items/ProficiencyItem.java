@@ -16,7 +16,7 @@
  *
  */
 
-package com.github.zastrixarundell.toramsensei.objects.toram;
+package com.github.zastrixarundell.toramsensei.objects.toram.items;
 
 import java.util.ArrayList;
 

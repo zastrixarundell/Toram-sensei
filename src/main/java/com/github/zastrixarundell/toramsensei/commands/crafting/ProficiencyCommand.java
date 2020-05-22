@@ -2,7 +2,7 @@ package com.github.zastrixarundell.toramsensei.commands.crafting;
 
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
-import com.github.zastrixarundell.toramsensei.objects.toram.ProficiencyItem;
+import com.github.zastrixarundell.toramsensei.objects.toram.items.ProficiencyItem;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 

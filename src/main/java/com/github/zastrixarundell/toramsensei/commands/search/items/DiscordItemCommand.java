@@ -20,8 +20,7 @@ package com.github.zastrixarundell.toramsensei.commands.search.items;
 
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
-import com.github.zastrixarundell.toramsensei.objects.toram.Item;
-import com.github.zastrixarundell.toramsensei.objects.toram.ItemType;
+import com.github.zastrixarundell.toramsensei.objects.toram.items.Item;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jsoup.Connection;
@@ -34,9 +33,9 @@ import java.util.ArrayList;
 
 public class DiscordItemCommand extends DiscordCommand
 {
-    private ItemType itemType;
+    private final Item.ItemType itemType;
 
-    public DiscordItemCommand(ItemType type)
+    public DiscordItemCommand(Item.ItemType type)
     {
         super(type.getCallers());
         this.itemType = type;
@@ -61,17 +60,20 @@ public class DiscordItemCommand extends DiscordCommand
             {
                 Connection connection = Jsoup.connect("http://coryn.club/item.php")
                         .data("name", data)
-                        .data("show", "5");
+                        .data("show", "5")
+                        .data("order", itemType.getType() != null ? itemType.getType() + " DESC,name" : "name");
 
                 if(itemType.getCode() != null)
-                    connection = connection.data("type", itemType.getCode());
+                    connection.data("type", itemType.getCode());
+
+                if(itemType == Item.ItemType.CRYSTA)
+                    connection.data("special", "xtal");
 
                 Document document = connection.get();
 
-                Element table = document.getElementsByClass("table table-striped").first();
-                Element body = table.getElementsByTag("tbody").first();
+                Element cardContainer = document.getElementsByClass("card-container").first();
 
-                getItems(body).forEach(item -> sendItemEmbed(item, event));
+                getItems(cardContainer).forEach(item -> sendItemEmbed(item, event));
             }
             catch (Exception e)
             {
@@ -83,19 +85,24 @@ public class DiscordItemCommand extends DiscordCommand
         executeRunnable(event, runnable);
     }
 
-    private ArrayList<Item> getItems(Element body)
+    public static ArrayList<Item> getItems(Element cardContainer)
     {
-
-        Elements trs = body.getElementsByTag("tr");
+        Elements divs = cardContainer.getElementsByTag("div");
 
         ArrayList<Item> listOfItems = new ArrayList<>();
 
-        for(int size = 0, count = 0; size < trs.size() && count < 5; size++)
-            if(trs.get(size).parent() == body)
-            {
-                listOfItems.add(new Item(trs.get(size)));
-                count++;
-            }
+        for(int size = 0, count = 0; size < divs.size() && count < 5; size++)
+        {
+            Element div = divs.get(size);
+
+            if (div.parent() == cardContainer)
+                if (!div.hasClass("card-adsense"))
+                {
+                    listOfItems.add(new Item(div));
+                    count++;
+                }
+
+        }
 
         return listOfItems;
     }

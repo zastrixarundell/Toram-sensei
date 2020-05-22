@@ -18,33 +18,29 @@
 
 package com.github.zastrixarundell.toramsensei;
 
-import com.github.zastrixarundell.toramsensei.commands.search.items.DiscordItemCommand;
-import com.github.zastrixarundell.toramsensei.commands.torambot.HelpCommand;
-import com.github.zastrixarundell.toramsensei.commands.gameinfo.*;
 import com.github.zastrixarundell.toramsensei.commands.crafting.CookingCommand;
 import com.github.zastrixarundell.toramsensei.commands.crafting.MatsCommand;
 import com.github.zastrixarundell.toramsensei.commands.crafting.ProficiencyCommand;
+import com.github.zastrixarundell.toramsensei.commands.gameinfo.*;
 import com.github.zastrixarundell.toramsensei.commands.player.LevelCommand;
 import com.github.zastrixarundell.toramsensei.commands.player.PointsCommand;
-import com.github.zastrixarundell.toramsensei.commands.search.monsters.BossCommand;
-import com.github.zastrixarundell.toramsensei.commands.search.monsters.MiniBossCommand;
-import com.github.zastrixarundell.toramsensei.commands.search.monsters.MonsterCommand;
-import com.github.zastrixarundell.toramsensei.commands.torambot.DonateCommand;
-import com.github.zastrixarundell.toramsensei.commands.torambot.InviteCommand;
-import com.github.zastrixarundell.toramsensei.commands.torambot.SupportCommand;
+import com.github.zastrixarundell.toramsensei.commands.search.items.DiscordItemCommand;
 import com.github.zastrixarundell.toramsensei.commands.search.items.UpgradeCommand;
-import com.github.zastrixarundell.toramsensei.commands.search.items.XtalCommand;
-import com.github.zastrixarundell.toramsensei.commands.torambot.VoteCommand;
+import com.github.zastrixarundell.toramsensei.commands.search.monsters.MonsterSearchCommand;
+import com.github.zastrixarundell.toramsensei.commands.torambot.*;
 import com.github.zastrixarundell.toramsensei.objects.tasks.MessageTask;
 import com.github.zastrixarundell.toramsensei.objects.tasks.MonthlyDyesTask;
 import com.github.zastrixarundell.toramsensei.objects.tasks.UpdateDisplayer;
-import com.github.zastrixarundell.toramsensei.objects.toram.ItemType;
-import com.github.zastrixarundell.toramsensei.objects.toram.ProficiencyItem;
+import com.github.zastrixarundell.toramsensei.objects.toram.items.Item;
+import com.github.zastrixarundell.toramsensei.objects.toram.items.ProficiencyItem;
+import com.github.zastrixarundell.toramsensei.objects.toram.monsters.Monster;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.DiscordApiBuilder;
 
-import java.util.*;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class ToramSensei
 {
@@ -82,7 +78,7 @@ public class ToramSensei
         Scanner scanner = new Scanner(System.in);
 
         Timer activity = updateActivity(bot);
-        Timer dyeImage = updateDyesImage(bot);
+        //Timer dyeImage = updateDyesImage(bot);
         Timer updates = updateUpdates(bot);
 
         try
@@ -95,7 +91,7 @@ public class ToramSensei
                 {
                     bot.disconnect();
                     activity.cancel();
-                    dyeImage.cancel();
+                    //dyeImage.cancel();
                     updates.cancel();
                     System.exit(0);
                 }
@@ -112,7 +108,7 @@ public class ToramSensei
             {
                 bot.disconnect();
                 activity.cancel();
-                dyeImage.cancel();
+                //dyeImage.cancel();
                 updates.cancel();
             }
             catch (Exception ignore)
@@ -156,16 +152,15 @@ public class ToramSensei
         bot.addListener(new MatsCommand());
 
         //items
-        for (ItemType type : ItemType.values())
+        for (Item.ItemType type : Item.ItemType.values())
             bot.addListener(new DiscordItemCommand(type));
 
-        bot.addListener(new XtalCommand());
         bot.addListener(new UpgradeCommand());
 
         //monsters
-        bot.addListener(new MonsterCommand());
-        bot.addListener(new MiniBossCommand());
-        bot.addListener(new BossCommand());
+        for (Monster.MonsterType type : Monster.MonsterType.values())
+            bot.addListener(new MonsterSearchCommand(type));
+
 
         //player
         bot.addListener(new LevelCommand());

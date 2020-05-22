@@ -2,7 +2,7 @@ package com.github.zastrixarundell.toramsensei.commands.search.monsters;
 
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
-import com.github.zastrixarundell.toramsensei.objects.toram.Monster;
+import com.github.zastrixarundell.toramsensei.objects.toram.monsters.Monster;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 import org.jsoup.Jsoup;
@@ -12,10 +12,16 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class BossCommand extends DiscordCommand
+public class MonsterSearchCommand extends DiscordCommand
 {
 
-    public BossCommand() { super("boss"); }
+    public MonsterSearchCommand(Monster.MonsterType type)
+    {
+        super(type.getCallers());
+        this.type = type;
+    }
+
+    private final Monster.MonsterType type;
 
     @Override
     protected void runCommand(MessageCreateEvent event)
@@ -24,7 +30,7 @@ public class BossCommand extends DiscordCommand
 
         if (arguments.isEmpty())
         {
-            sendError(event, "Empty Search", "You can't search for a boss without specifying which one!");
+            sendError(event, "Empty Search", "You can't search for a monster without specifying which one!");
             return;
         }
 
@@ -36,19 +42,19 @@ public class BossCommand extends DiscordCommand
             {
                 Document document = Jsoup.connect("http://coryn.club/monster.php")
                         .data("name", data)
-                        .data("type", "B")
+                        .data("type", type.getType())
                         .data("show", "5")
                         .get();
-                Elements tables = document.getElementsByClass("table table-striped");
-                Element body = tables.first().getElementsByTag("tbody").first();
 
-                generateMonsters(body).forEach(monster -> sendMonsterMessage(monster, event));
+                Element cardContainer = document.getElementsByClass("card-container").first();
+
+                generateMonsters(cardContainer).forEach(monster -> sendMonsterMessage(monster, event));
 
             }
             catch (Exception e)
             {
-                sendError(event, "Error while getting the boss!",
-                        "An error happened while getting the boss info! Does the specified boss even " +
+                sendError(event, "Error while getting the monster!",
+                        "An error happened while getting the monster info! Does the specified monster even " +
                                 "exist?");
             }
         };
@@ -78,25 +84,26 @@ public class BossCommand extends DiscordCommand
         messageCreateEvent.getChannel().sendMessage(embed);
     }
 
-    private ArrayList<Monster> generateMonsters(Element body)
+    private ArrayList<Monster> generateMonsters(Element cardContainer)
     {
+        Elements divs = cardContainer.getElementsByTag("div");
 
-        ArrayList<Monster> monsters = new ArrayList<>();
+        ArrayList<Monster> listOfMonsters = new ArrayList<>();
 
-        body.getElementsByTag("tr").forEach(element ->
+        for(int size = 0, count = 0; size < divs.size() && count < 5; size++)
         {
-            if(element.parent() == body)
-                try
-                {
-                    monsters.add(new Monster(element));
-                }
-                catch (Exception ignore)
-                {
+            Element div = divs.get(size);
 
+            if (div.parent() == cardContainer)
+                if (!div.hasClass("card-adsense"))
+                {
+                    listOfMonsters.add(new Monster(div));
+                    count++;
                 }
-        });
 
-        return monsters;
+        }
+
+        return listOfMonsters;
     }
 
     private void sendError(MessageCreateEvent messageCreateEvent, String name, String description)

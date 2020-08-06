@@ -4,6 +4,7 @@ import org.discordbots.api.client.DiscordBotListAPI;
 import org.joda.time.DateTime;
 import redis.clients.jedis.Jedis;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -29,8 +30,7 @@ public class Values
 
     public final static String donationLogo = "https://raw.githubusercontent.com/ZastrixArundell/Toram-sensei/master/images/patreon.png";
 
-    public final static Jedis jedis =
-            System.getenv("REDISTOGO_URL").isEmpty() ? new Jedis() : new Jedis(System.getenv("REDISTOGO_URL"));
+    private static Jedis jedis;
 
     private static DateTime lastDyeUpdate;
 
@@ -45,6 +45,13 @@ public class Values
     public static List<String> getDyeImages() { return dyeImages; }
 
     public static void setDyeImages(List<String> dyeImages) { Values.dyeImages = dyeImages; }
+
+    public static void setupJedis() {
+        URI redisURI = URI.create(System.getenv("REDIS_URL"));
+        jedis = new Jedis(redisURI);
+    }
+
+    public static Jedis getJedis() { return jedis; }
 
     static void getMavenVersion()
     {

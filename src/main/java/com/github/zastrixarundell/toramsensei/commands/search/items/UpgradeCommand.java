@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.zastrixarundell.toramsensei.Values.jedis;
+import static com.github.zastrixarundell.toramsensei.Values.getJedis;
 
 public class UpgradeCommand extends DiscordCommand
 {
@@ -80,9 +80,9 @@ public class UpgradeCommand extends DiscordCommand
 
                 List<Item> itemList = new ArrayList<>();
 
-                jedis.smembers("upgrade#names").forEach(upgradeXtal ->
+                getJedis().smembers("upgrade#names").forEach(upgradeXtal ->
                 {
-                    Item item = Item.fromJson(jedis.hget("upgrade#xtals", upgradeXtal));
+                    Item item = Item.fromJson(getJedis().hget("upgrade#xtals", upgradeXtal));
 
                     if(String.join("", item.getStats()).toLowerCase().contains("upgrade for: " + data.toLowerCase()))
                         itemList.add(item);
@@ -136,8 +136,8 @@ public class UpgradeCommand extends DiscordCommand
 
     private void addXtalToRedis(String key, Item value)
     {
-        jedis.sadd("upgrade#names", key);
-        jedis.hset("upgrade#xtals", key, value.toJson());
+        getJedis().sadd("upgrade#names", key);
+        getJedis().hset("upgrade#xtals", key, value.toJson());
         upgradeCount++;
     }
 

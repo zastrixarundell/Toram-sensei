@@ -19,6 +19,8 @@
 package com.github.zastrixarundell.toramsensei.objects.toram.items;
 
 import com.github.zastrixarundell.toramsensei.Parser;
+import com.google.gson.Gson;
+import org.json.JSONObject;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -238,6 +240,17 @@ public class Item
         public String[] getCallers() { return callers; }
 
         public String getType() { return type; }
+    }
+
+    public String toJson()
+    {
+        JSONObject jsonObject = new JSONObject(this);
+        return jsonObject.toString();
+    }
+
+    public static Item fromJson(String json)
+    {
+        return new Gson().fromJson(json, Item.class);
     }
 
 }

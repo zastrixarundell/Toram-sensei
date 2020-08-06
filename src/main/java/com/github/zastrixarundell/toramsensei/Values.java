@@ -29,7 +29,8 @@ public class Values
 
     public final static String donationLogo = "https://raw.githubusercontent.com/ZastrixArundell/Toram-sensei/master/images/patreon.png";
 
-    public final static Jedis jedis = new Jedis();
+    public final static Jedis jedis =
+            System.getenv("REDISTOGO_URL").isEmpty() ? new Jedis() : new Jedis(System.getenv("REDISTOGO_URL"));
 
     private static DateTime lastDyeUpdate;
 

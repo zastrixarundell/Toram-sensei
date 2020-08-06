@@ -29,7 +29,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.github.zastrixarundell.toramsensei.Values.jedis;
 
 public class UpgradeCommand extends DiscordCommand
 {
@@ -37,7 +40,8 @@ public class UpgradeCommand extends DiscordCommand
         For some reason a HashSet can't be used here so I am using the name of the item
         as they key for an unique identifier to remove copies.
      */
-    private HashMap<String, Item> allUpgradeXtals = new HashMap<>();
+    // private HashMap<String, Item> allUpgradeXtals = new HashMap<>();
+    private int upgradeCount = 0;
 
     public UpgradeCommand()
     {
@@ -58,6 +62,7 @@ public class UpgradeCommand extends DiscordCommand
     {
         ArrayList<String> arguments = Parser.argumentsParser(event);
 
+
         if (arguments.isEmpty())
         {
             emptySearch(event);
@@ -70,15 +75,17 @@ public class UpgradeCommand extends DiscordCommand
         {
             try
             {
-                if(allUpgradeXtals.isEmpty())
+                if(upgradeCount == 0)
                     setupXtals();
 
                 List<Item> itemList = new ArrayList<>();
 
-                allUpgradeXtals.values().forEach(upgradeXtal ->
+                jedis.smembers("upgrade#names").forEach(upgradeXtal ->
                 {
-                    if(String.join("", upgradeXtal.getStats()).toLowerCase().contains("upgrade for: " + data.toLowerCase()))
-                        itemList.add(upgradeXtal);
+                    Item item = Item.fromJson(jedis.hget("upgrade#xtals", upgradeXtal));
+
+                    if(String.join("", item.getStats()).toLowerCase().contains("upgrade for: " + data.toLowerCase()))
+                        itemList.add(item);
                 });
 
                 if(itemList.isEmpty())
@@ -93,7 +100,7 @@ public class UpgradeCommand extends DiscordCommand
             {
                 sendErrorMessage(event);
                 e.printStackTrace();
-                allUpgradeXtals = new HashMap<>();
+                upgradeCount = 0;
             }
         };
 
@@ -115,7 +122,7 @@ public class UpgradeCommand extends DiscordCommand
                 .get();
 
         Element cardContainer = document.getElementsByClass("card-container").first();
-        getUpgradable(cardContainer).forEach(item -> allUpgradeXtals.put(item.getName(), item));
+        getUpgradable(cardContainer).forEach(item -> addXtalToRedis(item.getName(), item));
 
         document = Jsoup.connect("http://coryn.club/item.php")
                 .data("special", "xtal")
@@ -124,7 +131,14 @@ public class UpgradeCommand extends DiscordCommand
                 .get();
 
         cardContainer = document.getElementsByClass("card-container").first();
-        getUpgradable(cardContainer).forEach(item -> allUpgradeXtals.put(item.getName(), item));
+        getUpgradable(cardContainer).forEach(item -> addXtalToRedis(item.getName(), item));
+    }
+
+    private void addXtalToRedis(String key, Item value)
+    {
+        jedis.sadd("upgrade#names", key);
+        jedis.hset("upgrade#xtals", key, value.toJson());
+        upgradeCount++;
     }
 
     private static Elements getChildrenElements(Element element)

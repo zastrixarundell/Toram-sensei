@@ -2,6 +2,7 @@ package com.github.zastrixarundell.toramsensei;
 
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.joda.time.DateTime;
+import redis.clients.jedis.Jedis;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,8 @@ public class Values
     public final static String supportLink = "https://discord.gg/MdASH22";
 
     public final static String donationLogo = "https://raw.githubusercontent.com/ZastrixArundell/Toram-sensei/master/images/patreon.png";
+
+    public final static Jedis jedis = new Jedis();
 
     private static DateTime lastDyeUpdate;
 

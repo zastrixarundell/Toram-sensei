@@ -47,8 +47,19 @@ public class Values
     public static void setDyeImages(List<String> dyeImages) { Values.dyeImages = dyeImages; }
 
     public static void setupJedis() {
-        URI redisURI = URI.create(System.getenv("REDIS_URL"));
-        jedis = new Jedis(redisURI);
+        try
+        {
+            URI redisURI = new URI(System.getenv("REDIS_URL"));
+            String password = redisURI.getUserInfo().split(":")[1];
+
+            jedis = new Jedis(redisURI.getHost(), redisURI.getPort());
+            jedis.auth(password);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            jedis = null;
+        }
     }
 
     public static Jedis getJedis() { return jedis; }

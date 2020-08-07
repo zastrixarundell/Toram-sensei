@@ -79,7 +79,7 @@ public class ToramSensei
         Scanner scanner = new Scanner(System.in);
 
         Timer activity = updateActivity(bot);
-        //Timer dyeImage = updateDyesImage(bot);
+        Timer dyeImage = updateDyesImage(bot);
         Timer updates = updateUpdates(bot);
 
         try

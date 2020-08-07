@@ -51,7 +51,7 @@ public class Values
 
     private static JedisPool buildJedisPool() {
         final JedisPoolConfig config = new JedisPoolConfig();
-        config.setMaxTotal(20);
+        config.setMaxTotal(10);
         config.setMaxIdle(5);
         config.setMinIdle(1);
         config.setTestOnBorrow(true);

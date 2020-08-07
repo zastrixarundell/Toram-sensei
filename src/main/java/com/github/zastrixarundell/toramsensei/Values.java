@@ -60,7 +60,7 @@ public class Values
 
         final URI redisURI = URI.create(System.getenv("REDIS_URL"));
 
-        String password = null;
+        String password;
         if ((password = redisURI.getUserInfo()) != null)
             password = password.split(":")[1];
 

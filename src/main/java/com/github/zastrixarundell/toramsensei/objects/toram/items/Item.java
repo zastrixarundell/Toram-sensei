@@ -30,11 +30,11 @@ import java.util.Optional;
 public class Item
 {
 
-    private final String name, price, proc;
+    private final String name;
     private final ArrayList<String> stats = new ArrayList<>();
     private final ArrayList<String> obtainedFrom = new ArrayList<>();
 
-    private String app;
+    private String app, price, proc;
     private ArrayList<String> mats = new ArrayList<>();
 
     public Item(Element itemData)
@@ -46,8 +46,23 @@ public class Item
         Element itemPropMini = itemData.getElementsByClass("item-prop").first();
         Elements divElements = getChildrenElements(itemPropMini);
 
-        price = capitalize(divElements.first().getElementsByTag("p").last().text());
-        proc = capitalize(divElements.last().getElementsByTag("p").last().text());
+        try
+        {
+            price = capitalize(divElements.first().getElementsByTag("p").last().text());
+        }
+        catch (Exception e)
+        {
+            price = "N/A";
+        }
+
+        try
+        {
+            proc = capitalize(divElements.last().getElementsByTag("p").last().text());
+        }
+        catch (Exception e)
+        {
+            proc = "N/A";
+        }
 
         //Image
         try
@@ -132,8 +147,6 @@ public class Item
         {
             mats.add("N/A");
         }
-
-        System.out.print("");
     }
 
     private String capitalize(String string)
@@ -144,6 +157,9 @@ public class Item
     private Elements getChildrenElements(Element element)
     {
         Elements elements = new Elements();
+
+        if (element == null)
+            return elements;
 
         for (Element child : element.children())
             if(child.parent() == element)

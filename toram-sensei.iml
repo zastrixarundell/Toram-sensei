@@ -33,27 +33,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.neovisionaries:nv-websocket-client:2.6" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.logging.log4j:log4j-api:2.11.0" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.10.2" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.htmlunit:htmlunit:2.35.0" level="project" />
-    <orderEntry type="library" name="Maven: xalan:xalan:2.7.2" level="project" />
-    <orderEntry type="library" name="Maven: xalan:serializer:2.7.2" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.9" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-text:1.6" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.httpcomponents:httpmime:4.5.8" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.htmlunit:htmlunit-core-js:2.35.0" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.htmlunit:neko-htmlunit:2.35.0" level="project" />
-    <orderEntry type="library" name="Maven: xerces:xercesImpl:2.12.0" level="project" />
-    <orderEntry type="library" name="Maven: xml-apis:xml-apis:1.4.01" level="project" />
-    <orderEntry type="library" name="Maven: net.sourceforge.htmlunit:htmlunit-cssparser:1.4.0" level="project" />
-    <orderEntry type="library" name="Maven: commons-io:commons-io:2.6" level="project" />
-    <orderEntry type="library" name="Maven: commons-net:commons-net:3.6" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-client:9.4.16.v20190411" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-client:9.4.16.v20190411" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-http:9.4.16.v20190411" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-xml:9.4.16.v20190411" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-util:9.4.16.v20190411" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty:jetty-io:9.4.16.v20190411" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-common:9.4.16.v20190411" level="project" />
-    <orderEntry type="library" name="Maven: org.eclipse.jetty.websocket:websocket-api:9.4.16.v20190411" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.10.3" level="project" />
     <orderEntry type="library" name="Maven: org.discordbots:DBL-Java-Library:2.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
@@ -62,12 +41,6 @@
     <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.14.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
     <orderEntry type="library" name="Maven: com.fatboyindustrial.gson-javatime-serialisers:gson-javatime-serialisers:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.cloudinary:cloudinary:1.0.14" level="project" />
-    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
-    <orderEntry type="library" name="Maven: commons-collections:commons-collections:3.2.1" level="project" />
-    <orderEntry type="library" name="Maven: com.googlecode.json-simple:json-simple:1.1.1" level="project" />
-    <orderEntry type="library" name="Maven: junit:junit:4.10" level="project" />
-    <orderEntry type="library" name="Maven: org.hamcrest:hamcrest-core:1.1" level="project" />
     <orderEntry type="library" name="Maven: mysql:mysql-connector-java:8.0.18" level="project" />
     <orderEntry type="library" name="Maven: com.google.protobuf:protobuf-java:3.6.1" level="project" />
     <orderEntry type="library" name="Maven: redis.clients:jedis:3.3.0" level="project" />

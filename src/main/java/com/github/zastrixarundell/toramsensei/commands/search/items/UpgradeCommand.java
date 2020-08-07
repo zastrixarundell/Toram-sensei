@@ -90,6 +90,7 @@ public class UpgradeCommand extends DiscordCommand
                         if (String.join("", item.getStats()).toLowerCase().contains("upgrade for: " + data.toLowerCase()))
                             itemList.add(item);
                     });
+
                 }
 
                 if(itemList.isEmpty())
@@ -129,19 +130,6 @@ public class UpgradeCommand extends DiscordCommand
 
             Element cardContainer = document.getElementsByClass("card-container").first();
             getUpgradable(cardContainer).forEach(item -> addXtalToRedis(jedis, item.getName(), item));
-
-            document = Jsoup.connect("http://coryn.club/item.php")
-                    .data("special", "xtal")
-                    .data("show", "3000")
-                    .data("order", "name DESC")
-                    .get();
-
-            cardContainer = document.getElementsByClass("card-container").first();
-            getUpgradable(cardContainer).forEach(item -> addXtalToRedis(jedis, item.getName(), item));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
         }
     }
 
@@ -186,8 +174,8 @@ public class UpgradeCommand extends DiscordCommand
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(item.getName())
-                .addInlineField("NPC sell price:", item.getPrice())
-                .addInlineField("Processed into:", item.getProc());
+                .addInlineField("NPC sell price:", "1 Spina")
+                .addInlineField("Processed into:", "100 Mana");
 
         String stats = String.join("\n", item.getStats());
 

@@ -7,7 +7,6 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.net.URI;
-import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -57,10 +56,6 @@ public class Values
         config.setTestOnBorrow(true);
         config.setTestOnReturn(true);
         config.setTestWhileIdle(true);
-        config.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis());
-        config.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());
-        config.setNumTestsPerEvictionRun(3);
-        config.setBlockWhenExhausted(true);
 
         final URI redisURI = URI.create(System.getenv("REDIS_URL"));
 

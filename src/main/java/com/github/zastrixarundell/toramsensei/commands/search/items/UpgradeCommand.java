@@ -42,7 +42,7 @@ public class UpgradeCommand extends DiscordCommand
         as they key for an unique identifier to remove copies.
      */
     // private HashMap<String, Item> allUpgradeXtals = new HashMap<>();
-    private int upgradeCount = 0;
+    private boolean used = false;
 
     public UpgradeCommand()
     {
@@ -76,7 +76,7 @@ public class UpgradeCommand extends DiscordCommand
         {
             try
             {
-                if(upgradeCount == 0)
+                if(!used)
                     setupXtals();
 
                 List<Item> itemList = new ArrayList<>();
@@ -105,7 +105,7 @@ public class UpgradeCommand extends DiscordCommand
             {
                 sendErrorMessage(event);
                 e.printStackTrace();
-                upgradeCount = 0;
+                used = false;
             }
         };
 
@@ -137,7 +137,7 @@ public class UpgradeCommand extends DiscordCommand
     {
         jedis.sadd("upgrade#names", key);
         jedis.hset("upgrade#xtals", key, value.toJson());
-        upgradeCount++;
+        used = true;
     }
 
     private static Elements getChildrenElements(Element element)

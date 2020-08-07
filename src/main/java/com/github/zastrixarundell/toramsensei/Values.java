@@ -3,8 +3,11 @@ package com.github.zastrixarundell.toramsensei;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.joda.time.DateTime;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import java.net.URI;
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -30,8 +33,6 @@ public class Values
 
     public final static String donationLogo = "https://raw.githubusercontent.com/ZastrixArundell/Toram-sensei/master/images/patreon.png";
 
-    private static Jedis jedis;
-
     private static DateTime lastDyeUpdate;
 
     private static List<String> dyeImages = null;
@@ -46,23 +47,41 @@ public class Values
 
     public static void setDyeImages(List<String> dyeImages) { Values.dyeImages = dyeImages; }
 
-    public static void setupJedis() {
-        try
-        {
-            URI redisURI = new URI(System.getenv("REDIS_URL"));
-            String password = redisURI.getUserInfo().split(":")[1];
+    private final static JedisPool jedisPool = buildJedisPool();
 
-            jedis = new Jedis(redisURI.getHost(), redisURI.getPort());
-            jedis.auth(password);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            jedis = null;
-        }
+    private static JedisPool buildJedisPool() {
+        final JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(128);
+        config.setMaxIdle(128);
+        config.setMinIdle(16);
+        config.setTestOnBorrow(true);
+        config.setTestOnReturn(true);
+        config.setTestWhileIdle(true);
+        config.setMinEvictableIdleTimeMillis(Duration.ofSeconds(60).toMillis());
+        config.setTimeBetweenEvictionRunsMillis(Duration.ofSeconds(30).toMillis());
+        config.setNumTestsPerEvictionRun(3);
+        config.setBlockWhenExhausted(true);
+
+        final URI redisURI = URI.create(System.getenv("REDIS_URL"));
+
+        return new JedisPool(config, redisURI.getHost(), redisURI.getPort());
     }
 
-    public static Jedis getJedis() { return jedis; }
+    public static Jedis getJedis() {
+        Jedis jedis = jedisPool.getResource();
+        final URI redisURI = URI.create(System.getenv("REDIS_URL"));
+
+        String password;
+        if ((password = redisURI.getUserInfo()) != null)
+        {
+            password = password.split(":")[1];
+            jedis.auth(password);
+        }
+
+        jedis.clientGetname();
+
+        return jedis;
+    }
 
     static void getMavenVersion()
     {

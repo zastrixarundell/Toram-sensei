@@ -51,7 +51,6 @@ public class ToramSensei
         String prefix = System.getenv("BOT_COMMAND_PREFIX");
 
         Values.setPrefix(prefix);
-        Values.setupJedis();
         System.out.println("Prefix set to: " + Values.getPrefix());
 
         DiscordApi bot;

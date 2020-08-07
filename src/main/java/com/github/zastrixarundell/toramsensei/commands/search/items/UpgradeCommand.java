@@ -27,6 +27,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -80,13 +81,17 @@ public class UpgradeCommand extends DiscordCommand
 
                 List<Item> itemList = new ArrayList<>();
 
-                getJedis().smembers("upgrade#names").forEach(upgradeXtal ->
+                Jedis jedis = getJedis();
+
+                jedis.smembers("upgrade#names").forEach(upgradeXtal ->
                 {
-                    Item item = Item.fromJson(getJedis().hget("upgrade#xtals", upgradeXtal));
+                    Item item = Item.fromJson(jedis.hget("upgrade#xtals", upgradeXtal));
 
                     if(String.join("", item.getStats()).toLowerCase().contains("upgrade for: " + data.toLowerCase()))
                         itemList.add(item);
                 });
+
+                jedis.close();
 
                 if(itemList.isEmpty())
                 {
@@ -115,6 +120,8 @@ public class UpgradeCommand extends DiscordCommand
             loaded... oof... Hey, it works!
          */
 
+        Jedis jedis = getJedis();
+
         Document document = Jsoup.connect("http://coryn.club/item.php")
                 .data("special", "xtal")
                 .data("show", "3000")
@@ -122,7 +129,7 @@ public class UpgradeCommand extends DiscordCommand
                 .get();
 
         Element cardContainer = document.getElementsByClass("card-container").first();
-        getUpgradable(cardContainer).forEach(item -> addXtalToRedis(item.getName(), item));
+        getUpgradable(cardContainer).forEach(item -> addXtalToRedis(jedis, item.getName(), item));
 
         document = Jsoup.connect("http://coryn.club/item.php")
                 .data("special", "xtal")
@@ -131,13 +138,15 @@ public class UpgradeCommand extends DiscordCommand
                 .get();
 
         cardContainer = document.getElementsByClass("card-container").first();
-        getUpgradable(cardContainer).forEach(item -> addXtalToRedis(item.getName(), item));
+        getUpgradable(cardContainer).forEach(item -> addXtalToRedis(jedis, item.getName(), item));
+
+        jedis.close();
     }
 
-    private void addXtalToRedis(String key, Item value)
+    private void addXtalToRedis(Jedis jedis, String key, Item value)
     {
-        getJedis().sadd("upgrade#names", key);
-        getJedis().hset("upgrade#xtals", key, value.toJson());
+        jedis.sadd("upgrade#names", key);
+        jedis.hset("upgrade#xtals", key, value.toJson());
         upgradeCount++;
     }
 

@@ -78,6 +78,10 @@ public class Values
         return jedis;
     }
 
+    public static void closePool() {
+        jedisPool.close();
+    }
+
     static void getMavenVersion()
     {
         try

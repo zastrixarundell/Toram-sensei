@@ -110,6 +110,7 @@ public class ToramSensei
                 activity.cancel();
                 //dyeImage.cancel();
                 updates.cancel();
+                Values.closePool();
             }
             catch (Exception ignore)
             {

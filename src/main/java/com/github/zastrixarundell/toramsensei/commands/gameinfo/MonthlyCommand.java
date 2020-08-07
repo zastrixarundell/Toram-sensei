@@ -3,10 +3,20 @@ package com.github.zastrixarundell.toramsensei.commands.gameinfo;
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.Values;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
+import com.github.zastrixarundell.toramsensei.objects.tasks.MonthlyDyesTask;
+import gui.ava.html.image.generator.HtmlImageGenerator;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
 
 public class MonthlyCommand extends DiscordCommand
 {
@@ -23,34 +33,73 @@ public class MonthlyCommand extends DiscordCommand
     {
         Runnable runnable = () ->
         {
-            DateTime time = new DateTime();
-            Period period = new Period(Values.getLastDyeUpdate(), time);
 
-            for(int i = 0; i < Values.getDyeImages().size(); i++)
+            try
             {
-                EmbedBuilder embed = new EmbedBuilder()
-                        .setTitle("Latest monthly dyes" + (Values.getDyeImages().size() <= 1 ? "" : " (" + (i+1) + "/" + Values.getDyeImages().size() + ")"))
-                        .setDescription("Here is the image of the latest monthly dyes!\n\n\n" +
-                                "Note: This can be late so check the title of the image.");
+                Document document = Jsoup.connect("https://toram-id.info/dye").get();
 
-                Parser.parseColor(embed, event);
-                Parser.parseThumbnail(embed, event);
-                embed.setImage(Values.getDyeImages().get(i));
+                Element colorTable = document.getElementsByClass("card-table").first();
 
-                int hours = period.getHours();
-                int minutes = period.getMinutes();
+                Element header = colorTable.getElementsByTag("th").first();
+                header.text("Boss Name");
 
-                embed.setUrl("https://toramonline.com/index.php?threads/weapon-shield-dyes-july-2019-white.23149/");
+                File file = new File(MonthlyDyesTask.class.getResource(File.separator + "bosslist.css").getFile());
 
-                embed.setFooter("Last check was " + hours + (hours == 1 ? " hour" : " hours") + " and " +
-                        minutes + (minutes == 1 ? " minute" : " minutes") + " ago.");
+                StringBuilder builder = new StringBuilder();
 
-                event.getChannel().sendMessage(embed);
+                try (Stream<String> lines = Files.lines(Paths.get(file.getAbsolutePath()))) {
+                    lines.forEach(builder::append);
+                }
+
+                for(int i = 0; i < colorTable.getElementsByTag("tr").size(); i++)
+                    if(i % 2 == 0)
+                        colorTable.getElementsByTag("tr").get(i).addClass("tr-even");
+
+                String html =
+                        "<style>" + builder.toString() + "</style>\n" +
+                                colorTable.toString();
+
+                HtmlImageGenerator generator = new HtmlImageGenerator();
+                generator.loadHtml(html);
+                BufferedImage image = generator.getBufferedImage();
+
+                sendDyeMessage(event, image);
             }
-
+            catch (IOException e)
+            {
+                e.printStackTrace();
+                sendErrorMessage(event);
+            }
         };
 
         executeRunnable(event, runnable);
+    }
+
+    private void sendDyeMessage(MessageCreateEvent messageCreateEvent, BufferedImage image)
+    {
+        EmbedBuilder embed = new EmbedBuilder()
+                .setTitle("Currently monthly dye drops!")
+                .setDescription("This is the latest monthly dye drop. The current lanauge is Indonesian but will be" +
+                        "translated to English soon!")
+                .setImage(image);
+
+        Parser.parseFooter(embed, messageCreateEvent);
+        Parser.parseColor(embed, messageCreateEvent);
+
+        messageCreateEvent.getChannel().sendMessage(embed);
+    }
+
+    private void sendErrorMessage(MessageCreateEvent messageCreateEvent)
+    {
+        EmbedBuilder embed = new EmbedBuilder()
+                .setTitle("Error while getting monthly dye!")
+                .setDescription("An error happened! Is the site maybe down?")
+                .setThumbnail(Values.toramLogo);
+
+        Parser.parseFooter(embed, messageCreateEvent);
+        Parser.parseColor(embed, messageCreateEvent);
+
+        messageCreateEvent.getChannel().sendMessage(embed);
     }
 
 }

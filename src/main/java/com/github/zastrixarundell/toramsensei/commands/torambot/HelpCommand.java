@@ -214,10 +214,8 @@ public class HelpCommand extends DiscordCommand
                 .addField(Values.getPrefix() + "news", "This command is used to show the latest big news on the site. Big events, " +
                         "new chapter in the story line, etc.")
 
-                .addField(Values.getPrefix() + "dye|dyes (value)", "This command is used to show all of the dyes or see details about a specific color!");
-
-        if (Values.getDyeImages() != null)
-            embed.addField(Values.getPrefix() + "monthly|month", "Get the latest monthly dyes!");
+                .addField(Values.getPrefix() + "dye|dyes (value)", "This command is used to show all of the dyes or see details about a specific color!")
+                .addField(Values.getPrefix() + "monthly|month", "Get the latest monthly dyes!");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

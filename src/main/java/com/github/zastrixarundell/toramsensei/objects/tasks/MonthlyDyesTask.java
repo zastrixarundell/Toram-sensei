@@ -1,5 +1,6 @@
 package com.github.zastrixarundell.toramsensei.objects.tasks;
 
+import gui.ava.html.image.generator.HtmlImageGenerator;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.Channel;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
@@ -7,7 +8,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -36,7 +36,7 @@ public class MonthlyDyesTask extends TimerTask
             Element header = colorTable.getElementsByTag("th").first();
             header.text("Boss Name");
 
-            File file = new File(MonthlyDyesTask.class.getResource(File.separator + "bootstrap.min.css").getFile());
+            File file = new File(MonthlyDyesTask.class.getResource(File.separator + "bosslist.css").getFile());
 
             StringBuilder builder = new StringBuilder();
 
@@ -44,43 +44,17 @@ public class MonthlyDyesTask extends TimerTask
                 lines.forEach(builder::append);
             }
 
+            for(int i = 0; i < colorTable.getElementsByTag("tr").size(); i++)
+                if(i % 2 == 0)
+                    colorTable.getElementsByTag("tr").get(i).addClass("tr-even");
+
             String html =
-                    " <!DOCTYPE html>\n" +
-                    "<html>\n" +
-                        "<head>\n" +
-                        "<title>Title of the document</title>\n" +
-                        "<style>" + builder.toString() + "</style>\n" +
-                        "</head>\n" +
-                    "\n" +
-                    "<body>\n" +
-                        colorTable.toString() + "\n" +
-                    "</body>\n" +
-                    "</html>";
+                    "<style>" + builder.toString() + "</style>\n" +
+                    colorTable.toString();
 
-
-
-            //load the webpage into the editor
-            JEditorPane pane = new JEditorPane();
-            pane.setContentType("text/html");
-            pane.setText(html);
-            pane.setSize(1920, 1080);
-
-            //create a new image
-            BufferedImage image = new BufferedImage(pane.getWidth(), pane.getHeight(),
-                    BufferedImage.TYPE_INT_ARGB);
-
-            //paint the editor onto the image
-            SwingUtilities.paintComponent(image.createGraphics(),
-                    pane,
-                    new JPanel(),
-                    0, 0, image.getWidth(), image.getHeight());
-
-            /*
             HtmlImageGenerator generator = new HtmlImageGenerator();
             generator.loadHtml(html);
             BufferedImage image = generator.getBufferedImage();
-
-             */
 
             Optional<Channel> channelOptional = bot.getChannelById("604090683304837123");
 
@@ -97,45 +71,5 @@ public class MonthlyDyesTask extends TimerTask
         {
             e.printStackTrace();
         }
-
-        /*
-        try
-        {
-            System.out.println("Starting forums user!");
-            ToramForumsUser user = new ToramForumsUser(bot.getToken());
-            System.out.println("Starting monthly dyes!");
-            user.setDye();
-            System.out.println("Finished monthly dyes!");
-            user.close();
-
-            if(Values.getDyeImages() == null)
-            {
-                System.out.println("There are monthly dyes!");
-
-                if(MonthlyCommand.instance != null)
-                {
-                    bot.removeListener(MonthlyCommand.instance);
-                    MonthlyCommand.instance = null;
-                }
-            }
-            else
-            if(MonthlyCommand.instance == null)
-            {
-                bot.addListener(new MonthlyCommand());
-                System.out.println("Updated monthly dyes!");
-            }
-        }
-        catch (Exception e)
-        {
-            Values.setDyeImages(null);
-            System.out.println("An error happened while updating the monthly dye data!");
-            e.printStackTrace();
-
-            if(MonthlyCommand.instance != null)
-            {
-                bot.removeListener(MonthlyCommand.instance);
-                MonthlyCommand.instance = null;
-            }
-        }*/
     }
 }

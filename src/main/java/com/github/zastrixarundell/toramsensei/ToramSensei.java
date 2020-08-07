@@ -78,7 +78,7 @@ public class ToramSensei
         Scanner scanner = new Scanner(System.in);
 
         Timer activity = updateActivity(bot);
-        Timer dyeImage = updateDyesImage(bot);
+        // Timer dyeImage = updateDyesImage(bot);
         Timer updates = updateUpdates(bot);
 
         try
@@ -180,6 +180,7 @@ public class ToramSensei
         bot.addListener(new MaintenanceCommand());
         bot.addListener(new EventsCommand());
         bot.addListener(new DyeCommand());
+        bot.addListener(new MonthlyCommand());
     }
 
     private static void setupDiscordBotListApi(DiscordApi bot)

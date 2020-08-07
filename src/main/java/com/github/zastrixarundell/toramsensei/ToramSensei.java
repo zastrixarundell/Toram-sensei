@@ -78,7 +78,7 @@ public class ToramSensei
         Scanner scanner = new Scanner(System.in);
 
         Timer activity = updateActivity(bot);
-        //Timer dyeImage = updateDyesImage(bot);
+        // Timer dyeImage = updateDyesImage(bot);
         Timer updates = updateUpdates(bot);
 
         try
@@ -110,6 +110,7 @@ public class ToramSensei
                 activity.cancel();
                 //dyeImage.cancel();
                 updates.cancel();
+                Values.closePool();
             }
             catch (Exception ignore)
             {

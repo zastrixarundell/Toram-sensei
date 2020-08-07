@@ -1,11 +1,21 @@
 package com.github.zastrixarundell.toramsensei.objects.tasks;
 
-import com.github.zastrixarundell.toramsensei.Values;
-import com.github.zastrixarundell.toramsensei.commands.gameinfo.MonthlyCommand;
-import com.github.zastrixarundell.toramsensei.entities.ToramForumsUser;
 import org.javacord.api.DiscordApi;
+import org.javacord.api.entity.channel.Channel;
+import org.javacord.api.entity.message.embed.EmbedBuilder;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.TimerTask;
+import java.util.stream.Stream;
 
 public class MonthlyDyesTask extends TimerTask
 {
@@ -17,6 +27,78 @@ public class MonthlyDyesTask extends TimerTask
     @Override
     public void run()
     {
+        try
+        {
+            Document document = Jsoup.connect("https://toram-id.info/dye").get();
+
+            Element colorTable = document.getElementsByClass("card-table").first();
+
+            Element header = colorTable.getElementsByTag("th").first();
+            header.text("Boss Name");
+
+            File file = new File(MonthlyDyesTask.class.getResource(File.separator + "bootstrap.min.css").getFile());
+
+            StringBuilder builder = new StringBuilder();
+
+            try (Stream<String> lines = Files.lines(Paths.get(file.getAbsolutePath()))) {
+                lines.forEach(builder::append);
+            }
+
+            String html =
+                    " <!DOCTYPE html>\n" +
+                    "<html>\n" +
+                        "<head>\n" +
+                        "<title>Title of the document</title>\n" +
+                        "<style>" + builder.toString() + "</style>\n" +
+                        "</head>\n" +
+                    "\n" +
+                    "<body>\n" +
+                        colorTable.toString() + "\n" +
+                    "</body>\n" +
+                    "</html>";
+
+
+
+            //load the webpage into the editor
+            JEditorPane pane = new JEditorPane();
+            pane.setContentType("text/html");
+            pane.setText(html);
+            pane.setSize(1920, 1080);
+
+            //create a new image
+            BufferedImage image = new BufferedImage(pane.getWidth(), pane.getHeight(),
+                    BufferedImage.TYPE_INT_ARGB);
+
+            //paint the editor onto the image
+            SwingUtilities.paintComponent(image.createGraphics(),
+                    pane,
+                    new JPanel(),
+                    0, 0, image.getWidth(), image.getHeight());
+
+            /*
+            HtmlImageGenerator generator = new HtmlImageGenerator();
+            generator.loadHtml(html);
+            BufferedImage image = generator.getBufferedImage();
+
+             */
+
+            Optional<Channel> channelOptional = bot.getChannelById("604090683304837123");
+
+            if (!channelOptional.isPresent())
+                return;
+
+            Channel channel = channelOptional.get();
+
+            EmbedBuilder embed = new EmbedBuilder().setTitle("Image").setImage(image);
+
+            channel.asServerTextChannel().get().sendMessage(embed);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
+        /*
         try
         {
             System.out.println("Starting forums user!");
@@ -54,6 +136,6 @@ public class MonthlyDyesTask extends TimerTask
                 bot.removeListener(MonthlyCommand.instance);
                 MonthlyCommand.instance = null;
             }
-        }
+        }*/
     }
 }

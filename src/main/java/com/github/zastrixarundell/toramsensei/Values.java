@@ -2,7 +2,12 @@ package com.github.zastrixarundell.toramsensei;
 
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.joda.time.DateTime;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Protocol;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
@@ -41,6 +46,42 @@ public class Values
     public static List<String> getDyeImages() { return dyeImages; }
 
     public static void setDyeImages(List<String> dyeImages) { Values.dyeImages = dyeImages; }
+
+    private final static JedisPool jedisPool = buildJedisPool();
+
+    private static JedisPool buildJedisPool() {
+        final JedisPoolConfig config = new JedisPoolConfig();
+        config.setMaxTotal(10);
+        config.setMaxIdle(5);
+        config.setMinIdle(1);
+        config.setTestOnBorrow(true);
+        config.setTestOnReturn(true);
+        config.setTestWhileIdle(true);
+
+        final URI redisURI = URI.create(System.getenv("REDIS_URL"));
+
+        String password;
+        if ((password = redisURI.getUserInfo()) != null)
+            password = password.split(":")[1];
+
+
+        return password == null ?
+                new JedisPool(config, redisURI.getHost(), redisURI.getPort(), Protocol.DEFAULT_TIMEOUT) :
+                new JedisPool(config, redisURI.getHost(), redisURI.getPort(), Protocol.DEFAULT_TIMEOUT, password);
+    }
+
+    public static Jedis getJedis() {
+        Jedis jedis = jedisPool.getResource();
+        final URI redisURI = URI.create(System.getenv("REDIS_URL"));
+
+        jedis.clientGetname();
+
+        return jedis;
+    }
+
+    public static void closePool() {
+        jedisPool.close();
+    }
 
     static void getMavenVersion()
     {

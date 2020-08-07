@@ -27,9 +27,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import redis.clients.jedis.Jedis;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.github.zastrixarundell.toramsensei.Values.getJedis;
 
 public class UpgradeCommand extends DiscordCommand
 {
@@ -37,7 +41,8 @@ public class UpgradeCommand extends DiscordCommand
         For some reason a HashSet can't be used here so I am using the name of the item
         as they key for an unique identifier to remove copies.
      */
-    private HashMap<String, Item> allUpgradeXtals = new HashMap<>();
+    // private HashMap<String, Item> allUpgradeXtals = new HashMap<>();
+    private boolean used = false;
 
     public UpgradeCommand()
     {
@@ -58,6 +63,7 @@ public class UpgradeCommand extends DiscordCommand
     {
         ArrayList<String> arguments = Parser.argumentsParser(event);
 
+
         if (arguments.isEmpty())
         {
             emptySearch(event);
@@ -70,16 +76,22 @@ public class UpgradeCommand extends DiscordCommand
         {
             try
             {
-                if(allUpgradeXtals.isEmpty())
+                if(!used)
                     setupXtals();
 
                 List<Item> itemList = new ArrayList<>();
 
-                allUpgradeXtals.values().forEach(upgradeXtal ->
+                try (Jedis jedis = getJedis())
                 {
-                    if(String.join("", upgradeXtal.getStats()).toLowerCase().contains("upgrade for: " + data.toLowerCase()))
-                        itemList.add(upgradeXtal);
-                });
+                    jedis.smembers("upgrade#names").forEach(upgradeXtal ->
+                    {
+                        Item item = Item.fromJson(jedis.hget("upgrade#xtals", upgradeXtal));
+
+                        if (String.join("", item.getStats()).toLowerCase().contains("upgrade for: " + data.toLowerCase()))
+                            itemList.add(item);
+                    });
+
+                }
 
                 if(itemList.isEmpty())
                 {
@@ -93,7 +105,7 @@ public class UpgradeCommand extends DiscordCommand
             {
                 sendErrorMessage(event);
                 e.printStackTrace();
-                allUpgradeXtals = new HashMap<>();
+                used = false;
             }
         };
 
@@ -108,23 +120,24 @@ public class UpgradeCommand extends DiscordCommand
             loaded... oof... Hey, it works!
          */
 
-        Document document = Jsoup.connect("http://coryn.club/item.php")
-                .data("special", "xtal")
-                .data("show", "3000")
-                .data("order", "name ASC")
-                .get();
+        try (Jedis jedis = getJedis())
+        {
+            Document document = Jsoup.connect("http://coryn.club/item.php")
+                    .data("special", "xtal")
+                    .data("show", "3000")
+                    .data("order", "name ASC")
+                    .get();
 
-        Element cardContainer = document.getElementsByClass("card-container").first();
-        getUpgradable(cardContainer).forEach(item -> allUpgradeXtals.put(item.getName(), item));
+            Element cardContainer = document.getElementsByClass("card-container").first();
+            getUpgradable(cardContainer).forEach(item -> addXtalToRedis(jedis, item.getName(), item));
+        }
+    }
 
-        document = Jsoup.connect("http://coryn.club/item.php")
-                .data("special", "xtal")
-                .data("show", "3000")
-                .data("order", "name DESC")
-                .get();
-
-        cardContainer = document.getElementsByClass("card-container").first();
-        getUpgradable(cardContainer).forEach(item -> allUpgradeXtals.put(item.getName(), item));
+    private void addXtalToRedis(Jedis jedis, String key, Item value)
+    {
+        jedis.sadd("upgrade#names", key);
+        jedis.hset("upgrade#xtals", key, value.toJson());
+        used = true;
     }
 
     private static Elements getChildrenElements(Element element)
@@ -161,8 +174,8 @@ public class UpgradeCommand extends DiscordCommand
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(item.getName())
-                .addInlineField("NPC sell price:", item.getPrice())
-                .addInlineField("Processed into:", item.getProc());
+                .addInlineField("NPC sell price:", "1 Spina")
+                .addInlineField("Processed into:", "100 Mana");
 
         String stats = String.join("\n", item.getStats());
 

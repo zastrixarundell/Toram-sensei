@@ -139,6 +139,10 @@ public class UpgradeCommand extends DiscordCommand
             cardContainer = document.getElementsByClass("card-container").first();
             getUpgradable(cardContainer).forEach(item -> addXtalToRedis(jedis, item.getName(), item));
         }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     private void addXtalToRedis(Jedis jedis, String key, Item value)

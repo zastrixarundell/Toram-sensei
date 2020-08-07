@@ -5,6 +5,7 @@ import org.joda.time.DateTime;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Protocol;
 
 import java.net.URI;
 import java.util.List;
@@ -59,19 +60,19 @@ public class Values
 
         final URI redisURI = URI.create(System.getenv("REDIS_URL"));
 
-        return new JedisPool(config, redisURI.getHost(), redisURI.getPort());
+        String password = null;
+        if ((password = redisURI.getUserInfo()) != null)
+            password = password.split(":")[1];
+
+
+        return password == null ?
+                new JedisPool(config, redisURI.getHost(), redisURI.getPort(), Protocol.DEFAULT_TIMEOUT) :
+                new JedisPool(config, redisURI.getHost(), redisURI.getPort(), Protocol.DEFAULT_TIMEOUT, password);
     }
 
     public static Jedis getJedis() {
         Jedis jedis = jedisPool.getResource();
         final URI redisURI = URI.create(System.getenv("REDIS_URL"));
-
-        String password;
-        if ((password = redisURI.getUserInfo()) != null)
-        {
-            password = password.split(":")[1];
-            jedis.auth(password);
-        }
 
         jedis.clientGetname();
 

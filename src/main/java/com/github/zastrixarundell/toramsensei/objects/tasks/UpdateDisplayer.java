@@ -18,6 +18,7 @@
 
 package com.github.zastrixarundell.toramsensei.objects.tasks;
 
+import com.github.zastrixarundell.toramsensei.Database;
 import org.javacord.api.DiscordApi;
 import org.javacord.api.entity.channel.ServerTextChannel;
 import org.javacord.api.entity.server.Server;
@@ -25,7 +26,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.sql.*;
+import java.sql.Connection;
 import java.util.Optional;
 import java.util.TimerTask;
 
@@ -44,10 +45,10 @@ public class UpdateDisplayer extends TimerTask
     {
         try
         {
-            String sqlUrl = System.getenv("SQL_URL");
-            Connection connection = DriverManager.getConnection("jdbc:" + sqlUrl);
-            createTable(connection);
-            Optional<String> cache = getCachedURL(connection);
+            Connection connection = Database.getConnection();
+            Database.createNewsTable(connection);
+
+            Optional<String> cache = Database.getCachedNews(connection);
 
             Document document = Jsoup.connect("http://en.toram.jp/information/")
                     .data("type_code", "all")
@@ -100,7 +101,7 @@ public class UpdateDisplayer extends TimerTask
                             + url + " for more info!***";
                 }
 
-                saveURL(connection, url);
+                Database.setNewsElement(connection, url);
 
                 for (Server server : api.getServers())
                     for (ServerTextChannel channel  : server.getTextChannels())
@@ -115,51 +116,6 @@ public class UpdateDisplayer extends TimerTask
         {
             e.printStackTrace();
         }
-    }
-
-    private void createTable(Connection connection) throws SQLException
-    {
-        String statement = "CREATE TABLE IF NOT EXISTS news (" +
-                "id int NOT NULL," +
-                "value VARCHAR(256)," +
-                "PRIMARY KEY (id)" +
-                ");";
-
-        Statement sqlStatement = connection.createStatement();
-        sqlStatement.executeUpdate(statement);
-    }
-
-    private Optional<String> getCachedURL(Connection connection)
-    {
-        try
-        {
-            String statement = "SELECT * FROM news";
-            Statement sqlStatement = connection.createStatement();
-            ResultSet resultSet = sqlStatement.executeQuery(statement);
-
-            resultSet.next();
-
-            return Optional.of(resultSet.getString("value"));
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return Optional.empty();
-        }
-    }
-
-    private void saveURL(Connection connection, String url) throws SQLException
-    {
-        String command = "INSERT INTO news(id, value)\n" +
-                "VALUES (?, ?)\n" +
-                "ON DUPLICATE KEY UPDATE\n" +
-                "id = VALUES(id)," +
-                "value = VALUES(value);";
-
-        PreparedStatement pstmt = connection.prepareStatement(command);
-        pstmt.setInt(1, 1);
-        pstmt.setString(2, url);
-        pstmt.executeUpdate();
     }
 
     private boolean shouldBroadcast(Optional<String> oldUrl, String newUrl)

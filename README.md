@@ -22,15 +22,11 @@ After that you need to set up environment variables:
 
 |Environment variable|usage|
 |--|--|
-|CLOUDINARY_API_SECRET|This will be needed when you want to use monthly dyes. Search on google how to get your own free cloudinary API key (the secret one is usually the longer one).|
-|CLOUDINARY_NAME|This is the name used to log in the cloud, usually just the username you use.|
-|CLOUDINARY_API_KEY|It's the more public api, usually the shorter one.|
-|FORUMS_USERNAME|As which profile do you want to log in to the forums for the dye update.|
-|FORUMS_PASSWORD|Which password to use with FORUMS_USERNAME|
 |DISCORD_TOKEN|Standard bot token used for Discord bots.|
 |BOT_COMMAND_PREFIX|The prefix used to separate commands from messages.|
 |DISCORD_BOT_LIST_API|API key used for the discord bot list if you are using that.|
 |SQL_URL|The URL for the SQL database used for automatic news updates. The syntax is: `mysql://<username>:<password>@<host>:<port>/<db_name>`|
+|REDIS_URL|The URL for the Redis database. The syntax is `redis://<username>:<password>@<host>:<port>/<optional_database_name>`
   
 ## Stopping the bot
 You just need to write **stop** in the console window of the bot.

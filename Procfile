@@ -1,1 +1,1 @@
-worker: ./mvnw clean package; while true; do java -Xmx1G -Xms1G -jar target/toram-sensei-*.jar; done
+worker: while true; do java -Xmx1G -Xms1G -cp target/classes:target/dependency/* com.github.zastrixarundell.toramsensei.ToramSensei; done

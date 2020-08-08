@@ -1,56 +1,60 @@
 package com.github.zastrixarundell.toramsensei.commands.gameinfo;
 
+import com.github.zastrixarundell.toramsensei.Helpers;
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.Values;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.joda.time.DateTime;
-import org.joda.time.Period;
+
+import java.awt.image.BufferedImage;
 
 public class MonthlyCommand extends DiscordCommand
 {
 
-    public static MonthlyCommand instance = null;
-
-    public MonthlyCommand()
-    {
-        super("monthly", "month");
-    }
+    public MonthlyCommand() { super("monthly", "month"); }
 
     @Override
     protected void runCommand(MessageCreateEvent event)
     {
         Runnable runnable = () ->
         {
-            DateTime time = new DateTime();
-            Period period = new Period(Values.getLastDyeUpdate(), time);
+            final Helpers.MonthlyHashObject monthlyImage = Helpers.getMonthlyImage();
 
-            for(int i = 0; i < Values.getDyeImages().size(); i++)
-            {
-                EmbedBuilder embed = new EmbedBuilder()
-                        .setTitle("Latest monthly dyes" + (Values.getDyeImages().size() <= 1 ? "" : " (" + (i+1) + "/" + Values.getDyeImages().size() + ")"))
-                        .setDescription("Here is the image of the latest monthly dyes!\n\n\n" +
-                                "Note: This can be late so check the title of the image.");
-
-                Parser.parseColor(embed, event);
-                Parser.parseThumbnail(embed, event);
-                embed.setImage(Values.getDyeImages().get(i));
-
-                int hours = period.getHours();
-                int minutes = period.getMinutes();
-
-                embed.setUrl("https://toramonline.com/index.php?threads/weapon-shield-dyes-july-2019-white.23149/");
-
-                embed.setFooter("Last check was " + hours + (hours == 1 ? " hour" : " hours") + " and " +
-                        minutes + (minutes == 1 ? " minute" : " minutes") + " ago.");
-
-                event.getChannel().sendMessage(embed);
-            }
-
+            if(monthlyImage.imageOptional.isPresent())
+                sendDyeMessage(event, monthlyImage.imageOptional.get());
+            else
+                sendErrorMessage(event);
         };
 
         executeRunnable(event, runnable);
+    }
+
+    private void sendDyeMessage(MessageCreateEvent messageCreateEvent, BufferedImage image)
+    {
+        EmbedBuilder embed = new EmbedBuilder()
+                .setTitle("Currently monthly dye drops!")
+                .setDescription("This is the latest monthly dye drop. The current language is Indonesian but will be " +
+                        "translated to English soon!")
+                .setImage(image);
+
+        Parser.parseFooter(embed, messageCreateEvent);
+        Parser.parseColor(embed, messageCreateEvent);
+
+        messageCreateEvent.getChannel().sendMessage(embed);
+    }
+
+    private void sendErrorMessage(MessageCreateEvent messageCreateEvent)
+    {
+        EmbedBuilder embed = new EmbedBuilder()
+                .setTitle("Error while getting monthly dye!")
+                .setDescription("An error happened! Is the site maybe down?")
+                .setThumbnail(Values.toramLogo);
+
+        Parser.parseFooter(embed, messageCreateEvent);
+        Parser.parseColor(embed, messageCreateEvent);
+
+        messageCreateEvent.getChannel().sendMessage(embed);
     }
 
 }

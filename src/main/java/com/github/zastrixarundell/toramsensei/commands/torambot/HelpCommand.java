@@ -79,8 +79,10 @@ public class HelpCommand extends DiscordCommand
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle(title)
                 .setDescription("Hi, I am a bot created by [Zastrix](https://toramonline.com/index.php?members/zastrix.100975/) " +
-                        "solely for the purpose of assisting players in Toram.\n\nIf you want automatic updates for Toram, just make " +
-                        "a channel named `#toram-sensei-news` and see the magic happen!\n\nYou can search for the commands by their categories:")
+                        "solely for the purpose of assisting players in Toram.\n\n" +
+                        "If you want automatic news updates for Toram, just make a channel named `#toram-sensei-news` and see the magic happen!\n\n" +
+                        "If you want automatic dyes updates for Toram, just make a channel named `#toram-sensei-dyes` and see the magic happen!\n\n" +
+                        "You can search for the commands by their categories:")
 
                 .addField("Item Search Commands", Values.getPrefix() + "help items")
                 .addField("Monster Search Commands:", Values.getPrefix() + "help monsters")
@@ -214,10 +216,8 @@ public class HelpCommand extends DiscordCommand
                 .addField(Values.getPrefix() + "news", "This command is used to show the latest big news on the site. Big events, " +
                         "new chapter in the story line, etc.")
 
-                .addField(Values.getPrefix() + "dye|dyes (value)", "This command is used to show all of the dyes or see details about a specific color!");
-
-        if (Values.getDyeImages() != null)
-            embed.addField(Values.getPrefix() + "monthly|month", "Get the latest monthly dyes!");
+                .addField(Values.getPrefix() + "dye|dyes (value)", "This command is used to show all of the dyes or see details about a specific color!")
+                .addField(Values.getPrefix() + "monthly|month", "Get the latest monthly dyes!");
 
         Parser.parseThumbnail(embed, messageCreateEvent);
         Parser.parseFooter(embed, messageCreateEvent);

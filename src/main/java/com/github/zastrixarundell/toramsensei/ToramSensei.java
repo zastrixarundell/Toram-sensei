@@ -78,7 +78,7 @@ public class ToramSensei
         Scanner scanner = new Scanner(System.in);
 
         Timer activity = updateActivity(bot);
-        //Timer dyeImage = updateDyesImage(bot);
+        Timer dyeImage = updateDyesImage(bot);
         Timer updates = updateUpdates(bot);
 
         try
@@ -91,7 +91,7 @@ public class ToramSensei
                 {
                     bot.disconnect();
                     activity.cancel();
-                    //dyeImage.cancel();
+                    dyeImage.cancel();
                     updates.cancel();
                     System.exit(0);
                 }
@@ -108,8 +108,9 @@ public class ToramSensei
             {
                 bot.disconnect();
                 activity.cancel();
-                //dyeImage.cancel();
+                dyeImage.cancel();
                 updates.cancel();
+                Values.closePool();
             }
             catch (Exception ignore)
             {
@@ -130,7 +131,7 @@ public class ToramSensei
     {
         Timer timer = new Timer();
         TimerTask task = new MonthlyDyesTask(bot);
-        timer.schedule(task,0, 250*60*60*24);
+        timer.schedule(task,0, 1000*60*5);
         return timer;
     }
 
@@ -179,6 +180,7 @@ public class ToramSensei
         bot.addListener(new MaintenanceCommand());
         bot.addListener(new EventsCommand());
         bot.addListener(new DyeCommand());
+        bot.addListener(new MonthlyCommand());
     }
 
     private static void setupDiscordBotListApi(DiscordApi bot)

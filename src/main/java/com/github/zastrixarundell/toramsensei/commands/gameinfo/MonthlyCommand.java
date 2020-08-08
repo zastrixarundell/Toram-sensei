@@ -1,22 +1,14 @@
 package com.github.zastrixarundell.toramsensei.commands.gameinfo;
 
+import com.github.zastrixarundell.toramsensei.Helpers;
 import com.github.zastrixarundell.toramsensei.Parser;
 import com.github.zastrixarundell.toramsensei.Values;
 import com.github.zastrixarundell.toramsensei.commands.DiscordCommand;
-import com.github.zastrixarundell.toramsensei.objects.tasks.MonthlyDyesTask;
-import gui.ava.html.image.generator.HtmlImageGenerator;
 import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 public class MonthlyCommand extends DiscordCommand
 {
@@ -33,43 +25,12 @@ public class MonthlyCommand extends DiscordCommand
     {
         Runnable runnable = () ->
         {
+            Optional<BufferedImage> imageOptional = Helpers.getMonthlyImage();
 
-            try
-            {
-                Document document = Jsoup.connect("https://toram-id.info/dye").get();
-
-                Element colorTable = document.getElementsByClass("card-table").first();
-
-                Element header = colorTable.getElementsByTag("th").first();
-                header.text("Boss Name");
-
-                File file = new File(MonthlyDyesTask.class.getResource(File.separator + "bosslist.css").getFile());
-
-                StringBuilder builder = new StringBuilder();
-
-                try (Stream<String> lines = Files.lines(Paths.get(file.getAbsolutePath()))) {
-                    lines.forEach(builder::append);
-                }
-
-                for(int i = 0; i < colorTable.getElementsByTag("tr").size(); i++)
-                    if(i % 2 == 0)
-                        colorTable.getElementsByTag("tr").get(i).addClass("tr-even");
-
-                String html =
-                        "<style>" + builder.toString() + "</style>\n" +
-                                colorTable.toString();
-
-                HtmlImageGenerator generator = new HtmlImageGenerator();
-                generator.loadHtml(html);
-                BufferedImage image = generator.getBufferedImage();
-
-                sendDyeMessage(event, image);
-            }
-            catch (IOException e)
-            {
-                e.printStackTrace();
+            if(imageOptional.isPresent())
+                sendDyeMessage(event, imageOptional.get());
+            else
                 sendErrorMessage(event);
-            }
         };
 
         executeRunnable(event, runnable);

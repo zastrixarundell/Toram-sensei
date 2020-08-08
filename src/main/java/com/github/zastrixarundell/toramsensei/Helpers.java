@@ -16,8 +16,11 @@ import java.util.stream.Stream;
 public class Helpers
 {
 
-    public static Optional<BufferedImage> getMonthlyImage()
+    public static MonthlyHashObject getMonthlyImage()
     {
+        Optional<BufferedImage> imageOptional = Optional.empty();
+        String hash = "";
+
         try
         {
             Document document = Jsoup.connect("https://toram-id.info/dye").get();
@@ -46,12 +49,30 @@ public class Helpers
 
             HtmlImageGenerator generator = new HtmlImageGenerator();
             generator.loadHtml(html);
-            return Optional.of(generator.getBufferedImage());
+
+            imageOptional = Optional.of(generator.getBufferedImage());
+
+            /*
+                TODO Add hashing logic to the `hash` variable.
+             */
         }
         catch (Exception e)
         {
             e.printStackTrace();
-            return Optional.empty();
+        }
+
+        return new MonthlyHashObject(imageOptional, hash);
+    }
+
+    public static class MonthlyHashObject
+    {
+        public final Optional<BufferedImage> imageOptional;
+        public final String htmlHash;
+
+        public MonthlyHashObject(Optional<BufferedImage> imageOptional, String htmlHash)
+        {
+            this.imageOptional = imageOptional;
+            this.htmlHash = htmlHash;
         }
     }
 

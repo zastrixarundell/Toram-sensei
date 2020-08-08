@@ -8,7 +8,6 @@ import org.javacord.api.entity.message.embed.EmbedBuilder;
 import org.javacord.api.event.message.MessageCreateEvent;
 
 import java.awt.image.BufferedImage;
-import java.util.Optional;
 
 public class MonthlyCommand extends DiscordCommand
 {
@@ -25,10 +24,10 @@ public class MonthlyCommand extends DiscordCommand
     {
         Runnable runnable = () ->
         {
-            Optional<BufferedImage> imageOptional = Helpers.getMonthlyImage();
+            final Helpers.MonthlyHashObject monthlyImage = Helpers.getMonthlyImage();
 
-            if(imageOptional.isPresent())
-                sendDyeMessage(event, imageOptional.get());
+            if(monthlyImage.imageOptional.isPresent())
+                sendDyeMessage(event, monthlyImage.imageOptional.get());
             else
                 sendErrorMessage(event);
         };

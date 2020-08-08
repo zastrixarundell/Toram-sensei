@@ -1,5 +1,10 @@
 # Changelog
 
+### 7.3.0
+- Added Redis usage.
+- Implemented Redis for Upgrade command.
+- Implemented `>month` command.
+
 ### 7.2.0
 - Fixed eveything with `>level` and monster search.
 - Release.

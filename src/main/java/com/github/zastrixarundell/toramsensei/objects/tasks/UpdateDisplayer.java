@@ -43,9 +43,8 @@ public class UpdateDisplayer extends TimerTask
     @Override
     public void run()
     {
-        try
+        try(Connection connection = Database.getConnection())
         {
-            Connection connection = Database.getConnection();
             Database.createNewsTable(connection);
 
             Optional<String> cache = Database.getCachedNews(connection);
@@ -109,8 +108,6 @@ public class UpdateDisplayer extends TimerTask
                             channel.sendMessage(text);
 
             }
-
-            connection.close();
         }
         catch (Exception e)
         {

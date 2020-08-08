@@ -1,5 +1,8 @@
 # Changelog
 
+### 7.4.1
+- Closing database connections on refugular tasks.
+
 ### 7.4.0
 - Added feature of automatic dyes updated on `#toram-sensei-dyes`.
 

@@ -25,9 +25,8 @@ public class MonthlyDyesTask extends TimerTask
     @Override
     public void run()
     {
-        try
+        try(Connection connection = Database.getConnection())
         {
-            Connection connection = Database.getConnection();
             Database.createHashTable(connection);
             Optional<String> cachedHash = Database.getCachedHash(connection);
 

@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -52,9 +53,9 @@ public class Helpers
 
             imageOptional = Optional.of(generator.getBufferedImage());
 
-            /*
-                TODO Add hashing logic to the `hash` variable.
-             */
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(colorTable.toString().getBytes());
+            hash = new String(messageDigest.digest());
         }
         catch (Exception e)
         {

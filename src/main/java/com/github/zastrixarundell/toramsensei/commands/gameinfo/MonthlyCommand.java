@@ -12,12 +12,7 @@ import java.awt.image.BufferedImage;
 public class MonthlyCommand extends DiscordCommand
 {
 
-    public static MonthlyCommand instance = null;
-
-    public MonthlyCommand()
-    {
-        super("monthly", "month");
-    }
+    public MonthlyCommand() { super("monthly", "month"); }
 
     @Override
     protected void runCommand(MessageCreateEvent event)
@@ -39,7 +34,7 @@ public class MonthlyCommand extends DiscordCommand
     {
         EmbedBuilder embed = new EmbedBuilder()
                 .setTitle("Currently monthly dye drops!")
-                .setDescription("This is the latest monthly dye drop. The current lanauge is Indonesian but will be" +
+                .setDescription("This is the latest monthly dye drop. The current language is Indonesian but will be " +
                         "translated to English soon!")
                 .setImage(image);
 

@@ -36,6 +36,9 @@ public class MonthlyDyesTask extends TimerTask
             if(!monthlyImage.imageOptional.isPresent())
                 throw new Exception();
 
+            System.out.println("Old hash is: " + cachedHash.orElse("undefined"));
+            System.out.println("New hash is: " + monthlyImage.htmlHash);
+
             if(cachedHash.isPresent())
             {
                 if(!monthlyImage.htmlHash.equals(cachedHash.get()))

@@ -1,5 +1,8 @@
 # Changelog
 
+### 7.4.0
+- Added feature of automatic dyes updated on `#toram-sensei-dyes`.
+
 ### 7.3.0
 - Added Redis usage.
 - Implemented Redis for Upgrade command.

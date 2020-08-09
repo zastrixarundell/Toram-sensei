@@ -1,5 +1,8 @@
 # Changelog
 
+### 7.4.2
+- Added infinte loop on worker.
+
 ### 7.4.1
 - Closing database connections on refugular tasks.
 

@@ -1,1 +1,1 @@
-worker: java -Xmx800M -Xms800M -cp target/classes:target/dependency/* com.github.zastrixarundell.toramsensei.ToramSensei
+worker: while true; do java -Xmx800M -Xms800M -cp target/classes:target/dependency/* com.github.zastrixarundell.toramsensei.ToramSensei; done

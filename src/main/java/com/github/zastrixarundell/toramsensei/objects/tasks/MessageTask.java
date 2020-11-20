@@ -12,7 +12,7 @@ import java.util.TimerTask;
 public class MessageTask extends TimerTask
 {
 
-    private DiscordApi bot;
+    private final DiscordApi bot;
     private int status = 0;
 
     public MessageTask(DiscordApi bot) { this.bot = bot; }
@@ -44,15 +44,6 @@ public class MessageTask extends TimerTask
 
     private static void updateCount(DiscordApi bot)
     {
-        Set<String> userIDs = new HashSet<>();
-
-        for (Server server : bot.getServers())
-            for (User user : server.getMembers())
-                if (!user.isBot())
-                    userIDs.add(user.getIdAsString());
-
-        Values.setUserCount(userIDs.size());
-
-        Values.setGuildCount(bot.getServers().size());
+        Values.setGuildCount(bot.getServers().stream().mapToInt(Server::getMemberCount).sum());
     }
 }

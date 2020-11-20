@@ -10,7 +10,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: gui.ava:html2image:0.9" level="project" />
     <orderEntry type="module-library">
       <library name="Maven: gui.ava:html2image:2.0.1">
         <CLASSES>
@@ -20,14 +19,18 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: org.javacord.javacord:javacord-api:3.0.5" level="project" />
-    <orderEntry type="library" name="Maven: org.javacord.javacord:javacord-core:3.0.5" level="project" />
+    <orderEntry type="library" name="Maven: org.javacord.javacord:javacord-api:3.1.1" level="project" />
+    <orderEntry type="library" name="Maven: org.javacord.javacord:javacord-core:3.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.squareup.okhttp3:logging-interceptor:3.9.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.3" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.neovisionaries:nv-websocket-client:2.6" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.codahale:xsalsa20poly1305:0.10.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.bouncycastle:bcprov-jdk15on:1.59" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.logging.log4j:log4j-api:2.11.0" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.vavr:vavr:0.10.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: io.vavr:vavr-match:0.10.1" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.10.2" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.10.3" level="project" />
     <orderEntry type="library" name="Maven: org.discordbots:DBL-Java-Library:2.0.1" level="project" />

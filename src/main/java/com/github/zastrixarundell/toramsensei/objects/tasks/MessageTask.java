@@ -12,7 +12,7 @@ import java.util.TimerTask;
 public class MessageTask extends TimerTask
 {
 
-    private final DiscordApi bot;
+    private DiscordApi bot;
     private int status = 0;
 
     public MessageTask(DiscordApi bot) { this.bot = bot; }

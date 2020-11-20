@@ -1,5 +1,12 @@
 # Changelog
 
+### 7.5.1
+- Fixed issue with IDEA project import.
+- Added stream sum to user count.
+
+### 7.5.0
+- Updated Javacord version to `3.1.1`.
+
 ### 7.4.2
 - Added infinte loop on worker.
 

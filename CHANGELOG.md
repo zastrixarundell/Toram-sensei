@@ -1,5 +1,9 @@
 # Changelog
 
+### 7.5.3
+- Using stream variable when determining stream count.
+- Setting guild count via said variable.
+
 ### 7.5.2
 - Fixed bug to use `setUserCount` in `MessageTask.java`
 

@@ -6,7 +6,7 @@
 
     <groupId>com.gmail.zastrixarundell</groupId>
     <artifactId>toram-sensei</artifactId>
-    <version>7.5.0</version>
+    <version>7.5.2</version>
 
     <repositories>
         <repository>

@@ -1,5 +1,8 @@
 # Changelog
 
+### 7.5.2
+- Fixed bug to use `setUserCount` in `MessageTask.java`
+
 ### 7.5.1
 - Fixed issue with IDEA project import.
 - Added stream sum to user count.

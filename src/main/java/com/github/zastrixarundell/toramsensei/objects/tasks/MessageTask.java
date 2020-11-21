@@ -8,6 +8,7 @@ import org.javacord.api.entity.user.User;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TimerTask;
+import java.util.stream.Stream;
 
 public class MessageTask extends TimerTask
 {
@@ -44,6 +45,8 @@ public class MessageTask extends TimerTask
 
     private static void updateCount(DiscordApi bot)
     {
-        Values.setUserCount(bot.getServers().stream().mapToInt(Server::getMemberCount).sum());
+        Stream<Server> serverStream = bot.getServers().stream();
+        Values.setGuildCount(((int) serverStream.distinct().count()));
+        Values.setUserCount(serverStream.mapToInt(Server::getMemberCount).sum());
     }
 }

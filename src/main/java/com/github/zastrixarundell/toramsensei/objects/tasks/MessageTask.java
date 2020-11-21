@@ -44,6 +44,6 @@ public class MessageTask extends TimerTask
 
     private static void updateCount(DiscordApi bot)
     {
-        Values.setGuildCount(bot.getServers().stream().mapToInt(Server::getMemberCount).sum());
+        Values.setUserCount(bot.getServers().stream().mapToInt(Server::getMemberCount).sum());
     }
 }
